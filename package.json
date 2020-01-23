@@ -41,6 +41,7 @@
     "d3-selection-multi": "^1.0.1",
     "exceljs": "^1.11.0",
     "fuse.js": "^3.4.5",
+    "ngx-cookie-service": "^2.3.0",
     "rxjs": "^6.5.1",
     "zone.js": "~0.8.26"
   },

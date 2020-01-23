@@ -6,9 +6,9 @@
       <button  mat-button (click)="sidenav.toggle()"><mat-icon>menu</mat-icon></button>
     </mat-toolbar-row>
   </mat-toolbar>
-  <mat-sidenav-container (backdropClick)="close('backdrop')" hasBackdrop="true">
+  <mat-sidenav-container hasBackdrop="true">
   <mat-sidenav #sidenav  mode="side"
-              opened="true"
+              opened="false"
               [fixedInViewport]="true"
               [fixedTopGap]="64"
               position="end"

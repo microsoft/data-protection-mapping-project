@@ -1,4 +1,4 @@
-﻿import { Component, OnInit } from '@angular/core';
+﻿import { Component, AfterViewInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AboutDialogComponent } from './dialogs/about-dialog.component';
 import { ChangeLogDialogComponent } from './dialogs/changelog-dialog.component';
@@ -8,20 +8,32 @@ import { DisclaimerDialogComponent } from './dialogs/disclaimer-dialog.component
 import { DownloadDialogComponent } from './dialogs/download-dialog.component';
 import { HowToDialogComponent } from './dialogs/howto-dialog.component';
 import { PurchaseDialogComponent } from './dialogs/purchase-dialog.component';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements AfterViewInit {
 	title = 'Standard Maps';
 
-	constructor(public dialog: MatDialog) { }
+	@ViewChild('sidenav') public sidenav: any;
 
-	ngOnInit() {
-        // show disclaimer by default
-		this.openDialog(null, 'disclaimer');
+	constructor(
+		public dialog: MatDialog,
+	    public cookies: CookieService) {
+	}
+
+	ngAfterViewInit() {
+        // If they've never dismissed the declaimer
+		if (!this.cookies.get('dismisseddisclaimer')) {
+            // Show the menu first
+			this.sidenav.open();
+
+			// Then show the disclaimer on top
+			this.openDialog(null, 'disclaimer');
+		}
 	}
 
 	openDialog(sideNav: any, dialog: string) {
@@ -44,6 +56,8 @@ export class AppComponent implements OnInit {
 
 			dialogRef.afterClosed().subscribe(result => {
 				console.log(`Dialog result: ${result}`);
+				if (dialog == 'disclaimer')
+					this.cookies.set('dismisseddisclaimer', 'y');
 			});
 		}
 	}

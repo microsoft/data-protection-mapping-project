@@ -5,6 +5,7 @@ import { HttpClientModule }    from '@angular/common/http';
 
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService }  from './in-memory-data.service';
+import { CookieService } from 'ngx-cookie-service';
 
 import { AppRoutingModule }     from './app-routing.module';
 
@@ -147,7 +148,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     StandardMapSearchComponent,
     D3TestComponent
   ],
-  //providers: [D3Service],
+  providers: [ CookieService ],
   bootstrap: [ AppComponent ]
 })
 export class AppModule { }
