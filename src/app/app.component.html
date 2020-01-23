@@ -3,15 +3,26 @@
     <mat-toolbar-row>
       <span>{{title}}</span>
       <span class="example-spacer"></span>
-      <a href="https://github.com/mkslalom/standards-mapping"><img src="assets/icons/github-white.svg" /></a>
+      <button  mat-button (click)="sidenav.toggle()"><mat-icon>menu</mat-icon></button>
     </mat-toolbar-row>
   </mat-toolbar>
-  <mat-sidenav-container>
-  <mat-sidenav  mode="side"
-              opened="false"
+  <mat-sidenav-container (backdropClick)="close('backdrop')" hasBackdrop="true">
+  <mat-sidenav #sidenav  mode="side"
+              opened="true"
               [fixedInViewport]="true"
-              [fixedTopGap]="64">
-              sidenav content
+              [fixedTopGap]="64"
+              position="end"
+              hasBackdrop="true">
+      <div>sidenav content</div>
+      <div><button mat-raised-button (click)="openDialog(sidenav, 'about')">About</button></div>
+      <div><button mat-raised-button (click)="openDialog(sidenav, 'changelog')">Change Log</button></div>
+      <div><button mat-raised-button (click)="openDialog(sidenav, 'contribute')">Contribute</button></div>
+      <div><button mat-raised-button (click)="openDialog(sidenav, 'credits')">Credits</button></div>
+      <div><button mat-raised-button (click)="openDialog(sidenav, 'disclaimer')">Disclaimer</button></div>
+      <div><button mat-raised-button (click)="openDialog(sidenav, 'download')">Download</button></div>
+      <div><button mat-raised-button (click)="openDialog(sidenav, 'howto')">How To</button></div>
+      <div><button mat-raised-button (click)="openDialog(sidenav, 'purchase')">Purchase Standard</button></div>
+      <div><img src="assets/icons/github-white.svg" /></div>
     </mat-sidenav>
       <router-outlet></router-outlet>
   </mat-sidenav-container>

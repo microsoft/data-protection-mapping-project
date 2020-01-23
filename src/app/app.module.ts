@@ -13,6 +13,14 @@ import { DashboardComponent }   from './dashboard/dashboard.component';
 import { StandardMapDetailComponent }  from './standard-map-detail/standard-map-detail.component';
 import { StandardMapsComponent }      from './standard-maps/standard-maps.component';
 import { StandardMapSearchComponent }  from './standard-map-search/standard-map-search.component';
+import { AboutDialogComponent }    from './dialogs/about-dialog.component';
+import { ChangeLogDialogComponent }    from './dialogs/changelog-dialog.component';
+import { ContributeDialogComponent }    from './dialogs/contribute-dialog.component';
+import { CreditsDialogComponent }    from './dialogs/credits-dialog.component';
+import { DisclaimerDialogComponent }    from './dialogs/disclaimer-dialog.component';
+import { DownloadDialogComponent }    from './dialogs/download-dialog.component';
+import { HowToDialogComponent }    from './dialogs/howto-dialog.component';
+import { PurchaseDialogComponent }    from './dialogs/purchase-dialog.component';
 import { MessagesComponent }    from './messages/messages.component';
 import { D3TestComponent }      from './d3-test/d3-test.component';
 import { TreeModule } from 'angular-tree-component';
@@ -112,11 +120,29 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     BrowserAnimationsModule,
     FlexLayoutModule
   ],
+  entryComponents: [
+	AboutDialogComponent,
+    ChangeLogDialogComponent,
+    ContributeDialogComponent,
+    CreditsDialogComponent,
+    DisclaimerDialogComponent,
+    DownloadDialogComponent,
+    HowToDialogComponent,
+    PurchaseDialogComponent
+  ],
   declarations: [
     AppComponent,
     DashboardComponent,
     StandardMapsComponent,
     StandardMapDetailComponent,
+	AboutDialogComponent,
+    ChangeLogDialogComponent,
+    ContributeDialogComponent,
+    CreditsDialogComponent,
+    DisclaimerDialogComponent,
+    DownloadDialogComponent,
+    HowToDialogComponent,
+    PurchaseDialogComponent,
     MessagesComponent,
     StandardMapSearchComponent,
     D3TestComponent
