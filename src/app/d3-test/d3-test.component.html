@@ -1,0 +1,130 @@
+﻿<div  (window:resize)="onResize($event)">
+<!--  <div class="graph-type">
+    <input name="options" type="radio"  [(ngModel)]="graphType" [value]="0"
+           [checked]="graphType==0" (change)="RefreshGraph()" />
+    <input name="options" type="radio"  [(ngModel)]="graphType" [value]="1"
+           [checked]="graphType==1" (change)="RefreshGraph()"/>
+    <input name="options" type="radio"  [(ngModel)]="graphType" [value]="2"
+           [checked]="graphType==2" (change)="RefreshGraph()"/>
+  </div>-->
+ <div fxLayout="row" fxLayoutGap="32px" fxLayoutAlign="flex-start" class="container">
+  <div fxFlex="0 0 300px">
+      <mat-card class="graph-categories">
+        <div class="title-container">
+          <mat-card-title class="filter-title">Filter</mat-card-title>
+            <span class="example-spacer"></span>
+            <button mat-button [matMenuTriggerFor]="menu" class="add-button" [class.button-disabled]="!graphService.canAdd"><mat-icon>add_box</mat-icon></button>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item *ngFor="let d of getMenuOptions()" (click)="graphService.addTab(d.id)">{{d.id}}</button>
+            </mat-menu>
+        </div>
+
+        <div class="graph-tabs">
+          <mat-tab-group [(selectedIndex)]="graphService.selectedTab"  (selectedTabChange)="tabChanged()">
+            <mat-tab *ngFor="let t of graphService.graphTabs">
+              <ng-template mat-tab-label>
+                  {{t.title}}
+                  <button mat-button *ngIf="t.title != 'ISO'" matSuffix mat-icon-button aria-label="Clear" (click)="graphService.removeTab(t)">
+                    <mat-icon>close</mat-icon>
+                  </button>
+              </ng-template>
+              <div class="coverage-box" *ngIf="!t.isIso"><a class="fake-link" (click)="filterIsoCoverage(t)">ISO:</a> {{t.coverage.coverage}}, <a class="fake-link" (click)="filterMapped(t)">Mapped:</a> {{t.coverage.mapped}}, <span>Unique:</span> {{t.coverage.uniqueconnections}}</div>
+              <!--<div class="coverage-box" *ngIf="t.isIso">-</div>-->
+              <div>
+                <mat-form-field class="filter-field">
+                  <input matInput type="text" placeholder="Search..." [(ngModel)]="t.searchValue"  #filter3 (keyup)="filter(filter3.value, tree.treeModel)">
+                  <button mat-button *ngIf="t.searchValue" matSuffix mat-icon-button aria-label="Clear" (click)="filter('', tree.treeModel); t.searchValue=''">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </mat-form-field>
+              </div>
+              
+              <div>
+                <mat-checkbox *ngIf="t.anyExpanded" (change)="t.expandAll()" [checked]="true">Collapse All</mat-checkbox>
+                <mat-checkbox *ngIf="!t.anyExpanded" (change)="t.expandAll()" [checked]="false">Expand All</mat-checkbox>
+                <mat-checkbox *ngIf="t.anySelected" (change)="t.selectAll()" [checked]="true">Deselect All</mat-checkbox>
+                <mat-checkbox *ngIf="!t.anySelected" (change)="t.selectAll()" [checked]="false">Select All</mat-checkbox>
+              </div>
+              
+              <div class="tree-container">
+                <tree-root #tree [(state)]="t.state" [options]="t.options" [nodes]="t.nodes" (initialized)="t.treeModel = tree.treeModel" (stateChange)="t.parentTabTreeChanged(updateSubject)">
+                  <ng-template #treeNodeWrapperTemplate let-node let-index="index">
+                    <div #wrapper class="node-wrapper" [style.padding-left]="node.getNodePadding()">
+                      <tree-node-expander [node]="node"></tree-node-expander>
+                      <tree-node-checkbox [node]="node"></tree-node-checkbox>
+                      <div class="node-content-wrapper"
+                        [class.dummystyle]="bindTogether(node, wrapper, svgbg)"
+                        [class.node-content-wrapper-active]="node.isActive"
+                        [class.node-content-wrapper-focused]="node.isFocused"
+                        (click)="node.mouseAction('click', $event)"
+                        [style.background-color]="getNodeColor(t, node)">
+                          <span>
+                            <span *ngIf="!node.data.node.hyperlink" [innerHTML]="injectHighlightSection(node.data)"></span>
+                            <a *ngIf="node.data.node.hyperlink" (mousedown)="openTab(node.data.node.hyperlink)" class="fake-link" target="_blank" href="{{node.data.node.hyperlink}}" [innerHTML]="injectHighlightSection(node.data)"></a>
+                            <span [innerHTML]="injectHighlightBody(node.data)"></span>
+                          </span>
+                      </div>
+                    </div>
+                  </ng-template>
+                </tree-root>
+              </div>
+            </mat-tab>
+          </mat-tab-group>
+        </div>
+        </mat-card>
+  </div>
+  <div fxFlex="1 0 auto">
+      <mat-card class="graph-columns" >
+<!--        <div fxLayout="row" fxLayoutGap="80px" fxLayoutAlign="flex-start">-->
+          <div class="graph-column" *ngFor="let t of graphService.graphTabs" >
+            <h3>{{t.title}}</h3>
+<!--            <div><a routerLink="/doctypes/{{t.title}}"><h3>{{t.title}}</h3></a> 
+              <div>
+                <mat-checkbox (change)="t.column.expandAll()" [checked]="t.column.anyExpanded">{{t.column.anyExpanded ? 'Collapse' : 'Expand'}} All</mat-checkbox>
+              </div></div>-->
+              
+              <tree-root #tree [(state)]="t.column.state" [options]="t.column.options" [nodes]="t.column.nodes" (initialized)="setup(t.column, tree); t.parentTabTreeChanged(updateSubject)" (activate)="activateNode(t, $event)" (deactivate)="t.columnTabTreeChanged(null, updateSubject)" (toggleExpanded)="t.columnTabTreeChanged($event, updateSubject)">
+                <ng-template #treeNodeWrapperTemplate let-node let-index="index">
+                  <div #wrapper class="node-wrapper" [style.padding-left]="node.getNodePadding()">
+                    <!--<tree-node-expander [node]="node"></tree-node-expander>-->
+                    <div class="node-content-wrapper"
+                      [class.dummystyle]="bindTogether(node, wrapper, svgbg)"
+                      [class.node-content-wrapper-active]="node.isActive"
+                      [class.node-content-wrapper-focused]="node.isFocused"
+                      (click)="node.mouseAction('click', $event)"
+                      [style.background-color]="getNodeColor(t.column, node)">
+
+                      <span>
+                        <span *ngIf="!node.data.node.hyperlink">{{node.data.node.section}}</span>
+                        <a *ngIf="node.data.node.hyperlink" (mousedown)="openTab(node.data.node.hyperlink)" class="fake-link" target="_blank" href="{{node.data.node.hyperlink}}">{{node.data.node.section}}</a>
+                        <span>{{node.data.node.body ? (' - ' + node.data.node.body) : ''}}</span>
+                      </span>
+                    </div>
+                  </div>
+                </ng-template>
+              </tree-root>
+          </div>
+<!--        </div>-->
+        <svg #svgbg class="svg-background">
+          <defs>
+            <marker id="arrow" markerWidth="10" markerHeight="10" refX="0" refY="3" orient="auto" markerUnits="strokeWidth">
+              <path d="M0,0 L0,6 L9,3 z" fill="#000" />
+            </marker>
+          </defs>
+          <g *ngFor="let t of graphService.graphTabs">
+            <g *ngFor="let l of t.column.displayLinks">
+<!--              <line class="svg-line-click" (click)="clickedLink(l)" [attr.x1]="l.x3" [attr.x2]="l.x4" [attr.y1]="l.y2" [attr.y2]="l.y2" marker-end="url(#arrow)"></line>
+              <line class="svg-line-click" (click)="clickedLink(l)" [attr.x1]="l.x1" [attr.x2]="l.x3" [attr.y1]="l.y1" [attr.y2]="l.y2"></line>-->
+              <line class="svg-line-visible" [class.svg-line-active]="l.weight > 1" [attr.x1]="l.x3" [attr.x2]="l.x4" [attr.y1]="l.y2" [attr.y2]="l.y2" marker-end="url(#arrow)"></line>
+              <line class="svg-line-visible" [class.svg-line-active]="l.weight > 1" [attr.x1]="l.x1" [attr.x2]="l.x3" [attr.y1]="l.y1" [attr.y2]="l.y2"></line>
+            </g>
+          </g>
+        </svg>
+<!--        <div class="table-wrapper" *ngIf="tableData">
+        </div>
+        <div id="d3" class="d3">
+        </div>-->
+      </mat-card>
+  </div>
+</div>
+</div>

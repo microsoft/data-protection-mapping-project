@@ -1,0 +1,68 @@
+﻿<div *ngIf="standardMap" class="container">
+  <button (click)="goBack()">Go back</button>
+  <h2>{{standardMap.name | uppercase}}</h2>
+  
+  <div><mat-checkbox (change)="treeData.expandAll()" [checked]="treeData.anyExpanded">Expand All</mat-checkbox></div>
+
+  <tree-root #tree [focused]="true" [(state)]="treeData.state" [options]="treeData.options" [nodes]="treeData.nodes" (initialized)="treeData.treeModel = tree.treeModel;" >
+    <ng-template #treeNodeWrapperTemplate let-node let-index="index">
+      <div #wrapper class="node-wrapper" [style.padding-left]="node.getNodePadding()">
+        <tree-node-expander [node]="node"></tree-node-expander>
+        <div class="node-content-wrapper"
+          [class.node-content-wrapper-focused]="node.isFocused"
+          (click)="node.mouseAction('click', $event)"
+          (dblclick)="node.mouseAction('dblClick', $event)"
+          (contextmenu)="node.mouseAction('contextMenu', $event)"
+          (treeDrop)="node.onDrop($event)"
+          [treeAllowDrop]="node.allowDrop"
+          [treeDrag]="node"
+          [treeDragEnabled]="node.allowDrag()">
+          
+          <div class="node-content">
+            <div *ngIf="(node.isExpanded || node.isLeaf)">
+              <div class="button-row">
+                <span class="example-spacer"></span>
+                <button><mat-icon>arrow_upward</mat-icon></button>
+                <button><mat-icon>arrow_downward</mat-icon></button>
+                <button><mat-icon>cancel</mat-icon></button>
+              </div>
+              <mat-form-field class="input-field">
+                <input matInput type="text" placeholder="id" [(ngModel)]="node.data.node.id" >
+              </mat-form-field>
+              <mat-form-field class="input-field">
+                <input matInput type="text" placeholder="section" [(ngModel)]="node.data.node.section" >
+              </mat-form-field>
+              <mat-form-field class="input-field">
+                <input matInput type="text" placeholder="body" [(ngModel)]="node.data.node.body" >
+              </mat-form-field>
+              <!--<tree-node-content [node]="node" [index]="index"></tree-node-content>-->
+              <h4>
+                <span>Links</span>
+                <span class="example-spacer"></span>
+                <button><mat-icon>add_box</mat-icon></button>
+              </h4>
+              <div *ngFor="let link of node.data.node.links">
+                <div class="link">
+                  <mat-form-field class="link-field">
+                    <input matInput type="text" placeholder="type" [(ngModel)]="link.type" >
+                  </mat-form-field>
+                  <mat-form-field class="link-field">
+                    <input matInput type="text" placeholder="id" [(ngModel)]="link.id" >
+                  </mat-form-field>
+                  <mat-form-field class="link-field">
+                    <input matInput type="text" placeholder="rev" [(ngModel)]="link.rev" >
+                  </mat-form-field>
+                  <button><mat-icon>cancel</mat-icon></button>
+                </div>
+              </div>
+              <h4 *ngIf="node.children.length">Children</h4>
+            </div>
+            <div *ngIf="!(node.isExpanded || node.isLeaf)">
+              <div>{{node.data.name}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </tree-root>
+</div>

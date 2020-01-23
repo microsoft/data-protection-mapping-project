@@ -1,0 +1,15 @@
+﻿@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+body { 
+  margin: 0;
+}
+
+.basic-container {
+  padding: 0px;
+}
+
+
+
+.mat-drawer-content {
+    padding: 20px;
+}

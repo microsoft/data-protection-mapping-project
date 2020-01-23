@@ -1,0 +1,11 @@
+﻿<div id="search-component">
+  <span>Search:</span><input #searchBox id="search-box" (input)="search(searchBox.value)" />
+
+  <ul class="search-result">
+    <li *ngFor="let standardMap of standardMap$ | async" >
+      <a routerLink="/detail/{{standardMap.id}}">
+        {{standardMap.name}}
+      </a>
+    </li>
+  </ul>
+</div>

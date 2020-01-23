@@ -1,0 +1,41 @@
+﻿.example-icon {
+  padding: 0 14px;
+}
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+.app-body {
+    overflow: auto;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 64px;
+}
+
+.app-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+
+mat-sidenav-container {
+  width: 100% !important;
+  height: calc(100vh - 64px) !important;
+}
+
+mat-sidenav {
+  background-color: red !important;
+}
+  
+
+mat-toolbar {
+  height: 64px;
+  position: relative;
+  z-index: 100;
+}
