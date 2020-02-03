@@ -11,7 +11,8 @@
     "e2e": "ng e2e",
     "ng": "ng",
     "import": "node utils/importer.js",
-    "convert": "node utils/converter.js"
+    "convert": "node utils/converter.js",
+    "importcharter": "mammoth \"src/assets/Data Protection Mapping Project Charter v2.docx\" \"src/app/dialogs/charter-content.component.html\""
   },
   "keywords": [],
   "author": "",
@@ -41,6 +42,7 @@
     "d3-selection-multi": "^1.0.1",
     "exceljs": "^1.11.0",
     "fuse.js": "^3.4.5",
+    "mammoth": "^1.4.9",
     "ngx-cookie-service": "^2.3.0",
     "rxjs": "^6.5.1",
     "zone.js": "~0.8.26"

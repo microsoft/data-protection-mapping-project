@@ -23,6 +23,18 @@
     bottom: 0;
 }
 
+.menu-button {
+  width: 100%;
+}
+
+.padded-container {
+  padding: 20px;
+}
+
+.centered-image {
+  width: 100%;
+  height: 25px;
+}
 
 mat-sidenav-container {
   width: 100% !important;
@@ -30,9 +42,8 @@ mat-sidenav-container {
 }
 
 mat-sidenav {
-  background-color: red !important;
-}
-  
+ 
+}  
 
 mat-toolbar {
   height: 64px;

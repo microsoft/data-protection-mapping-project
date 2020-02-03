@@ -22,6 +22,7 @@ import { DisclaimerDialogComponent }    from './dialogs/disclaimer-dialog.compon
 import { DownloadDialogComponent }    from './dialogs/download-dialog.component';
 import { HowToDialogComponent }    from './dialogs/howto-dialog.component';
 import { PurchaseDialogComponent }    from './dialogs/purchase-dialog.component';
+import { CharterContentComponent }    from './dialogs/charter-content.component';
 import { MessagesComponent }    from './messages/messages.component';
 import { D3TestComponent }      from './d3-test/d3-test.component';
 import { TreeModule } from 'angular-tree-component';
@@ -129,7 +130,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     DisclaimerDialogComponent,
     DownloadDialogComponent,
     HowToDialogComponent,
-    PurchaseDialogComponent
+    PurchaseDialogComponent,
+    CharterContentComponent
   ],
   declarations: [
     AppComponent,
@@ -146,7 +148,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     PurchaseDialogComponent,
     MessagesComponent,
     StandardMapSearchComponent,
-    D3TestComponent
+    D3TestComponent,
+    CharterContentComponent
   ],
   providers: [ CookieService ],
   bootstrap: [ AppComponent ]

@@ -1,14 +1,13 @@
 ﻿import { InMemoryDbService } from 'angular-in-memory-web-api';
 import { Injectable } from '@angular/core';
-import { mapDb } from './mock-standard-maps'
+//import { mapDb } from './mock-standard-maps'
 
 @Injectable({
   providedIn: 'root',
 })
 export class InMemoryDataService implements InMemoryDbService {
   createDb() {
-    const standardMaps = mapDb.slice();
-    return {'standard-map':standardMaps};
+    return {'standard-map':null};
   }
 
   //// Overrides the genId method to ensure that a standard-map always has an id.

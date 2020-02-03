@@ -1,7 +1,7 @@
 ﻿
 var Excel = require('exceljs');
 
-var xlsxFile = "./src/app/data/Database.xlsx";
+var xlsxFile = "./src/assets/database.xlsx";
 var outputFile = "./src/assets/db.json";
 var outputFile2 = "./docs/assets/db.json"; // write one straight to the bin file so the user doesnt have to run the build pipeline.
 
