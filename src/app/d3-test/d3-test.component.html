@@ -28,7 +28,7 @@
                     <mat-icon>close</mat-icon>
                   </button>
               </ng-template>
-              <div class="coverage-box" *ngIf="!t.isIso"><a class="fake-link" (click)="filterIsoCoverage(t)">ISO:</a> {{t.coverage.coverage}}, <a class="fake-link" (click)="filterMapped(t)">Mapped:</a> {{t.coverage.mapped}}, <span>Unique:</span> {{t.coverage.uniqueconnections}}</div>
+              <!--<div class="coverage-box" *ngIf="!t.isIso"><a class="fake-link" (click)="filterIsoCoverage(t)">ISO:</a> {{t.coverage.coverage}}, <a class="fake-link" (click)="filterMapped(t)">Mapped:</a> {{t.coverage.mapped}}, <span>Unique:</span> {{t.coverage.uniqueconnections}}</div>-->
               <!--<div class="coverage-box" *ngIf="t.isIso">-</div>-->
               <div>
                 <mat-form-field class="filter-field">
@@ -77,7 +77,8 @@
       <mat-card class="graph-columns" >
 <!--        <div fxLayout="row" fxLayoutGap="80px" fxLayoutAlign="flex-start">-->
           <div class="graph-column" *ngFor="let t of graphService.graphTabs" >
-            <h3>{{t.title}}</h3>
+            <h3 *ngIf="t.isIso"><a href="https://www.iso.org/standard/71670.html" target="_blank">ISO</a> / <a href="https://en.wikipedia.org/wiki/ISO/IEC_27701" target="_blank">IEC</a> 27701</h3>
+            <h3 *ngIf="!t.isIso">{{t.title}}</h3>
 <!--            <div><a routerLink="/doctypes/{{t.title}}"><h3>{{t.title}}</h3></a> 
               <div>
                 <mat-checkbox (change)="t.column.expandAll()" [checked]="t.column.anyExpanded">{{t.column.anyExpanded ? 'Collapse' : 'Expand'}} All</mat-checkbox>
