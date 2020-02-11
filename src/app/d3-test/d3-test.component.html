@@ -77,7 +77,7 @@
       <mat-card class="graph-columns" >
 <!--        <div fxLayout="row" fxLayoutGap="80px" fxLayoutAlign="flex-start">-->
           <div class="graph-column" *ngFor="let t of graphService.graphTabs" >
-            <h3 *ngIf="t.isIso"><a href="https://www.iso.org/standard/71670.html" target="_blank">ISO</a> / <a href="https://en.wikipedia.org/wiki/ISO/IEC_27701" target="_blank">IEC</a> 27701</h3>
+            <h3 *ngIf="t.isIso"><a href="https://www.iso.org/standard/71670.html" target="_blank">ISO</a> / <a href="https://webstore.iec.ch/publication/65597" target="_blank">IEC</a> 27701</h3>
             <h3 *ngIf="!t.isIso">{{t.title}}</h3>
 <!--            <div><a routerLink="/doctypes/{{t.title}}"><h3>{{t.title}}</h3></a> 
               <div>
