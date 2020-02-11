@@ -9,7 +9,7 @@ Standards Mapping is an open source tool used to map and visualize standards and
 
 ### Running the app
 
-You can access the app live at the following URL: https://mkslalom.github.io/standards-mapping/.
+You can access the app live at the following URL: https://dataprotectionmapping.z21.web.core.windows.net/.
 
 ### Building the code
 
