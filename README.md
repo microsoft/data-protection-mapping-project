@@ -113,7 +113,7 @@ Please ensure that you have at least the **minimum** recommended versions
 
 # data-protection-mapping-project
 
-Copyright <2020> <Data Protection Mapping Project>
+Copyright <2020> Data Protection Mapping Project
   
   MIT License
   
