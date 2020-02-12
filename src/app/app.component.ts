@@ -16,7 +16,8 @@ import { CookieService } from 'ngx-cookie-service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements AfterViewInit {
-	title = 'Data Protection Mapping Project';
+  title = 'Data Protection Mapping Project';
+  enableCookies = false;
 
 	@ViewChild('sidenav') public sidenav: any;
 
@@ -26,9 +27,9 @@ export class AppComponent implements AfterViewInit {
 	}
 
 	ngAfterViewInit() {
-        // If they've never dismissed the declaimer
-		if (!this.cookies.get('dismisseddisclaimer')) {
-            // Show the menu first
+    // If they've never dismissed the declaimer
+    if (!this.enableCookies || !this.cookies.get('dismisseddisclaimer')) {
+      // Show the menu first
 			this.sidenav.open();
 
 			// Then show the disclaimer on top
@@ -56,7 +57,7 @@ export class AppComponent implements AfterViewInit {
 
 			dialogRef.afterClosed().subscribe(result => {
 				console.log(`Dialog result: ${result}`);
-        if (dialogId == 'disclaimer')
+        if (this.enableCookies && dialogId == 'disclaimer')
 					this.cookies.set('dismisseddisclaimer', 'y');
 			});
 		}
