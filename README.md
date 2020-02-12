@@ -4,10 +4,10 @@ Licensed under the MIT License.
 ## Data Protection/Privacy Mapping Project Mission
 The Data Protection/Privacy Mapping Project (the “Project”) facilitates consistent global comprehension and implementation of data protection with an open source mapping between ISO/IEC 27701 and global data protection and/or privacy laws and regulations.
 ### Principles
-•	Neutral – The project is not for profit and carries no affiliation or company-driven focus. 
-•	Open – The data, infrastructure, and processes are available to all
-•	Consensus – Mapping data can at times be subjective, but consensus can be achieved through engagements with stakeholders
-•	Transparent – The operations and decision-making process for this project is transparent
+* Neutral – The project is not for profit and carries no affiliation or company-driven focus. 
+* Open – The data, infrastructure, and processes are available to all
+* Consensus – Mapping data can at times be subjective, but consensus can be achieved through engagements with stakeholders
+* Transparent – The operations and decision-making process for this project is transparent
 ### Scope
 The Project aims to make the link between ISO/IEC 27001 and data protection regulatory requirements comprehensible to privacy professionals. It seeks to continuously improve and expand the data map between ISO/IEC 27701 and data protection laws and regulations, especially that of regulatory requirements. Initial mapping data is based on existing mapping between ISO/IEC 27701 and GDPR, and additional mappings were prepared by outside counsel for Microsoft between ISO/IEC 27701 and regulations from Australia, California, Canada, Brazil, Hong Kong, Singapore, South Korea, and Turkey.
 ### What?
@@ -19,12 +19,12 @@ Microsoft initiated the Project by donating the initial data visualization code 
 ### How?
 The Project encourages mapping contributions from data protection experts. The Data Curators will assess whether to accept, reject, or amend those contributions. Contributions that are accepted (with or without amendments) are then posted publicly with attribution for the public to review and consume. Contributions that are rejected are published separately with explanation from data curators within the site for future reference.
 ### Future efforts could focus on further topics such as the following examples:
-•	Mapping Quality: Improve comprehensiveness, integrity and accuracy of the mapping
-•	Mapping Scope: Add new mappings
-•	Multilingual Capability: Enable multi-language capability both for mapping and consumption of data
-•	Improve User Interface: Include attribution of mapping source and time stamp
-•	Additional Data Visualization and Analytics
-•	Simplify Data Export
+*	Mapping Quality: Improve comprehensiveness, integrity and accuracy of the mapping
+*	Mapping Scope: Add new mappings
+*	Multilingual Capability: Enable multi-language capability both for mapping and consumption of data
+*	Improve User Interface: Include attribution of mapping source and time stamp
+*	Additional Data Visualization and Analytics
+*	Simplify Data Export
 The ordering and completion of this projected work and effort applied will depend entirely on the community and their interests.
 ## Governance
 ### Processes
@@ -111,7 +111,7 @@ Please ensure that you have at least the **minimum** recommended versions
 	http://localhost:4200/dashboard
 
 
-# data-protection-mapping-project
+# MIT License
 
 Copyright <2020> Data Protection Mapping Project
   
