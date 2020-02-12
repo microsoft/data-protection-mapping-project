@@ -1,4 +1,4 @@
-﻿import { Component, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, AfterViewInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AboutDialogComponent } from './dialogs/about-dialog.component';
 import { ChangeLogDialogComponent } from './dialogs/changelog-dialog.component';
@@ -36,11 +36,11 @@ export class AppComponent implements AfterViewInit {
 		}
 	}
 
-	openDialog(sideNav: any, dialog: string) {
+	openDialog(sideNav: any, dialogId: string) {
 		//sideNav.close();
 
 		var dialogType = null;
-		switch (dialog) {
+    switch (dialogId) {
 			case 'about': dialogType = AboutDialogComponent; break;
 			case 'changelog': dialogType = ChangeLogDialogComponent; break;
 			case 'contribute': dialogType = ContributeDialogComponent; break;
@@ -56,7 +56,7 @@ export class AppComponent implements AfterViewInit {
 
 			dialogRef.afterClosed().subscribe(result => {
 				console.log(`Dialog result: ${result}`);
-				if (dialog == 'disclaimer')
+        if (dialogId == 'disclaimer')
 					this.cookies.set('dismisseddisclaimer', 'y');
 			});
 		}
