@@ -16,7 +16,7 @@ import { CookieService } from 'ngx-cookie-service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements AfterViewInit {
-	title = 'Standard Maps';
+	title = 'Data Protection Mapping Project';
 
 	@ViewChild('sidenav') public sidenav: any;
 
