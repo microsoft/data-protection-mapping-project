@@ -1,4 +1,4 @@
-﻿
+
 export class Link {
   id: string;
   type: string;
@@ -86,3 +86,14 @@ export class FullDocNode {
     return this.shouldBeMappedCached;
   }
 }
+
+export class Db {
+  public changelog: Change[];
+  public docs: Doc2[];
+};
+
+export class Change {
+  public date: string;
+  public author: string;
+  public change: string;
+};

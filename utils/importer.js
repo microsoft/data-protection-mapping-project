@@ -1,4 +1,4 @@
-﻿
+
 var Excel = require('exceljs');
 
 var xlsxFile = "./src/assets/database.xlsx";
@@ -30,7 +30,7 @@ function exportXlsx(allDocs) {
           { key: 'section' },
           { key: 'body' },
           { key: 'hyperlink' },
-          { key: 'isolinks' },
+          { key: 'isolinks' }
         ];
     
         worksheet.getColumn('id').values = ["id"].concat(sections.map(v => v.id));
@@ -46,9 +46,9 @@ function exportXlsx(allDocs) {
       });
 }
 
-function writeDocs(allDocs) {
+function writeResult(result) {
     const fs = require('fs');
-    let data = JSON.stringify(allDocs, null, 4);  
+    let data = JSON.stringify(result, null, 4);  
     console.log(data);
     fs.writeFileSync(outputFile, data); 
     fs.writeFileSync(outputFile2, data); 
@@ -145,7 +145,7 @@ var mergeDocRecursive = function (src, dst) {
         if (d.children)
           mergeDocRecursive(d.children, dst);
     }
-}
+};
 
 var mergeDoc = function (src, dst) {
     mergeDocRecursive(src, dst);
@@ -153,6 +153,70 @@ var mergeDoc = function (src, dst) {
     recursiveSort(dst);
 
     return dst;
+};
+
+function processRegulation(worksheet) {
+  var idsCol = worksheet.getColumn(1);
+
+  var ids = [];
+  var doc = {
+      "type": worksheet.name,
+      "rev": 1,
+      "children": []
+  };
+
+  var newChildren = [];
+
+  idsCol.eachCell({ includeEmpty: true }, function(cell, rowNumber) {
+      if (rowNumber == 1)
+          return; // skip the header row
+
+      var row = worksheet.getRow(rowNumber);
+                      
+      var section = row.getCell(2).text;
+      var body = row.getCell(3).text;
+      var hyperlink = row.getCell(4).text;
+      var isolinks = row.getCell(5).text;
+
+      var links = isolinks.split(';').filter(v => v).map(v => { return {
+              "id": v,
+              "type": "ISO"
+            }; });
+
+      newChildren.push({
+          id: cell.text,
+          section: section,
+          body: body.length ? body : undefined,
+          hyperlink: hyperlink.length ? hyperlink : undefined,
+          links: links
+      });
+  });
+
+  mergeDoc(newChildren, doc);
+  return doc;
+}
+
+function processChangeLog(worksheet) {
+  var changeLog = [];
+  var datesCol = worksheet.getColumn(1);
+
+  datesCol.eachCell({ includeEmpty: false }, function(cell, rowNumber) {
+      if (rowNumber == 1)
+          return; // skip the header row
+
+      var row = worksheet.getRow(rowNumber);
+                      
+      var author = row.getCell(2).text;
+      var change = row.getCell(3).text;
+      
+      changeLog.push({
+          date: new Date(cell),
+          author: author,
+          change: change
+      });
+  });
+
+  return changeLog;
 }
 
 function importXlsx() {
@@ -160,59 +224,33 @@ function importXlsx() {
     return workbook.xlsx.readFile(xlsxFile)
       .then(function() {
           var allDocs = [];
+          var changeLog = [];
 
           workbook.eachSheet(function(worksheet, sheetId) {
               console.log(worksheet.name);
-              var idsCol = worksheet.getColumn(1);
-
-              var ids = [];
-              var doc = {
-                  "type": worksheet.name,
-                  "rev": 1,
-                  "children": []
-              };
-
-              var newChildren = [];
-
-              idsCol.eachCell({ includeEmpty: true }, function(cell, rowNumber) {
-                  if (rowNumber == 1)
-                      return; // skip the header row
-
-                  var row = worksheet.getRow(rowNumber);
-                      
-                  var section = row.getCell(2).text;
-                  var body = row.getCell(3).text;
-                  var hyperlink = row.getCell(4).text;
-                  var isolinks = row.getCell(5).text;
-
-                  var links = isolinks.split(';').filter(v => v).map(v => { return {
-                          "id": v,
-                          "type": "ISO"
-                        }; });
-
-                  newChildren.push({
-                      id: cell.text,
-                      section: section,
-                      body: body.length ? body : undefined,
-                      hyperlink: hyperlink.length ? hyperlink : undefined,
-                      links: links
-                  });
-              });
-
-              mergeDoc(newChildren, doc);
-              allDocs.push(doc);
+              if (worksheet.name == "ChangeLog") {
+                changeLog = processChangeLog(worksheet);
+              }
+              else {
+                var doc = processRegulation(worksheet);
+                allDocs.push(doc);
+              }
           });
 
-          writeDocs(allDocs);
+          var db = {
+            "changelog": changeLog,
+            "docs": allDocs
+          };
+          writeResult(db);
       });
 };
 
 module.exports = {
     exportXlsx,
-    writeDocs,
+    writeResult,
     mergeDoc,
     normalizePath,
-    mergeLinks,
-}
+    mergeLinks
+};
 
 importXlsx();

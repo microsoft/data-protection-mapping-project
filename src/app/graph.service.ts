@@ -1,11 +1,11 @@
-﻿import { Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Observable, of, forkJoin } from 'rxjs';
 import * as Rx from 'rxjs';
 import { catchError, map, tap, debounce } from 'rxjs/operators';
 
-import { FullDocNode, DocNode2, Doc2, Link } from './standard-map';
+import { FullDocNode, DocNode2, Doc2, Link, Change, Db } from './standard-map';
 import { MessageService } from './message.service';
 import * as d3Sankey from 'd3-sankey';
 import { TreeModel, TreeNode, ITreeState, TREE_ACTIONS, IActionMapping } from 'angular-tree-component';
@@ -416,7 +416,7 @@ export class GraphTab {
 @Injectable({ providedIn: 'root' })
 export class GraphService {
   private docGuids = {};
-  private docDb = null;
+  private docDb: Db = null;
   private nextDocGuid = 0;
   public tabsChangedSubject = new Rx.BehaviorSubject(0);
 
@@ -457,14 +457,20 @@ export class GraphService {
       return value;
   }
 
-  getDb() : Observable<Doc2[]> {
+  getDb() : Observable<Db> {
       if (this.docDb)
           return of(this.docDb);
 
-      return this.http.get<Doc2[]>('assets/db.json', {responseType: 'json'})
+      return this.http.get<Db>('assets/db.json', {responseType: 'json'})
         .pipe(
           tap(
-            data => this.docDb = data,
+            data => {
+              this.docDb = data;
+              this.docDb.changelog = this.docDb.changelog.map(v => {
+                v.date = new Date(v.date).toLocaleDateString();
+                return v;
+              });
+            },
             error => this.handleError("getDb", [])
           )
         );
@@ -474,7 +480,7 @@ export class GraphService {
       return this.getDb().pipe(
         map(
           data => {
-              return data.map(v => { return { id: v.type, title: v.type }; });
+              return data.docs.map(v => { return { id: v.type, title: v.type }; });
           }
         )
       );
@@ -501,14 +507,22 @@ export class GraphService {
       return this.getDb().pipe(
         map(
           data => {
-              var doc = data.find(n => n.type == docType);
+              var doc = data.docs.find(n => n.type == docType);
               return this.addToDoc(null, doc);
           }
         )
       );
   }
 
-
+  getChangeLog(): Observable<Change[]> {
+    return this.getDb().pipe(
+      map(
+        data => {
+          return data.changelog;
+        }
+      )
+    );
+  }
 
   // Live state management: maybe move this to a different service.  
   public graphTabs: GraphTab[] = [ ];
