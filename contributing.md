@@ -15,7 +15,7 @@ or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any addi
 
 If you want to submit changes but not familiar with GitHub pull request, please take the following steps:
 
-1. Download the XLSX data set from: Download Here
+1. Download the XLSX data set from: https://github.com/microsoft/data-protection-mapping-project/blob/master/src/assets/database.xlsx
 1. Add comments to the Excel file where you would like to make changes.
 1. Email the changed Excel file to Alex Li: alli@Microsoft.com Include your:
 * Name
