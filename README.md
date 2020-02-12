@@ -1,7 +1,6 @@
-﻿<!--
-Copyright (c) Microsoft Corporation. All rights reserved.
+Copyright (c) Data Protection Mapping Project. All rights reserved.
 Licensed under the MIT License.
--->
+
 ## Data Protection/Privacy Mapping Project Mission
 The Data Protection/Privacy Mapping Project (the “Project”) facilitates consistent global comprehension and implementation of data protection with an open source mapping between ISO/IEC 27701 and global data protection and/or privacy laws and regulations.
 ### Principles
@@ -113,8 +112,13 @@ Please ensure that you have at least the **minimum** recommended versions
 
 
 # data-protection-mapping-project
-Open Source Data Protection Mapping Project
+
 Copyright <2020> <Data Protection Mapping Project>
+  
+  MIT License
+  
   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+  
   The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+  
   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
