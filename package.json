@@ -8,6 +8,7 @@
     "start": "ng serve",
     "test": "ng test",
     "build": "ng build --prod=true --outputPath=docs",
+    "postbuild": "npm run import",
     "e2e": "ng e2e",
     "ng": "ng",
     "import": "node utils/importer.js",
