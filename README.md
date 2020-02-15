@@ -75,28 +75,23 @@ Please ensure that you have at least the **minimum** recommended versions
 
 #### 1. Clone the repository
 
--   Clone the repository using one of the following commands
+-   Clone the repository using the following commands:
     ```bash
-    git clone https://github.com/mkslalom/standards-mapping.git
-    ```
-    or
-    ```bash
-    git clone git@github.com:mkslalom/standards-mapping.git
+    git clone https://github.com/microsoft/data-protection-mapping-project
     ```
 -   Select the created directory
     ```bash
-    cd standards-mapping
+    cd data-protection-mapping-project
     ```
 
 #### 2. Install packages
 
--   Install the packages
+-   Install the Angular CLI and the project dependency packages:
 
     ```bash
+    npm install -g @angular/cli
     npm install
     ```
-
-    (Temporary note from Matt. You may need to install Angular CLI separately: npm install -g @angular/cli)
 
 #### 3. Build and run
 
@@ -108,7 +103,7 @@ Please ensure that you have at least the **minimum** recommended versions
 #### 4. Open app in web browser
 
 -   Navigate your browser to: 
-	http://localhost:4200/dashboard
+	http://localhost:4200
 
 
 # MIT License
