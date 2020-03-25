@@ -15,23 +15,31 @@ _______
 1.1 Accepted by default:   
 - Laws and public regulation 
 - Internationally recognized rules (OECD privacty guidelines) 
+
 1.2 Acceptance to be discussed depending on the content 
 - codes of conduct 
 - International and national standards
 - Internal rules an certification requirements 
+
 1.3 Rejected by default 
 - Standards, rules or regulation refering to personal certification requirements 
 - Standards, rules or regulation not refering to privacy matters
+
 2.IAPP submission 
 The submission is rejected unanimously 
+
 3. NIST submission The submission is accepted unanimously 
+
 4.Other submissions to come 
 CSA, PLA and TBD in the following months 
+
 5. Minors technical changes All the minors changes presented by Alex Li have been accepted 
+
 6.Purposes of the project 
 - This topic has to be clarified in the following weeks/months 
 - Alex Li works on it and comes back with proposals 
 - Eric Lachaud suggests to open contributions to different mapping for the same reglations/standards to improve accuracy of the tool 
+
 7.Next meeting 8th April 2020 at 9AM PST
 
 ## Recording of Meeting
