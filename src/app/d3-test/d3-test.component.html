@@ -1,4 +1,4 @@
-﻿<div  (window:resize)="onResize($event)">
+<div  (window:resize)="onResize($event)">
 <!--  <div class="graph-type">
     <input name="options" type="radio"  [(ngModel)]="graphType" [value]="0"
            [checked]="graphType==0" (change)="RefreshGraph()" />
@@ -13,7 +13,7 @@
         <div class="title-container">
           <mat-card-title class="filter-title">Filter</mat-card-title>
             <span class="example-spacer"></span>
-            <button mat-button [matMenuTriggerFor]="menu" class="add-button" [class.button-disabled]="!graphService.canAdd"><mat-icon>add_box</mat-icon></button>
+            <button title="Add Regulation Tab" mat-button [matMenuTriggerFor]="menu" class="add-button" [class.button-disabled]="!graphService.canAdd"><mat-icon>add_box</mat-icon></button>
             <mat-menu #menu="matMenu">
               <button mat-menu-item *ngFor="let d of getMenuOptions()" (click)="graphService.addTab(d.id)">{{d.id}}</button>
             </mat-menu>
@@ -32,8 +32,8 @@
               <!--<div class="coverage-box" *ngIf="t.isIso">-</div>-->
               <div>
                 <mat-form-field class="filter-field">
-                  <input matInput type="text" placeholder="Search..." [(ngModel)]="t.searchValue"  #filter3 (keyup)="filter(filter3.value, tree.treeModel)">
-                  <button mat-button *ngIf="t.searchValue" matSuffix mat-icon-button aria-label="Clear" (click)="filter('', tree.treeModel); t.searchValue=''">
+                  <input matInput type="text" placeholder="Search..." [(ngModel)]="t.searchValue"  #filter3 (keyup)="filter(filter3.value, tree.treeModel, t)">
+                  <button mat-button *ngIf="t.searchValue" matSuffix mat-icon-button aria-label="Clear" (click)="filter('', tree.treeModel, t); t.searchValue=''">
                     <mat-icon>close</mat-icon>
                   </button>
                 </mat-form-field>
@@ -46,23 +46,36 @@
                 <mat-checkbox *ngIf="!t.anySelected" (change)="t.selectAll()" [checked]="false">Select All</mat-checkbox>
               </div>
               
+              <div>
+                <mat-form-field *ngIf="t.doc.node.langs.length > 1">
+                  <mat-label>Language:</mat-label>
+                  <mat-select matNativeControl required [(value)]="t.selectedLang">
+                    <mat-option *ngFor="let l of t.doc.node.langs" value="{{l}}">{{l}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
               <div class="tree-container">
                 <tree-root #tree [(state)]="t.state" [options]="t.options" [nodes]="t.nodes" (initialized)="t.treeModel = tree.treeModel" (stateChange)="t.parentTabTreeChanged(updateSubject)">
                   <ng-template #treeNodeWrapperTemplate let-node let-index="index">
                     <div #wrapper class="node-wrapper" [style.padding-left]="node.getNodePadding()">
-                      <tree-node-expander [node]="node"></tree-node-expander>
-                      <tree-node-checkbox [node]="node"></tree-node-checkbox>
+                      <tree-node-expander title="Expand/Collapse Regulation" [node]="node"></tree-node-expander>
+                      <input title="Include/Exclude Regulation" class="tree-node-checkbox"
+                              type="checkbox"
+                              (click)="node.mouseAction('checkboxClick', $event)"
+                              [checked]="node.isSelected"
+                              [indeterminate]="node.isPartiallySelected" />
                       <div class="node-content-wrapper"
-                        [class.dummystyle]="bindTogether(node, wrapper, svgbg)"
-                        [class.node-content-wrapper-active]="node.isActive"
-                        [class.node-content-wrapper-focused]="node.isFocused"
-                        (click)="node.mouseAction('click', $event)"
-                        [style.background-color]="getNodeColor(t, node)">
-                          <span>
-                            <span *ngIf="!node.data.node.hyperlink" [innerHTML]="injectHighlightSection(node.data)"></span>
-                            <a *ngIf="node.data.node.hyperlink" (mousedown)="openTab(node.data.node.hyperlink)" class="fake-link" target="_blank" href="{{node.data.node.hyperlink}}" [innerHTML]="injectHighlightSection(node.data)"></a>
-                            <span [innerHTML]="injectHighlightBody(node.data)"></span>
-                          </span>
+                           [class.dummystyle]="bindTogether(node, wrapper, svgbg)"
+                           [class.node-content-wrapper-active]="node.isActive"
+                           [class.node-content-wrapper-focused]="node.isFocused"
+                           (click)="node.mouseAction('click', $event)"
+                           [style.background-color]="getNodeColor(t, node)">
+                        <span>
+                          <span *ngIf="!node.data.node.hyperlink" [innerHTML]="injectHighlightSection(node.data, t.selectedLang)"></span>
+                          <a *ngIf="node.data.node.hyperlink" (mousedown)="openTab(node.data.node.hyperlink)" class="fake-link" target="_blank" href="{{node.data.node.hyperlink}}" [innerHTML]="injectHighlightSection(node.data, t.selectedLang)"></a>
+                          <span [innerHTML]="injectHighlightBody(node.data, t.selectedLang)"></span>
+                        </span>
                       </div>
                     </div>
                   </ng-template>
@@ -77,12 +90,21 @@
       <mat-card class="graph-columns" >
 <!--        <div fxLayout="row" fxLayoutGap="80px" fxLayoutAlign="flex-start">-->
           <div class="graph-column" *ngFor="let t of graphService.graphTabs" >
-            <h3 *ngIf="t.isIso"><a href="https://www.iso.org/standard/71670.html" target="_blank">ISO</a>/<a href="https://webstore.iec.ch/publication/65597" target="_blank">IEC</a> 27701</h3>
-            <h3 *ngIf="!t.isIso">{{t.title}}</h3>
+            <h3 class="share-header" *ngIf="t.isIso"><a href="https://www.iso.org/standard/71670.html" target="_blank">ISO</a>/<a href="https://webstore.iec.ch/publication/65597" target="_blank">IEC</a> 27701</h3>
+            <h3 class="share-header" *ngIf="!t.isIso">{{t.title}}</h3>
 <!--            <div><a routerLink="/doctypes/{{t.title}}"><h3>{{t.title}}</h3></a> 
               <div>
                 <mat-checkbox (change)="t.column.expandAll()" [checked]="t.column.anyExpanded">{{t.column.anyExpanded ? 'Collapse' : 'Expand'}} All</mat-checkbox>
               </div></div>-->
+              
+              <div class="share-header share-header-pad">
+                <mat-form-field *ngIf="t.doc.node.langs.length > 1">
+                  <mat-label>Language:</mat-label>
+                  <mat-select matNativeControl required [(value)]="t.selectedLang">
+                    <mat-option *ngFor="let l of t.doc.node.langs" value="{{l}}">{{l}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
               
               <tree-root #tree [(state)]="t.column.state" [options]="t.column.options" [nodes]="t.column.nodes" (initialized)="setup(t.column, tree); t.parentTabTreeChanged(updateSubject)" (activate)="activateNode(t, $event)" (deactivate)="t.columnTabTreeChanged(null, updateSubject)" (toggleExpanded)="t.columnTabTreeChanged($event, updateSubject)">
                 <ng-template #treeNodeWrapperTemplate let-node let-index="index">
@@ -96,9 +118,9 @@
                       [style.background-color]="getNodeColor(t.column, node)">
 
                       <span>
-                        <span *ngIf="!node.data.node.hyperlink">{{node.data.node.section}}</span>
-                        <a *ngIf="node.data.node.hyperlink" (mousedown)="openTab(node.data.node.hyperlink)" class="fake-link" target="_blank" href="{{node.data.node.hyperlink}}">{{node.data.node.section}}</a>
-                        <span>{{node.data.node.body ? (' - ' + node.data.node.body) : ''}}</span>
+                        <span *ngIf="!node.data.node.hyperlink">{{node.data.getSection(t.selectedLang)}}</span>
+                        <a *ngIf="node.data.node.hyperlink" (mousedown)="openTab(node.data.node.hyperlink)" class="fake-link" target="_blank" href="{{node.data.node.hyperlink}}">{{node.data.getSection(t.selectedLang)}}</a>
+                        <span>{{node.data.getBody(t.selectedLang)}}</span>
                       </span>
                     </div>
                   </div>

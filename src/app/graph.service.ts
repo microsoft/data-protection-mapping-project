@@ -87,15 +87,17 @@ export class GraphTab {
     public coverage: any = null;
     public autoFilterSrc: GraphTab;
     public autoFilterSelf: boolean;
-	public autoFilterParent: GraphTab;
-	public errors: any = {};
+	  public autoFilterParent: GraphTab;
+	  public errors: any = {};
     private updateSubjectParent = new Rx.BehaviorSubject(null);
     private updateSubjectColumn = new Rx.BehaviorSubject(null);
+    public selectedLang: string = "default";
 
     constructor(
       public title: string,
       public graphService: GraphService,
-      public parent: GraphTab = null) {
+      public parent: GraphTab = null,
+      public doc: FullDocNode = null) {
         this.isIso = title == "ISO";
 
         if (!parent)
@@ -538,7 +540,7 @@ export class GraphService {
 
       this.getFullDocByType(id)
         .subscribe(doc => {
-          var newTab = new GraphTab(id, this);
+          var newTab = new GraphTab(id, this, null, doc);
 
           newTab.nodes = doc.children;
           newTab.column.nodes = doc.children;

@@ -1,4 +1,4 @@
-﻿
+
 .container { 
     width:100%;
 }
@@ -142,9 +142,13 @@ tree-viewport {
     stroke-width: 2;
 }
 
+.mat-tab-label-content {
+    color: #000 !important;
+}
+
 .mat-tab-label {
-    min-width: 50px !important;
-    padding: 0px !important;
+  min-width: 50px !important;
+  padding: 0px !important;
 }
 
 mat-card {
@@ -173,4 +177,13 @@ mat-checkbox {
 
 .coverage-box {
     padding: 10px;
+}
+
+.share-header {
+  display: inline-block;
+  padding-left: 20px;
+}
+
+.share-header-pad {
+  padding-left: 20px;
 }

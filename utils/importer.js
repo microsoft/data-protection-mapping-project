@@ -106,7 +106,8 @@ var findOrCreateSection = function (root, id) {
             "frag": f, // sortable fragment
             "section": assembled,
             "children": [],
-            "links": []
+            "links": [],
+            "langs": []
           };
 
           root.children.push(node);
@@ -141,6 +142,7 @@ var mergeDocRecursive = function (src, dst) {
         node.hyperlink = d.hyperlink;
         if (d.links)
           mergeLinks(d, node);
+        node.langs = d.langs;
 
         if (d.children)
           mergeDocRecursive(d.children, dst);
@@ -157,6 +159,7 @@ var mergeDoc = function (src, dst) {
 
 function processRegulation(worksheet) {
   var idsCol = worksheet.getColumn(1);
+  var headerRow = worksheet.getRow(1);
 
   var ids = [];
   var doc = {
@@ -166,6 +169,7 @@ function processRegulation(worksheet) {
   };
 
   var newChildren = [];
+  var langDictTotal = { "default":true };
 
   idsCol.eachCell({ includeEmpty: true }, function(cell, rowNumber) {
       if (rowNumber == 1)
@@ -177,6 +181,24 @@ function processRegulation(worksheet) {
       var body = row.getCell(3).text;
       var hyperlink = row.getCell(4).text;
       var isolinks = row.getCell(5).text;
+      var langDict = {
+        "default": {
+          section: section,
+          body: body.length ? body : undefined
+        }
+      };
+
+    for (var i = 6; i < headerRow.cellCount; i += 2) {
+      var lang = headerRow.getCell(i).text.replace("-section", "");
+      var langSection = row.getCell(i).text;
+      var langBody = row.getCell(i + 1).text;
+      langDictTotal[lang] = true;
+      langDict[lang] = {
+        lang: lang,
+        section: langSection,
+        body: langBody.length ? langBody : undefined
+      };
+    }
 
       var links = isolinks.split(';').filter(v => v).map(v => { return {
               "id": v,
@@ -185,12 +207,13 @@ function processRegulation(worksheet) {
 
       newChildren.push({
           id: cell.text,
-          section: section,
-          body: body.length ? body : undefined,
           hyperlink: hyperlink.length ? hyperlink : undefined,
-          links: links
+          links: links,
+          langs: langDict
       });
   });
+
+  doc.langs = Object.keys(langDictTotal);
 
   mergeDoc(newChildren, doc);
   return doc;

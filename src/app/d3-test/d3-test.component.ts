@@ -1,4 +1,4 @@
-﻿import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 import * as d3 from 'd3';
 import * as d3Sankey from 'd3-sankey';
 import { DAG, SNode, GraphService, CategoryList, FilterCriteria, GraphTab } from '../graph.service';
@@ -66,7 +66,7 @@ export class D3TestComponent implements OnInit, OnDestroy {
         this.searchSubject.pipe(debounce(() => Rx.timer(100))).subscribe({
           next: (v) => {
             if (v)
-              this.filterFn(v[0], v[1]);
+              this.filterFn(v[0], v[1], v[2]);
           }
         });
     };
@@ -419,13 +419,13 @@ export class D3TestComponent implements OnInit, OnDestroy {
       }
     }
 
-    public filter(value: string, treeModel: TreeModel) {
-        this.searchSubject.next([value, treeModel]);
+    public filter(value: string, treeModel: TreeModel, tab: GraphTab) {
+        this.searchSubject.next([value, treeModel, tab]);
     }
 
-    public filterFn(value: string, treeModel: TreeModel) {
+    public filterFn(value: string, treeModel: TreeModel, tab: GraphTab) {
       if (value != "")
-        treeModel.filterNodes((node: TreeNode) => this.fuzzysearch(value, node));
+        treeModel.filterNodes((node: TreeNode) => this.fuzzysearch(value, node, tab));
       else
         treeModel.filterNodes((node: TreeNode) => this.clearSearch(node));
     }
@@ -626,7 +626,7 @@ export class D3TestComponent implements OnInit, OnDestroy {
         return true;
     }
 
-    public fuzzysearch(searchTerm: string, node: TreeNode): boolean {
+    public fuzzysearch(searchTerm: string, node: TreeNode, tab: GraphTab): boolean {
       var options = {
          includeMatches: true,
          includeScore: true,
@@ -644,11 +644,12 @@ export class D3TestComponent implements OnInit, OnDestroy {
       var inName = false;
       
       // Test body first
-      if (node.data.node.body)
+      var body = node.data.getBody(tab.selectedLang);
+      if (body)
       {
           if (!node.data.bodyFuse)
           {
-              node.data.bodyFuse = new Fuse([node.data.node.body], options);
+              node.data.bodyFuse = new Fuse([body], options);
           }
 
           result = node.data.bodyFuse.search(searchTerm);
@@ -660,7 +661,8 @@ export class D3TestComponent implements OnInit, OnDestroy {
           // test title
           if (!node.data.sectionFuse)
           {
-              node.data.sectionFuse = new Fuse([node.data.node.section], options);
+              var section = node.data.getSection(tab.selectedLang);
+              node.data.sectionFuse = new Fuse([section], options);
           }
 
           result = node.data.sectionFuse.search(searchTerm);
@@ -702,9 +704,9 @@ export class D3TestComponent implements OnInit, OnDestroy {
         return text.substring(0, highlight[0]) + "<mark>" + text.substring(highlight[0], highlight[1]) + "</mark>" + text.substring(highlight[1], text.length);
     }
 
-    public injectHighlightSection(data: FullDocNode) 
+    public injectHighlightSection(data: FullDocNode, lang: string) 
     {
-        var section = data.node.section;
+        var section = data.getSection(lang);
 
         if (data.highlight && data.highlightName)
             section = this.highlightText(section, data.highlight);
@@ -712,17 +714,15 @@ export class D3TestComponent implements OnInit, OnDestroy {
         return this.sanitizer.bypassSecurityTrustHtml(section);
     }
 
-    public injectHighlightBody(data: FullDocNode) 
+    public injectHighlightBody(data: FullDocNode, lang: string) 
     {
-        var body = data.node.body;
+        var body = data.getBody(lang);
         if (body)
         {
             if (data.highlight && !data.highlightName)
             {
                 body = this.highlightText(body, data.highlight);
             }
-        
-            body = " - " + body;
         }   
         else
             body = "";

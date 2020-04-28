@@ -13,6 +13,7 @@ export class DocNode2 {
   compliance_level?: number;
   children: DocNode2[];
   links: Link[];
+  langs: any;
 }
 
 
@@ -84,6 +85,16 @@ export class FullDocNode {
     }
 
     return this.shouldBeMappedCached;
+  }
+
+  public getBody(lang: string): string {
+    var l = this.node.langs[lang];
+    return l ? (l.body ? (' - ' + l.body) : '') : this.node.body;
+  }
+
+  public getSection(lang: string): string {
+    var l = this.node.langs[lang];
+    return l ? l.section : this.node.section;
   }
 }
 
