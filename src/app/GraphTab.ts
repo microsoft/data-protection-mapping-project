@@ -35,7 +35,11 @@ export class GraphTab {
     private updateSubjectColumn = new Rx.BehaviorSubject(null);
     public selectedLang: string = "default";
 
-    constructor(public title: string, public graphService: GraphService, public parent: GraphTab = null, public doc: FullDocNode = null) {
+    constructor(
+      public title: string,
+      public graphService: GraphService,
+      public parent: GraphTab = null,
+      public doc: FullDocNode = null) {
         this.isIso = title == "ISO";
         if (!parent) {
             this.column = new GraphTab(title, this.graphService, this);
