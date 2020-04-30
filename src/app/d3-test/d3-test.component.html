@@ -32,8 +32,8 @@
               <!--<div class="coverage-box" *ngIf="t.isIso">-</div>-->
               <div>
                 <mat-form-field class="filter-field">
-                  <input matInput type="text" placeholder="Search..." [(ngModel)]="t.searchValue"  #filter3 (keyup)="filter(filter3.value, tree.treeModel, t)">
-                  <button mat-button *ngIf="t.searchValue" matSuffix mat-icon-button aria-label="Clear" (click)="filter('', tree.treeModel, t); t.searchValue=''">
+                  <input matInput type="text" placeholder="Search..." [(ngModel)]="t.searchValue"  #filter3 (keyup)="searchable.filter(filter3.value, tree.treeModel, t)">
+                  <button mat-button *ngIf="t.searchValue" matSuffix mat-icon-button aria-label="Clear" (click)="searchable.filter('', tree.treeModel, t); t.searchValue=''">
                     <mat-icon>close</mat-icon>
                   </button>
                 </mat-form-field>

@@ -3,7 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 
 import { FullDocNode }         from '../standard-map';
-import { GraphService, GraphTab }  from '../graph.service';
+import { GraphService }  from '../graph.service';
+import { GraphTab } from "../GraphTab";
 
 @Component({
   selector: 'app-standard-map-detail',

@@ -1,14 +1,15 @@
 import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 import * as d3 from 'd3';
 import * as d3Sankey from 'd3-sankey';
-import { DAG, SNode, GraphService, CategoryList, FilterCriteria, GraphTab } from '../graph.service';
+import { DAG, SNode, GraphService, CategoryList, FilterCriteria } from '../graph.service';
+import { GraphTab } from "../GraphTab";
+import { Searchable } from "../Searchable";
 import { FullDocNode } from '../standard-map';
 import { DomSanitizer } from '@angular/platform-browser';
 import { debounce } from 'rxjs/operators';
 import * as Rx from 'rxjs';
 
 import { TreeModel, TreeNode, ITreeState } from 'angular-tree-component';
-import Fuse from 'fuse.js';
   
  import convert from 'color-convert';
 
@@ -50,8 +51,8 @@ export class D3TestComponent implements OnInit, OnDestroy {
     public svgbgElement: any;
     private updateSubject = new Rx.BehaviorSubject(0);
     private updateViewSubject = new Rx.BehaviorSubject(0);
-    private searchSubject = new Rx.BehaviorSubject(null);
     private tabsChangedSubscription;
+    private searchable: Searchable;
 
     constructor(
       public graphService: GraphService,
@@ -63,12 +64,8 @@ export class D3TestComponent implements OnInit, OnDestroy {
         this.updateViewSubject.pipe(debounce(() => Rx.timer(1))).subscribe({
           next: (v) => this.updateGraphView()
         });
-        this.searchSubject.pipe(debounce(() => Rx.timer(100))).subscribe({
-          next: (v) => {
-            if (v)
-              this.filterFn(v[0], v[1], v[2]);
-          }
-        });
+
+        this.searchable = new Searchable();
     };
 
     ngOnInit(): void {     
@@ -419,17 +416,6 @@ export class D3TestComponent implements OnInit, OnDestroy {
       }
     }
 
-    public filter(value: string, treeModel: TreeModel, tab: GraphTab) {
-        this.searchSubject.next([value, treeModel, tab]);
-    }
-
-    public filterFn(value: string, treeModel: TreeModel, tab: GraphTab) {
-      if (value != "")
-        treeModel.filterNodes((node: TreeNode) => this.fuzzysearch(value, node, tab));
-      else
-        treeModel.filterNodes((node: TreeNode) => this.clearSearch(node));
-    }
-
     public tabChanged() {
         this.graphService.configureFilterStack();
 
@@ -619,84 +605,6 @@ export class D3TestComponent implements OnInit, OnDestroy {
     public bindTogether(node, element, svgbg) {
         node.elementRef2 = element;
         this.svgbgElement = svgbg;
-    }
-
-    public clearSearch(node: TreeNode): boolean {
-        node.data.highlight = undefined;
-        return true;
-    }
-
-    public fuzzysearch(searchTerm: string, node: TreeNode, tab: GraphTab): boolean {
-      var options = {
-         includeMatches: true,
-         includeScore: true,
-         shouldSort: false,
-         tokenize: false,
-         threshold: 0.3,
-         location: 0,
-         distance: 800,
-         maxPatternLength: 32,
-         minMatchCharLength: 3,
-      };
-
-      var result = [];
-      var scoreThresh = 0;
-      var inName = false;
-      
-      // Test body first
-      var body = node.data.getBody(tab.selectedLang);
-      if (body)
-      {
-          if (!node.data.bodyFuse)
-          {
-              node.data.bodyFuse = new Fuse([body], options);
-          }
-
-          result = node.data.bodyFuse.search(searchTerm);
-          result = result.filter(a => a.score > scoreThresh);
-      }
-
-      if (result.length == 0)
-      {
-          // test title
-          if (!node.data.sectionFuse)
-          {
-              var section = node.data.getSection(tab.selectedLang);
-              node.data.sectionFuse = new Fuse([section], options);
-          }
-
-          result = node.data.sectionFuse.search(searchTerm);
-          result = result.filter(a => a.score > scoreThresh);
-          inName = true;
-      }
-
-      if (result.length > 0)
-      {
-          // record the longest matching span for highlight
-          var length = -1;
-          var longest = undefined;
-          var match = result[0].matches[0];
-          if (match)
-          {
-              for (var span of match.indices)
-              {
-                  var newLength = span[1] - span[0];
-                  if (newLength > length)
-                  {
-                      length = newLength;
-                      longest = span;
-                      span[1] += 1; // convert ending index to js substring convention of end + 1
-                  }
-              }
-          }
-
-          node.data.highlight = longest;
-          node.data.highlightName = inName;
-          return true;
-      }
-
-      node.data.highlight = undefined;
-      return false;
     }
 
     private highlightText(text: string, highlight: number[]): string
