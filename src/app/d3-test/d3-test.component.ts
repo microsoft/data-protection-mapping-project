@@ -696,4 +696,12 @@ export class D3TestComponent implements OnInit, OnDestroy {
         isoTab.filterToIds(tab.coverage.uncoveredIds);
         this.graphService.activateTab(isoTab);
     }
+
+    private onKeyDown(node: TreeNode, event: any) {
+      switch (event.code)
+      {
+        case "ArrowRight": node.expand(); event.preventDefault(); break;
+        case "ArrowLeft": node.collapse(); event.preventDefault(); break;
+      }
+    }
 }

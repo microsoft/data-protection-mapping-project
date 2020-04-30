@@ -64,7 +64,8 @@
                               type="checkbox"
                               (click)="node.mouseAction('checkboxClick', $event)"
                               [checked]="node.isSelected"
-                              [indeterminate]="node.isPartiallySelected" />
+                              [indeterminate]="node.isPartiallySelected"
+                              (keydown)="onKeyDown(node, $event)"/>
                       <div class="node-content-wrapper"
                            [class.dummystyle]="bindTogether(node, wrapper, svgbg)"
                            [class.node-content-wrapper-active]="node.isActive"
