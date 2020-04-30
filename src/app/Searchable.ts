@@ -85,8 +85,13 @@ export class Searchable {
             // Do actual search
             var searchResult = this.fuse.search(value);
 
+            // Create lookup of the results by node id
+            var lookup = {};
+            for (var r of searchResult)
+                lookup[r.item.node.id] = r;
+
             // Update tree
-            treeModel.filterNodes((node: TreeNode) => this.fuzzysearch(searchResult, node, tab));
+            treeModel.filterNodes((node: TreeNode) => this.fuzzysearch(lookup, node, tab));
         }
         else {
             // Clear tree filter
@@ -104,9 +109,8 @@ export class Searchable {
     }
 
     // Update a node to have fuzzy search results applied.
-    private fuzzysearch(searchResult: any[], node: TreeNode, tab: GraphTab): boolean {
-        var item = node.data;
-        var result = searchResult.find(v => v.item.node == item);
+    private fuzzysearch(searchResult: any, node: TreeNode, tab: GraphTab): boolean {
+        var result = searchResult[node.data.id];
         if (result) {
             // record the longest matching span for highlight
             var length = -1;
