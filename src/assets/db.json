@@ -5416,9 +5416,13 @@
                     "hyperlink": "https://www.legislation.gov.au/Details/C2018C00034"
                 }
             ],
-            "langs": [
-                "default"
-            ]
+            "langs": {
+                "default": {
+                    "section": ""
+                }
+            },
+            "id": "",
+            "links": []
         },
         {
             "type": "Canada ",
@@ -6265,6 +6269,11 @@
                                 "default": {
                                     "section": "DPP.1",
                                     "body": "Must take all practical steps to inform a number of matters including the purpose of collection, the classes of persons who will have access to the information and rights to access and correct information and the contact information to whom such a request should be made\r\nthe data is collected for a lawful purpose directly related to a function or activity of the data user who is to use the data"
+                                },
+                                "zh_HK": {
+                                    "lang": "zh_HK",
+                                    "section": "DPP.1",
+                                    "body": "这是一个测试规则。请不要存储个人信息。"
                                 }
                             },
                             "hyperlink": "https://www.elegislation.gov.hk/hk/cap486?xpid=ID_1438403263424_003#"
@@ -6319,6 +6328,11 @@
                                 "default": {
                                     "section": "DPP.2",
                                     "body": "The data user must adopt contractual or other means to prevent data from being kept by data processors longer than necessary \r\nMust take all practical steps to ensure personal data is not kept longer than necessary to fulfil the purpose for which it was collected \r\nMust take all practical steps to ensure personal data is accurate having regard to the purposes for which it is or is to be used\r\nData user must adopt contractual provisions to prevent personal data being kept longer by data processor than necessary to fulfil the processing (DPP 2)"
+                                },
+                                "zh_HK": {
+                                    "lang": "zh_HK",
+                                    "section": "DPP.2",
+                                    "body": "The data user must adopt contractual or other means to prevent data from being kept by data processors longer than necessary \r\nMust take all practical steps to ensure personal data is not kept longer than necessary to fulfil the purpose for which it was collected \r\nMust take all practical steps to ensure personal data is accurate having regard to the purposes for which it is or is to be used\r\nData user must adopt contractual provisions to prevent personal data being kept longer by data processor than necessary to fulfil the processing (DPP 2)"
                                 }
                             },
                             "hyperlink": "https://www.elegislation.gov.hk/hk/cap486?xpid=ID_1438403263424_003#"
@@ -6347,6 +6361,11 @@
                             ],
                             "langs": {
                                 "default": {
+                                    "section": "DPP.3",
+                                    "body": "Personal data must not be used for a new purpose (i.e. not previously identified) unless the  consent of the data subject is obtained"
+                                },
+                                "zh_HK": {
+                                    "lang": "zh_HK",
                                     "section": "DPP.3",
                                     "body": "Personal data must not be used for a new purpose (i.e. not previously identified) unless the  consent of the data subject is obtained"
                                 }
@@ -6487,6 +6506,11 @@
                                         "default": {
                                             "section": "DPP.4.1",
                                             "body": "All practicable steps shall be taken to ensure that any personal data (including data in a form in which access to or processing of the data is not practicable) held by a data user is protected against unauthorized or accidental access, processing, erasure, loss or use having particular regard to—  (Amended 18 of 2012 s. 40; 17 of 2018 s. 129)\r\n(a)\r\nthe kind of data and the harm that could result if any of those things should occur;\r\n(b)\r\nthe physical location where the data is stored; (Amended 18 of 2012 s. 40)\r\n(c)\r\nany security measures incorporated (whether by automated means or otherwise) into any equipment in which the data is stored; (Amended 18 of 2012 s. 40)\r\n(d)\r\nany measures taken for ensuring the integrity, prudence and competence of persons having access to the data; and\r\n(e)\r\nany measures taken for ensuring the secure transmission of the data."
+                                        },
+                                        "zh_HK": {
+                                            "lang": "zh_HK",
+                                            "section": "DPP.4.1",
+                                            "body": "All practicable steps shall be taken to ensure that any personal data (including data in a form in which access to or processing of the data is not practicable) held by a data user is protected against unauthorized or accidental access, processing, erasure, loss or use having particular regard to—  (Amended 18 of 2012 s. 40; 17 of 2018 s. 129)\r\n(a)\r\nthe kind of data and the harm that could result if any of those things should occur;\r\n(b)\r\nthe physical location where the data is stored; (Amended 18 of 2012 s. 40)\r\n(c)\r\nany security measures incorporated (whether by automated means or otherwise) into any equipment in which the data is stored; (Amended 18 of 2012 s. 40)\r\n(d)\r\nany measures taken for ensuring the integrity, prudence and competence of persons having access to the data; and\r\n(e)\r\nany measures taken for ensuring the secure transmission of the data."
                                         }
                                     }
                                 },
@@ -6504,6 +6528,11 @@
                                         "default": {
                                             "section": "DPP.4.2",
                                             "body": "The data user must adopt contractual or other means to ensure data processors take appropriate security measures (DDP 4)"
+                                        },
+                                        "zh_HK": {
+                                            "lang": "zh_HK",
+                                            "section": "DPP.4.2",
+                                            "body": "The data user must adopt contractual or other means to ensure data processors take appropriate security measures (DDP 4)"
                                         }
                                     },
                                     "hyperlink": "https://www.elegislation.gov.hk/hk/cap486?xpid=ID_1438403263424_003#"
@@ -6512,6 +6541,11 @@
                             "links": [],
                             "langs": {
                                 "default": {
+                                    "section": "DPP.4",
+                                    "body": "security of personal data"
+                                },
+                                "zh_HK": {
+                                    "lang": "zh_HK",
                                     "section": "DPP.4",
                                     "body": "security of personal data"
                                 }
@@ -6548,6 +6582,11 @@
                                 "default": {
                                     "section": "DPP.5",
                                     "body": "Must take all practical steps to ensure that person can ascertain a data user's policies and practices in relation to personal data (DPP 5)"
+                                },
+                                "zh_HK": {
+                                    "lang": "zh_HK",
+                                    "section": "DPP.5",
+                                    "body": "Must take all practical steps to ensure that person can ascertain a data user's policies and practices in relation to personal data (DPP 5)"
                                 }
                             },
                             "hyperlink": "https://www.elegislation.gov.hk/hk/cap486?xpid=ID_1438403263424_003#"
@@ -6574,6 +6613,11 @@
                                 "default": {
                                     "section": "DPP.6",
                                     "body": "A data subject is entitled to ascertain whether personal data is held about them, request access to and correction of it (DPP 6)"
+                                },
+                                "zh_HK": {
+                                    "lang": "zh_HK",
+                                    "section": "DPP.6",
+                                    "body": "A data subject is entitled to ascertain whether personal data is held about them, request access to and correction of it (DPP 6)"
                                 }
                             },
                             "hyperlink": "https://www.elegislation.gov.hk/hk/cap486?xpid=ID_1438403263424_003#"
@@ -6582,6 +6626,11 @@
                     "links": [],
                     "langs": {
                         "default": {
+                            "section": "DPP",
+                            "body": "Data Protection Principles"
+                        },
+                        "zh_HK": {
+                            "lang": "zh_HK",
                             "section": "DPP",
                             "body": "Data Protection Principles"
                         }
@@ -6609,6 +6658,11 @@
                                 "default": {
                                     "section": "S.18",
                                     "body": "An individual may make a request to be informed whether personal data is held in relation to the individual and to be supplied with a copy of such data"
+                                },
+                                "zh_HK": {
+                                    "lang": "zh_HK",
+                                    "section": "S.18",
+                                    "body": "An individual may make a request to be informed whether personal data is held in relation to the individual and to be supplied with a copy of such data"
                                 }
                             },
                             "hyperlink": "https://www.elegislation.gov.hk/hk/cap486?xpid=ID_1438403261458_002#"
@@ -6631,6 +6685,11 @@
                                 "default": {
                                     "section": "S.22",
                                     "body": "On request by the individual, must correct personal data (S.22)"
+                                },
+                                "zh_HK": {
+                                    "lang": "zh_HK",
+                                    "section": "S.22",
+                                    "body": "On request by the individual, must correct personal data (S.22)"
                                 }
                             },
                             "hyperlink": "https://www.elegislation.gov.hk/hk/cap486?xpid=ID_1438403261630_003#"
@@ -6651,6 +6710,11 @@
                             ],
                             "langs": {
                                 "default": {
+                                    "section": "S.23",
+                                    "body": "Must take all practicable steps to supply the third party with a copy of the corrected data (disclosed within prior 12 months) and a notice in writing stating the reasons for the correction"
+                                },
+                                "zh_HK": {
+                                    "lang": "zh_HK",
                                     "section": "S.23",
                                     "body": "Must take all practicable steps to supply the third party with a copy of the corrected data (disclosed within prior 12 months) and a notice in writing stating the reasons for the correction"
                                 }
@@ -6683,6 +6747,11 @@
                                 "default": {
                                     "section": "S.26",
                                     "body": "Must take all practicable steps to erase data held where the data is no longer required for the purpose for which the data was used..."
+                                },
+                                "zh_HK": {
+                                    "lang": "zh_HK",
+                                    "section": "S.26",
+                                    "body": "Must take all practicable steps to erase data held where the data is no longer required for the purpose for which the data was used..."
                                 }
                             },
                             "hyperlink": "https://www.elegislation.gov.hk/hk/cap486?xpid=ID_1438403261692_003#"
@@ -6699,6 +6768,11 @@
                             ],
                             "langs": {
                                 "default": {
+                                    "section": "S.30",
+                                    "body": "Matching procedures cannot be undertaken without the consent of all relevant data subjects or the Commissioner"
+                                },
+                                "zh_HK": {
+                                    "lang": "zh_HK",
                                     "section": "S.30",
                                     "body": "Matching procedures cannot be undertaken without the consent of all relevant data subjects or the Commissioner"
                                 }
@@ -6723,6 +6797,11 @@
                                 "default": {
                                     "section": "S.35E",
                                     "body": "Must not use personal data for marketing without data subject's consent (S.35E)"
+                                },
+                                "zh_HK": {
+                                    "lang": "zh_HK",
+                                    "section": "S.35E",
+                                    "body": "Must not use personal data for marketing without data subject's consent (S.35E)"
                                 }
                             },
                             "hyperlink": "https://www.elegislation.gov.hk/hk/cap486?xpid=ID_1438403262145_002#"
@@ -6739,6 +6818,11 @@
                             ],
                             "langs": {
                                 "default": {
+                                    "section": "S.35G",
+                                    "body": "Must cease using personal data for direct marketing when the data subject requests (S.35G)"
+                                },
+                                "zh_HK": {
+                                    "lang": "zh_HK",
                                     "section": "S.35G",
                                     "body": "Must cease using personal data for direct marketing when the data subject requests (S.35G)"
                                 }
@@ -6783,6 +6867,11 @@
                                 "default": {
                                     "section": "S.4",
                                     "body": "A data user must not act or engage in practice that contravenes the data protection principles (S.4)"
+                                },
+                                "zh_HK": {
+                                    "lang": "zh_HK",
+                                    "section": "S.4",
+                                    "body": "A data user must not act or engage in practice that contravenes the data protection principles (S.4)"
                                 }
                             },
                             "hyperlink": "https://www.elegislation.gov.hk/hk/cap486?xpid=ID_1438403261193_002#"
@@ -6793,12 +6882,18 @@
                         "default": {
                             "section": "S",
                             "body": "Personal Data (Privacy) Ordinance"
+                        },
+                        "zh_HK": {
+                            "lang": "zh_HK",
+                            "section": "S",
+                            "body": "Personal Data (Privacy) Ordinance"
                         }
                     }
                 }
             ],
             "langs": [
-                "default"
+                "default",
+                "zh_HK"
             ]
         },
         {
