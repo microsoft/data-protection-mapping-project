@@ -53,6 +53,7 @@ export class D3TestComponent implements OnInit, OnDestroy {
     private updateViewSubject = new Rx.BehaviorSubject(0);
     private tabsChangedSubscription;
     private searchable: Searchable;
+    private inputObjectsMap: any = {};
 
     constructor(
       public graphService: GraphService,
@@ -602,9 +603,11 @@ export class D3TestComponent implements OnInit, OnDestroy {
         link.toTree.getNodeById(link.to).expandAll();
     }
 
-    public bindTogether(node, element, svgbg) {
+    public bindTogether(node, element, svgbg, checkBox) {
         node.elementRef2 = element;
-        this.svgbgElement = svgbg;
+      this.svgbgElement = svgbg;
+      if (checkBox)
+        this.inputObjectsMap[checkBox.id] = checkBox;
     }
 
     private highlightText(text: string, highlight: number[]): string
@@ -697,11 +700,53 @@ export class D3TestComponent implements OnInit, OnDestroy {
         this.graphService.activateTab(isoTab);
     }
 
-    private onKeyDown(node: TreeNode, event: any) {
+    private onKeyDown(tab: GraphTab, node: TreeNode, event: any) {
       switch (event.code)
       {
-        case "ArrowRight": node.expand(); event.preventDefault(); break;
-        case "ArrowLeft": node.collapse(); event.preventDefault(); break;
+        case "ArrowRight":
+          {
+            if (node.children.length > 0) {
+              node.expand();
+              this.selectInputById(tab, node.children[0].id);
+              event.preventDefault(); 
+            }
+          }
+          break;
+        case "ArrowLeft": 
+          {
+            if (node.parent) {
+              node.collapse();
+              this.selectInputById(tab, node.parent.id);
+              event.preventDefault(); 
+            }
+          }
+          break;
+        case "ArrowDown": this.moveFocusUpDown(tab, node, 1); break;
+        case "ArrowUp": this.moveFocusUpDown(tab, node, -1); break;
+        case "Home":
+          {
+            var root = node.treeModel.getFirstRoot();
+            if (root) {
+              this.selectInputById(tab, root.id);
+              event.preventDefault(); 
+            }
+          }
+          break;
       }
+    }
+
+    private moveFocusUpDown(tab: GraphTab, node: TreeNode, amount: number) {
+        var index = node.parent.children.findIndex(f => f.id == node.id);
+        if (index > -1) {
+            var newIndex = index + amount;
+            var nextId = node.parent.children[newIndex].id;
+            this.selectInputById(tab, nextId);
+        }
+    }
+
+    private selectInputById(tab: GraphTab, nextId: any) {
+        var selectedObject = this.inputObjectsMap[tab.title + '.cb.' + nextId];
+        if (selectedObject)
+          selectedObject.focus();
     }
 }

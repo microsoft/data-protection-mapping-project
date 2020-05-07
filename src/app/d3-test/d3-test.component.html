@@ -13,7 +13,7 @@
         <div class="title-container">
           <mat-card-title class="filter-title">Filter</mat-card-title>
             <span class="example-spacer"></span>
-            <button title="Add Regulation Tab" mat-button [matMenuTriggerFor]="menu" class="add-button" [class.button-disabled]="!graphService.canAdd"><mat-icon>add_box</mat-icon></button>
+            <button mat-button aria-label="Add Regulation Tab" [matMenuTriggerFor]="menu" class="add-button" [class.button-disabled]="!graphService.canAdd"><mat-icon>add_box</mat-icon></button>
             <mat-menu #menu="matMenu">
               <button mat-menu-item *ngFor="let d of getMenuOptions()" (click)="graphService.addTab(d.id)">{{d.id}}</button>
             </mat-menu>
@@ -24,7 +24,7 @@
             <mat-tab *ngFor="let t of graphService.graphTabs">
               <ng-template mat-tab-label>
                   {{t.title}}
-                  <button mat-button *ngIf="t.title != 'ISO'" matSuffix mat-icon-button aria-label="Clear" (click)="graphService.removeTab(t)">
+                  <button mat-button *ngIf="t.title != 'ISO'" matSuffix mat-icon-button aria-label="Remove Tab" (click)="graphService.removeTab(t)">
                     <mat-icon>close</mat-icon>
                   </button>
               </ng-template>
@@ -32,8 +32,8 @@
               <!--<div class="coverage-box" *ngIf="t.isIso">-</div>-->
               <div>
                 <mat-form-field class="filter-field">
-                  <input matInput type="text" placeholder="Search..." [(ngModel)]="t.searchValue"  #filter3 (keyup)="searchable.filter(filter3.value, tree.treeModel, t)">
-                  <button mat-button *ngIf="t.searchValue" matSuffix mat-icon-button aria-label="Clear" (click)="searchable.filter('', tree.treeModel, t); t.searchValue=''">
+                  <input matInput type="text" attr.aria-label="" placeholder="Search" [(ngModel)]="t.searchValue"  #filter3 (keyup)="searchable.filter(filter3.value, tree.treeModel, t)">
+                  <button mat-button *ngIf="t.searchValue" matSuffix mat-icon-button aria-label="Clear Search" (click)="searchable.filter('', tree.treeModel, t); t.searchValue=''">
                     <mat-icon>close</mat-icon>
                   </button>
                 </mat-form-field>
@@ -60,19 +60,21 @@
                   <ng-template #treeNodeWrapperTemplate let-node let-index="index">
                     <div #wrapper class="node-wrapper" [style.padding-left]="node.getNodePadding()">
                       <tree-node-expander title="Expand/Collapse Regulation" [node]="node"></tree-node-expander>
-                      <input title="Include/Exclude Regulation" class="tree-node-checkbox"
+                      <input #checkBox attr.aria-labelledby="{{t.title + '.lbl.' + node.data.node.id}}"
+                             id="{{t.title + '.cb.' + node.data.node.id}}"
+                             class="tree-node-checkbox"
                               type="checkbox"
                               (click)="node.mouseAction('checkboxClick', $event)"
                               [checked]="node.isSelected"
                               [indeterminate]="node.isPartiallySelected"
-                              (keydown)="onKeyDown(node, $event)"/>
+                              (keydown)="onKeyDown(t, node, $event)"/>
                       <div class="node-content-wrapper"
-                           [class.dummystyle]="bindTogether(node, wrapper, svgbg)"
+                           [class.dummystyle]="bindTogether(node, wrapper, svgbg, checkBox)"
                            [class.node-content-wrapper-active]="node.isActive"
                            [class.node-content-wrapper-focused]="node.isFocused"
                            (click)="node.mouseAction('click', $event)"
                            [style.background-color]="getNodeColor(t, node)">
-                        <span>
+                        <span id="{{t.title + '.lbl.' + node.data.node.id}}">
                           <span *ngIf="!node.data.node.hyperlink" [innerHTML]="injectHighlightSection(node.data, t.selectedLang)"></span>
                           <a *ngIf="node.data.node.hyperlink" (mousedown)="openTab(node.data.node.hyperlink)" class="fake-link" target="_blank" href="{{node.data.node.hyperlink}}" [innerHTML]="injectHighlightSection(node.data, t.selectedLang)"></a>
                           <span [innerHTML]="injectHighlightBody(node.data, t.selectedLang)"></span>
