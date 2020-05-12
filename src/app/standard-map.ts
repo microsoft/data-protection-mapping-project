@@ -37,10 +37,12 @@ export class FullDocNode {
     public children: FullDocNode[] = []) {
   }
 
-  get name():string {
-    var name = this.node.section ? this.node.section : (this.node as Doc2).type;
-    if (this.node.body)
-      name += " - " + this.node.body;
+  get name(): string {
+    var section = this.getSection();
+    var name = section ? section : (this.node as Doc2).type;
+    var body = this.getBody();
+    if (body)
+      name += " - " + body;
     return name;
   }
 
@@ -80,20 +82,24 @@ export class FullDocNode {
     if (this.shouldBeMappedCached === undefined)
     {
         // to be qualified as unmapped        
-        this.shouldBeMappedCached = this.node.body  //  needs a body
+        this.shouldBeMappedCached = this.getBody()  //  needs a body
             && (!this.node.children || this.node.children.length == 0); // no children
     }
 
     return this.shouldBeMappedCached;
   }
 
-  public getBody(lang: string): string {
-    var l = this.node.langs[lang];
+  // pass null for default lang
+  public getBody(lang: string = null): string {
+    var langs = this.node.langs;
+    var l = lang ? langs[lang] : langs['default'];
     return l ? (l.body ? (' - ' + l.body) : '') : this.node.body;
   }
-
-  public getSection(lang: string): string {
-    var l = this.node.langs[lang];
+  
+  // pass null for default lang
+  public getSection(lang: string = null): string {
+    var langs = this.node.langs;
+    var l = lang ? langs[lang] : langs['default'];
     return l ? l.section : this.node.section;
   }
 }

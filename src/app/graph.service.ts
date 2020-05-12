@@ -305,7 +305,7 @@ export class GraphService {
   {
       for (var c of children)
       {
-          if (c.node.body)
+          if (c.getBody())
             result.push(c.id);
           this.flattenSections(c.children, result);
       }
