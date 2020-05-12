@@ -4493,7 +4493,8 @@
             "langs": [
                 "default",
                 "AltLang"
-            ]
+            ],
+            "notes": []
         },
         {
             "type": "Australia ",
@@ -5416,13 +5417,10 @@
                     "hyperlink": "https://www.legislation.gov.au/Details/C2018C00034"
                 }
             ],
-            "langs": {
-                "default": {
-                    "section": ""
-                }
-            },
-            "id": "",
-            "links": []
+            "langs": [
+                "default"
+            ],
+            "notes": []
         },
         {
             "type": "Canada ",
@@ -6201,7 +6199,8 @@
             ],
             "langs": [
                 "default"
-            ]
+            ],
+            "notes": []
         },
         {
             "type": "Hong Kong ",
@@ -6894,6 +6893,28 @@
             "langs": [
                 "default",
                 "zh_HK"
+            ],
+            "notes": [
+                {
+                    "id": "S.4",
+                    "links": [
+                        {
+                            "id": "5.2.3",
+                            "type": "ISO"
+                        }
+                    ],
+                    "comment": "This is a note."
+                },
+                {
+                    "id": "S.35G",
+                    "links": [
+                        {
+                            "id": "7.3.4",
+                            "type": "ISO"
+                        }
+                    ],
+                    "comment": "Another note."
+                }
             ]
         },
         {
@@ -7513,7 +7534,8 @@
             ],
             "langs": [
                 "default"
-            ]
+            ],
+            "notes": []
         },
         {
             "type": "South Korea ",
@@ -8284,7 +8306,8 @@
             ],
             "langs": [
                 "default"
-            ]
+            ],
+            "notes": []
         },
         {
             "type": "Turkey ",
@@ -8975,7 +8998,8 @@
             ],
             "langs": [
                 "default"
-            ]
+            ],
+            "notes": []
         },
         {
             "type": "California CCPA ",
@@ -9869,7 +9893,8 @@
             ],
             "langs": [
                 "default"
-            ]
+            ],
+            "notes": []
         },
         {
             "type": "Brazil ",
@@ -10862,7 +10887,8 @@
             ],
             "langs": [
                 "default"
-            ]
+            ],
+            "notes": []
         },
         {
             "type": "GDPR",
@@ -18086,7 +18112,8 @@
             ],
             "langs": [
                 "default"
-            ]
+            ],
+            "notes": []
         }
     ]
 }

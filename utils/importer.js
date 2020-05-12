@@ -157,6 +157,16 @@ var mergeDoc = function (src, dst) {
     return dst;
 };
 
+var parseIsoLinks = function (isoLinks) {
+  return isoLinks.split(';').filter(v => v).map(v => {
+    return {
+      "id": v,
+      "type": "ISO"
+    };
+  })
+};
+
+
 function processRegulation(worksheet) {
   var idsCol = worksheet.getColumn(1);
   var headerRow = worksheet.getRow(1);
@@ -169,51 +179,84 @@ function processRegulation(worksheet) {
   };
 
   var newChildren = [];
-  var langDictTotal = { "default":true };
+  var langDictTotal = { "default": true };
+  var processingNotes = false;
+  var skippedNotesRows = 0;
+  var notes = [];
 
   idsCol.eachCell({ includeEmpty: true }, function(cell, rowNumber) {
       if (rowNumber == 1)
           return; // skip the header row
 
       var row = worksheet.getRow(rowNumber);
-                      
-      var section = row.getCell(2).text;
-      var body = row.getCell(3).text;
-      var hyperlink = row.getCell(4).text;
-      var isolinks = row.getCell(5).text;
-      var langDict = {
-        "default": {
-          section: section,
-          body: body.length ? body : undefined
+      var idText = cell.text;
+
+      if (processingNotes)
+      {
+        // process notes row
+          console.log("notez.");
+        
+        // skip blank rows
+        if (idText == "")
+          return;
+
+        // skip title and header rows
+        if (skippedNotesRows++ < 2)
+          return;
+        
+        var isoLinks = row.getCell(2).text;
+        var comment = row.getCell(3).text;
+        notes.push({
+            id: idText,
+            links: parseIsoLinks(isoLinks),
+            comment: comment
+        });
+      }
+      else
+      {
+        // process regulation
+        if (idText == "")
+        {
+          // Switch to notes.
+          processingNotes = true;
+          return;
         }
-      };
+          console.log(idText);
 
-    for (var i = 6; i < headerRow.cellCount; i += 2) {
-      var lang = headerRow.getCell(i).text.replace("-section", "");
-      var langSection = row.getCell(i).text;
-      var langBody = row.getCell(i + 1).text;
-      langDictTotal[lang] = true;
-      langDict[lang] = {
-        lang: lang,
-        section: langSection,
-        body: langBody.length ? langBody : undefined
-      };
-    }
+        var section = row.getCell(2).text;
+        var body = row.getCell(3).text;
+        var hyperlink = row.getCell(4).text;
+        var isoLinks = row.getCell(5).text;
+        var langDict = {
+          "default": {
+            section: section,
+            body: body.length ? body : undefined
+          }
+        };
 
-      var links = isolinks.split(';').filter(v => v).map(v => { return {
-              "id": v,
-              "type": "ISO"
-            }; });
-
-      newChildren.push({
-          id: cell.text,
-          hyperlink: hyperlink.length ? hyperlink : undefined,
-          links: links,
-          langs: langDict
-      });
+        for (var i = 6; i < headerRow.cellCount; i += 2) {
+          var lang = headerRow.getCell(i).text.replace("-section", "");
+          var langSection = row.getCell(i).text;
+          var langBody = row.getCell(i + 1).text;
+          langDictTotal[lang] = true;
+          langDict[lang] = {
+            lang: lang,
+            section: langSection,
+            body: langBody.length ? langBody : undefined
+          };
+        }
+        
+        newChildren.push({
+            id: idText,
+            hyperlink: hyperlink.length ? hyperlink : undefined,
+            links: parseIsoLinks(isoLinks),
+            langs: langDict
+        });
+      }
   });
 
   doc.langs = Object.keys(langDictTotal);
+  doc.notes = notes;
 
   mergeDoc(newChildren, doc);
   return doc;
