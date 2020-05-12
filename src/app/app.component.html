@@ -1,35 +1,39 @@
-<div class="mat-app-background basic-container">
-  <mat-toolbar class="mat-elevation-z6" color="primary">
-    <mat-toolbar-row>
-      <span>{{title}}</span>
-      <span class="example-spacer"></span>
-      <button mat-button (click)="sidenav.toggle()"><mat-icon>menu</mat-icon><span class="visuallyhidden">Open/Close Menu</span></button>
-    </mat-toolbar-row>
-  </mat-toolbar>
-  <mat-sidenav-container hasBackdrop="true">
-  <mat-sidenav #sidenav  mode="side"
-              opened="false"
-              [fixedInViewport]="true"
-              [fixedTopGap]="64"
-              position="end"
-              hasBackdrop="true">
-      <div><button class="menu-button" mat-raised-button (click)="openDialog(sidenav, 'about')">Project Charter</button></div>
-      <div><button class="menu-button" mat-raised-button (click)="openDialog(sidenav, 'howto')">How to use this site</button></div>
-      <div><button class="menu-button" mat-raised-button (click)="openDialog(sidenav, 'download')">Download Data</button></div>
-      <div><button class="menu-button" mat-raised-button (click)="openDialog(sidenav, 'contribute')">Data Contribution</button></div>
-      <div><button class="menu-button" mat-raised-button (click)="openDialog(sidenav, 'changelog')">Change Log</button></div>
-      <div><button class="menu-button" mat-raised-button (click)="openDialog(sidenav, 'credits')">Credits</button></div>
-      <div><button class="menu-button" mat-raised-button (click)="openDialog(sidenav, 'disclaimer')">Disclaimer</button></div>
-      <div class="padded-container"><a href="https://github.com/microsoft/data-protection-mapping-project" target="_blank"><img class="centered-image" src="assets/icons/github-black.svg" alt="GitHub Repository" /></a></div>
-      <div class="padded-container"><a href="https://www.linkedin.com/company/dpmap" target="_blank"><img class="centered-image" src="assets/icons/LinkedIn_logo_In-Black.svg" alt="Project Linkedin Page" /></a></div>
-    </mat-sidenav>
-      <router-outlet></router-outlet>
-  </mat-sidenav-container>
+<div fxLayout="column" fxFlexFill>
+  <div class="mat-app-background basic-container">
+    <mat-toolbar class="mat-elevation-z6" color="primary">
+      <mat-toolbar-row>
+        <span>{{title}}</span>
+        <span class="example-spacer"></span>
+        <button mat-button (click)="sidenav.toggle()"><mat-icon>menu</mat-icon><span class="visuallyhidden">Open/Close Menu</span></button>
+      </mat-toolbar-row>
+    </mat-toolbar>
+    <mat-sidenav-container hasBackdrop="true">
+      <mat-sidenav #sidenav mode="side"
+                   opened="false"
+                   [fixedInViewport]="true"
+                   [fixedTopGap]="64"
+                   position="end"
+                   hasBackdrop="true">
+        <div><button class="menu-button" mat-raised-button (click)="openDialog(sidenav, 'about')">Project Charter</button></div>
+        <div><button class="menu-button" mat-raised-button (click)="openDialog(sidenav, 'howto')">How to use this site</button></div>
+        <div><button class="menu-button" mat-raised-button (click)="openDialog(sidenav, 'download')">Download Data</button></div>
+        <div><button class="menu-button" mat-raised-button (click)="openDialog(sidenav, 'contribute')">Data Contribution</button></div>
+        <div><button class="menu-button" mat-raised-button (click)="openDialog(sidenav, 'changelog')">Change Log</button></div>
+        <div><button class="menu-button" mat-raised-button (click)="openDialog(sidenav, 'credits')">Credits</button></div>
+        <div><button class="menu-button" mat-raised-button (click)="openDialog(sidenav, 'disclaimer')">Disclaimer</button></div>
+        <div class="padded-container"><a href="https://github.com/microsoft/data-protection-mapping-project" target="_blank"><img class="centered-image" src="assets/icons/github-black.svg" alt="GitHub Repository" /></a></div>
+        <div class="padded-container"><a href="https://www.linkedin.com/company/dpmap" target="_blank"><img class="centered-image" src="assets/icons/LinkedIn_logo_In-Black.svg" alt="Project Linkedin Page" /></a></div>
+      </mat-sidenav>
+      <div fxFlex>
+        <router-outlet></router-outlet>
+      </div>
+    </mat-sidenav-container>
 
-  
- <!--< nav>
-    <a routerLink="/dashboard">Dashboard</a>
-    <a routerLink="/standard-map">Standard Maps</a>
-  </!--nav>-->
-  <!--<app-messages></app-messages>-->
+
+    <!--< nav>
+       <a routerLink="/dashboard">Dashboard</a>
+       <a routerLink="/standard-map">Standard Maps</a>
+     </!--nav>-->
+    <!--<app-messages></app-messages>-->
+  </div>
 </div>

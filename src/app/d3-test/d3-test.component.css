@@ -1,6 +1,8 @@
 
-.container { 
-    width:100%;
+.container {
+  position: absolute;
+  width: 100%;
+  height: 96%;
 }
 
 h1 {
@@ -33,6 +35,13 @@ h1 {
     border: 1px solid #d6d6d6;
     width: 100%;
     padding: 0px 5px;
+}
+
+.node-content-wrapper-active {
+    border: 3px solid #000;
+}
+
+.node-content-icon {
 }
 
 .d3 {
@@ -79,7 +88,6 @@ table, th, td {
 }
 
 .graph-columns {
-    height: 680px;
 }
 
 .graph-column {
@@ -87,7 +95,7 @@ table, th, td {
     vertical-align: top;
     margin-right: 60px;
     max-width: 500px;
-    height: 600px;
+    height: 90%;
     padding-bottom: 20px;
     width: 400px;
 }
@@ -107,10 +115,6 @@ table, th, td {
 
 .tree-container {
   height: 482px;
-}
-
-tree-viewport {
-  height: calc(100% + 32px) !important;
 }
 
 .button-disabled {

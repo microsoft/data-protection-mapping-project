@@ -28,7 +28,7 @@ function saturateColor(input, saturationZeroToOne){
     if (input == "unset")
         return input;
 
-    var out = '#' + convert.keyword.hex(input) + saturationZeroToOne ;
+    var out = (input[0] == '#' ? input : ('#' + convert.keyword.hex(input))) + saturationZeroToOne ;
     return out;
 }
  
@@ -260,13 +260,13 @@ export class D3TestComponent implements OnInit, OnDestroy {
                 .attr("y", function (d: any) { return (d.y1 + d.y0) / 2; })
                 .attr("dy", "0.35em")
                 .attr("text-anchor", "start")
-                .text(function (d: any) { return d.name + "\n" + d.data.body; });
+                .text(function (d: any) { return d.name + "\n" + d.data.getBody(); });
                 //.filter(function (d: any) { return d.x0 < width / 2; })
                 //.attr("x", function (d: any) { return d.x1 + 6; })
                 //.attr("text-anchor", "start");
 
             node.append("title")
-                .text(function (d: any) { return d.name + "\n" + d.data.body; });
+                .text(function (d: any) { return d.name + "\n" + d.data.getBody(); });
     }
 
     private DrawGraph(data: DAG) {
@@ -646,22 +646,38 @@ export class D3TestComponent implements OnInit, OnDestroy {
     {
         window.open(url, "_blank").focus();
     }
+  
+    static None = 0;
+    static UnSelected = 1;
+    static Selected = 2;
+    static Unmapped = 3;
+    static ChildrenUnmapped = 4;
+    static Filtered = 5;
 
-    public getNodeColor(tab: GraphTab, node: TreeNode)
+    static visualTraits = [
+      { color: 'unset', icon: '', alt: '' },
+      { color: 'unset', icon: '', alt: '' },
+      { color: '#add8e6', icon: '', alt: '' },
+      { color: '#ff6969', icon: 'error', alt: 'This node is not mapped.' },
+      { color: '#ffc0cb', icon: 'warning', alt: 'This node has children that are not mapped.' },
+      { color: '#ffff00', icon: 'done', alt: 'This node is selected in the filter.' },
+    ];
+
+
+    public getNodeStatus(tab: GraphTab, node: TreeNode)
     {
         // if we're a tree in the right side view, highlight active nodes
-        var selected = (tab.parent && node.isActive);
-        var color = selected ? 'lightblue' : 'unset';
+        var status = D3TestComponent.None;
 
         if (tab.parent && node.data.filterColor)
         {
             if (!tab.isIso && node.data.isUnmapped)
             {
-                color = 'red';
+                status = D3TestComponent.Unmapped;
             }
-            else if (!selected)
+            else
             {
-                color = node.data.filterColor;
+                status = D3TestComponent.Filtered;
             }
         }
         else if (!tab.isIso)
@@ -669,24 +685,46 @@ export class D3TestComponent implements OnInit, OnDestroy {
             // Iso never has outward mappings
             if (node.data.isUnmapped)
             {
-                color = 'red';
+                status = D3TestComponent.Unmapped;
             }
             else if (node.data.isAnyChildUnmapped)
             {
-                color = 'pink';
+                status = D3TestComponent.ChildrenUnmapped;
             }
         }
+        
+        return status;
+    }
 
+    public getNodeColor(tab: GraphTab, node: TreeNode)
+    {
+        var color = D3TestComponent.visualTraits[this.getNodeStatus(tab, node)].color;
+                  
         // if we're a tree in the right side view
-        if (tab.parent && !node.isActive)
+        if (tab.parent)
         {
-            // desaturate background color unless active node
-            color = saturateColor(color, 'A0');
+            if (!node.isActive)
+            {
+              // desaturate background color unless active node
+              color = saturateColor(color, 'A0');
+            }
         }
         
         return color;
     }
 
+    public getNodeIcon(tab: GraphTab, node: TreeNode)
+    {
+        var icon = D3TestComponent.visualTraits[this.getNodeStatus(tab, node)].icon;
+        return icon;
+    }
+
+    public getNodeIconAlt(tab: GraphTab, node: TreeNode)
+    {
+        var alt = D3TestComponent.visualTraits[this.getNodeStatus(tab, node)].alt;
+        return alt;
+    }
+  
     public filterMapped(tab: GraphTab)
     {
         tab.filterMapped();
