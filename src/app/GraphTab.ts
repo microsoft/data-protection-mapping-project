@@ -34,6 +34,7 @@ export class GraphTab {
     private updateSubjectParent = new Rx.BehaviorSubject(null);
     private updateSubjectColumn = new Rx.BehaviorSubject(null);
     public selectedLang: string = "default";
+    public inputObjectsMap: any = {};
 
     constructor(
       public title: string,

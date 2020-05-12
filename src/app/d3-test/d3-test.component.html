@@ -70,13 +70,13 @@
                                [indeterminate]="node.isPartiallySelected"
                                (keydown)="onKeyDown(t, node, $event)" />
                         <div class="node-content-wrapper"
-                             [class.dummystyle]="bindTogether(node, wrapper, svgbg, checkBox)"
+                             [class.dummystyle]="bindTogether(node, wrapper, svgbg, checkBox, t)"
                              [class.node-content-wrapper-active]="node.isActive"
                              [class.node-content-wrapper-focused]="node.isFocused"
                              (click)="node.mouseAction('click', $event)"
-                             [style.background-color]="getNodeColor(t, node)">
-                          <mat-icon class="node-content-icon" title="{{getNodeIconAlt(t, node)}}">{{getNodeIcon(t, node)}}</mat-icon>
-                          <span id="{{t.title + '.lbl.' + node.data.node.id}}">
+                             [style.background-color]="getNodeColor(t, node)"  id="{{t.title + '.lbl.' + node.data.node.id}}">
+                          <div class="node-content-icon"><mat-icon class="node-content-icon" aria-hidden="false" attr.aria-label="{{getNodeIconAlt(t, node)}}">{{getNodeIcon(t, node)}}</mat-icon></div>
+                          <span>
                             <span *ngIf="!node.data.node.hyperlink" [innerHTML]="injectHighlightSection(node.data, t.selectedLang)"></span>
                             <a *ngIf="node.data.node.hyperlink" (mousedown)="openTab(node.data.node.hyperlink)" class="fake-link" target="_blank" href="{{node.data.node.hyperlink}}" [innerHTML]="injectHighlightSection(node.data, t.selectedLang)"></a>
                             <span [innerHTML]="injectHighlightBody(node.data, t.selectedLang)"></span>
@@ -113,15 +113,15 @@
 
             <tree-root #tree [(state)]="t.column.state" [options]="t.column.options" [nodes]="t.column.nodes" (initialized)="setup(t.column, tree); t.parentTabTreeChanged(updateSubject)" (activate)="activateNode(t, $event)" (deactivate)="t.columnTabTreeChanged(null, updateSubject)" (toggleExpanded)="t.columnTabTreeChanged($event, updateSubject)">
               <ng-template #treeNodeWrapperTemplate let-node let-index="index">
-                <div #wrapper class="node-wrapper" [style.padding-left]="node.getNodePadding()">
+                <div #wrapper class="node-wrapper" [style.padding-left]="node.getNodePadding()" id="{{t.title + '.cb.' + node.data.node.id}}" tabindex="0" (keydown)="onKeyDown(t.column, node, $event)">
                   <!--<tree-node-expander [node]="node"></tree-node-expander>-->
                   <div class="node-content-wrapper"
-                       [class.dummystyle]="bindTogether(node, wrapper, svgbg)"
+                       [class.dummystyle]="bindTogether(node, wrapper, svgbg, wrapper, t.column)"
                        [class.node-content-wrapper-active]="node.isActive"
                        [class.node-content-wrapper-focused]="node.isFocused"
                        (click)="node.mouseAction('click', $event)"
                        [style.background-color]="getNodeColor(t.column, node)">
-                    <mat-icon class="node-content-icon" title="{{getNodeIconAlt(t.column, node)}}">{{getNodeIcon(t.column, node)}}</mat-icon>
+                    <div class="node-content-icon"><mat-icon aria-hidden="false" attr.aria-label="{{getNodeIconAlt(t.column, node)}}">{{getNodeIcon(t.column, node)}}</mat-icon></div>
                     <span>
                       <span *ngIf="!node.data.node.hyperlink">{{node.data.getSection(t.selectedLang)}}</span>
                       <a *ngIf="node.data.node.hyperlink" (mousedown)="openTab(node.data.node.hyperlink)" class="fake-link" target="_blank" href="{{node.data.node.hyperlink}}">{{node.data.getSection(t.selectedLang)}}</a>

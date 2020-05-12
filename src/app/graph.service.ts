@@ -270,13 +270,18 @@ export class GraphService {
       this.activateTab(this.graphTabs[0]);
   }
 
-  public activateTab(tab: GraphTab) {
+  public activateTab(tab: GraphTab): Promise<boolean> {
+    return new Promise<boolean>((resolve, reject) => {
+
       var newIndex = this.graphTabs.indexOf(tab);
       if (newIndex != this.selectedTab)
       {
         this.selectedTab = newIndex;
         this.configureFilterStack();
         this.tabsChangedSubject.next(0);
+        setTimeout(() => {
+          resolve(true);
+        }, 1000);
       }
       else
       {
@@ -285,8 +290,12 @@ export class GraphService {
           this.selectedTab = newIndex;
           this.configureFilterStack();
           this.tabsChangedSubject.next(0);
+          setTimeout(() => {
+            resolve(true);
+          }, 1000);
         }, 10);
       }
+    });
   }
 
   public getNodesWithLinks(children: FullDocNode[], result: FullDocNode[])

@@ -53,7 +53,6 @@ export class D3TestComponent implements OnInit, OnDestroy {
     private updateViewSubject = new Rx.BehaviorSubject(0);
     private tabsChangedSubscription;
     private searchable: Searchable;
-    private inputObjectsMap: any = {};
 
     constructor(
       public graphService: GraphService,
@@ -603,11 +602,11 @@ export class D3TestComponent implements OnInit, OnDestroy {
         link.toTree.getNodeById(link.to).expandAll();
     }
 
-    public bindTogether(node, element, svgbg, checkBox) {
-        node.elementRef2 = element;
+    public bindTogether(node, element, svgbg, checkBox, tab: GraphTab) {
+      node.elementRef2 = element;
       this.svgbgElement = svgbg;
       if (checkBox)
-        this.inputObjectsMap[checkBox.id] = checkBox;
+        tab.inputObjectsMap[checkBox.id] = checkBox;
     }
 
     private highlightText(text: string, highlight: number[]): string
@@ -741,31 +740,51 @@ export class D3TestComponent implements OnInit, OnDestroy {
     private onKeyDown(tab: GraphTab, node: TreeNode, event: any) {
       switch (event.code)
       {
+        case "Digit1":
+          {
+            if (event.shiftKey)
+              this.toggleTree(0, tab);
+          }
+          break;
+        case "Digit2":
+          {
+            if (event.shiftKey)
+              this.toggleTree(1, tab);
+          }
+          break;
+        case "Digit3":
+          {
+            if (event.shiftKey)
+              this.toggleTree(2, tab);
+          }
+          break;
         case "ArrowRight":
           {
-            if (node.children.length > 0) {
-              node.expand();
-              this.selectInputById(tab, node.children[0].id);
-              event.preventDefault(); 
-            }
+            if (event.shiftKey)
+              this.nextTree(node, tab, event);
+            else
+              D3TestComponent.descendTree(node, tab, event);
+            event.preventDefault();
+            event.stopPropagation();
           }
           break;
         case "ArrowLeft": 
           {
-            if (node.parent) {
-              node.collapse();
-              this.selectInputById(tab, node.parent.id);
-              event.preventDefault(); 
-            }
+            if (event.shiftKey)
+              this.prevTree(node, tab, event);
+            else
+              D3TestComponent.ascendTree(node, tab, event);
+            event.preventDefault();
+            event.stopPropagation();
           }
           break;
-        case "ArrowDown": this.moveFocusUpDown(tab, node, 1); break;
-        case "ArrowUp": this.moveFocusUpDown(tab, node, -1); break;
+        case "ArrowDown": D3TestComponent.moveFocusUpDown(tab, node, 1); break;
+        case "ArrowUp": D3TestComponent.moveFocusUpDown(tab, node, -1); break;
         case "Home":
           {
             var root = node.treeModel.getFirstRoot();
             if (root) {
-              this.selectInputById(tab, root.id);
+              D3TestComponent.selectInputById(tab, root.id);
               event.preventDefault(); 
             }
           }
@@ -773,17 +792,103 @@ export class D3TestComponent implements OnInit, OnDestroy {
       }
     }
 
-    private moveFocusUpDown(tab: GraphTab, node: TreeNode, amount: number) {
+    private nextTree(node: TreeNode, tab: GraphTab, event: any) {
+      if (!tab.parent) {
+        //we're in filter tab
+        this.activateTree(0, true);
+      }
+      else {
+        var currentIndex = this.graphService.graphTabs.indexOf(tab.parent);
+        if (currentIndex < this.graphService.graphTabs.length - 1) {
+          this.activateTree(currentIndex + 1, true);
+        }
+      }
+    }
+
+    private prevTree(node: TreeNode, tab: GraphTab, event: any) {
+      if (!tab.parent) {
+        //we're in filter tab
+        // no prev tree
+      }
+      else {
+        var currentIndex = this.graphService.graphTabs.indexOf(tab.parent);
+        if (currentIndex > 0) {
+          this.activateTree(currentIndex - 1, true);
+        }
+        else {
+          this.activateTree(this.graphService.selectedTab, false);
+        }
+      }
+    }
+
+    private activateTree(index: number, graph: boolean) {
+        var tab = this.graphService.graphTabs[index];
+        var finalize = Promise.resolve(true);
+        if (graph)
+          tab = tab.column;
+        else if (this.graphService.selectedTab != index)
+          finalize = this.graphService.activateTab(tab);
+
+        finalize.then((v, e) => {
+          var nextId = tab.treeModel.getFirstRoot().id
+          D3TestComponent.selectInputById(tab, nextId);
+        });
+    }
+
+    private toggleTree(index: number, tab: GraphTab) {
+      if (index > this.graphService.graphTabs.length - 1)
+        return; // invalid index
+
+      if (!tab.parent) {
+        //we're in filter tab
+        if (index != this.graphService.selectedTab)
+          this.activateTree(index, false); // jump to this tab in filter
+        else
+          this.activateTree(index, true); // jump to this tab in graph
+      }
+      else {
+        //we're in graph tab
+        var currentIndex = this.graphService.graphTabs.indexOf(tab.parent);
+        if (index != currentIndex)
+          this.activateTree(index, true); // jump to this tab in graph
+        else
+          this.activateTree(index, false); // jump to this tab in filter
+      }
+    }
+
+    static ascendTree(node: TreeNode, tab: GraphTab, event: any) {
+        if (node.parent) {
+            // dont let them keyboard expand if we have a tab.parent, ie we are in the graph.
+            //  expand is disabled in that view
+            if (!tab.parent)
+                node.collapse();
+            D3TestComponent.selectInputById(tab, node.parent.id);
+        }
+    }
+
+    static descendTree(node: TreeNode, tab: GraphTab, event: any) {
+        if (node.children.length > 0) {
+            // dont let them keyboard expand if we have a tab.parent, ie we are in the graph.
+            //  expand is disabled in that view
+            if (!tab.parent)
+                node.expand();
+            if (node.isExpanded) {
+                D3TestComponent.selectInputById(tab, node.children[0].id);
+            }
+        }
+    }
+
+    static moveFocusUpDown(tab: GraphTab, node: TreeNode, amount: number) {
         var index = node.parent.children.findIndex(f => f.id == node.id);
         if (index > -1) {
             var newIndex = index + amount;
             var nextId = node.parent.children[newIndex].id;
-            this.selectInputById(tab, nextId);
+            D3TestComponent.selectInputById(tab, nextId);
         }
     }
 
-    private selectInputById(tab: GraphTab, nextId: any) {
-        var selectedObject = this.inputObjectsMap[tab.title + '.cb.' + nextId];
+    static selectInputById(tab: GraphTab, nextId: any) {
+        var selectedObject = tab.inputObjectsMap[tab.title + '.cb.' + nextId];
         if (selectedObject)
           selectedObject.focus();
     }

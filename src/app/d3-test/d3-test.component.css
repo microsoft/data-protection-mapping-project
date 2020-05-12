@@ -42,6 +42,7 @@ h1 {
 }
 
 .node-content-icon {
+    display: inline;
 }
 
 .d3 {
@@ -166,6 +167,11 @@ mat-card {
 
 mat-checkbox {
     margin-left: 10px !important;
+}
+
+.mat-icon {
+  vertical-align: middle !important;
+  margin: 2px !important;
 }
 
 .filter-field {
