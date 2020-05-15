@@ -5,6 +5,12 @@ export class Link {
   rev: string;
 }
 
+export class Note {
+  id: string;
+  links: Link[];  
+  comment: string;
+}
+
 export class DocNode2 {
   id?: string;
   section?: string;
@@ -13,6 +19,7 @@ export class DocNode2 {
   compliance_level?: number;
   children: DocNode2[];
   links: Link[];
+  notes: Note[];
   langs: any;
 }
 
@@ -31,6 +38,7 @@ export class FullDocNode {
   public isAnyChildUnmappedCached: boolean;
   public shouldBeMappedCached: boolean;
   public filterColor: string;
+  public connectedTo: any[] = [];
 
   public constructor(
     public node: Doc2 | DocNode2,
@@ -90,10 +98,11 @@ export class FullDocNode {
   }
 
   // pass null for default lang
-  public getBody(lang: string = null): string {
+  public getBody(lang: string = null, includeNotes: boolean = false): string {
     var langs = this.node.langs;
     var l = lang ? langs[lang] : langs['default'];
-    return l ? (l.body ? (' - ' + l.body) : '') : this.node.body;
+    var text = l ? (l.body ? (' - ' + l.body) : '') : this.node.body;
+    return text;
   }
   
   // pass null for default lang
@@ -101,6 +110,16 @@ export class FullDocNode {
     var langs = this.node.langs;
     var l = lang ? langs[lang] : langs['default'];
     return l ? l.section : this.node.section;
+  }
+  
+  // pass null for default lang
+  public getConnectionsText(lang: string = null): string {
+    return "References ISO sections: " + Object.keys(this.connectedTo).join(", ") + ".";
+  }
+  
+  // pass null for default lang
+  public getCommentText(note: Note, lang: string = null): string {
+    return note.comment + "[Iso Sections: " + note.links.map(v=>v.id).join(", ") + "]";
   }
 }
 

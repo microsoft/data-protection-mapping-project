@@ -506,11 +506,14 @@ export class D3TestComponent implements OnInit, OnDestroy {
             var fromTree = fromTab.treeModel;
             var toTree = toTab.treeModel;
             var destinationMap = b[1];
-            var fromNode = fromTree.getNodeById(b[0]);
+            var fromNode: TreeNode = fromTree.getNodeById(b[0]);
 
             // If the source node is hidden, continue.
             if (fromNode.id in fromTree.hiddenNodeIds)
               return a;
+
+            // store a refrence to the connections in the source node.
+            fromNode.data.connectedTo = destinationMap;
 
             // one source node may map to many destination.
             for (var destinationKey in destinationMap)

@@ -107,7 +107,8 @@ var findOrCreateSection = function (root, id) {
             "section": assembled,
             "children": [],
             "links": [],
-            "langs": []
+            "langs": [],
+            "notes": []
           };
 
           root.children.push(node);
@@ -256,9 +257,16 @@ function processRegulation(worksheet) {
   });
 
   doc.langs = Object.keys(langDictTotal);
-  doc.notes = notes;
 
   mergeDoc(newChildren, doc);
+
+  // zip in notes
+  //doc.notes = notes;
+  for (var n of notes) {
+    var node = findOrCreateSection(doc, n.id);
+    node.notes.push(n);
+  }
+
   return doc;
 }
 

@@ -75,7 +75,7 @@
                              [class.node-content-wrapper-focused]="node.isFocused"
                              (click)="node.mouseAction('click', $event)"
                              [style.background-color]="getNodeColor(t, node)"  id="{{t.title + '.lbl.' + node.data.node.id}}">
-                          <div class="node-content-icon"><mat-icon class="node-content-icon" aria-hidden="false" attr.aria-label="{{getNodeIconAlt(t, node)}}">{{getNodeIcon(t, node)}}</mat-icon></div>
+                          <div class="node-content-icon"><mat-icon class="node-content-icon" aria-hidden="false" title="{{getNodeIconAlt(t.column, node)}}" attr.aria-label="{{getNodeIconAlt(t, node)}}">{{getNodeIcon(t, node)}}</mat-icon></div>
                           <span>
                             <span *ngIf="!node.data.node.hyperlink" [innerHTML]="injectHighlightSection(node.data, t.selectedLang)"></span>
                             <a *ngIf="node.data.node.hyperlink" (mousedown)="openTab(node.data.node.hyperlink)" class="fake-link" target="_blank" href="{{node.data.node.hyperlink}}" [innerHTML]="injectHighlightSection(node.data, t.selectedLang)"></a>
@@ -121,12 +121,18 @@
                        [class.node-content-wrapper-focused]="node.isFocused"
                        (click)="node.mouseAction('click', $event)"
                        [style.background-color]="getNodeColor(t.column, node)">
-                    <div class="node-content-icon"><mat-icon aria-hidden="false" attr.aria-label="{{getNodeIconAlt(t.column, node)}}">{{getNodeIcon(t.column, node)}}</mat-icon></div>
+                    <div class="node-content-icon"><mat-icon aria-hidden="false" title="{{getNodeIconAlt(t.column, node)}}" attr.aria-label="{{getNodeIconAlt(t.column, node)}}">{{getNodeIcon(t.column, node)}}</mat-icon></div>
                     <span>
                       <span *ngIf="!node.data.node.hyperlink">{{node.data.getSection(t.selectedLang)}}</span>
                       <a *ngIf="node.data.node.hyperlink" (mousedown)="openTab(node.data.node.hyperlink)" class="fake-link" target="_blank" href="{{node.data.node.hyperlink}}">{{node.data.getSection(t.selectedLang)}}</a>
                       <span>{{node.data.getBody(t.selectedLang)}}</span>
+                      <span class="visuallyhidden">{{node.data.getConnectionsText(t.selectedLang)}}</span>
                     </span>
+                    <div *ngIf="node.data.node.notes.length">
+                      <ul>
+                        <li *ngFor="let note of node.data.node.notes">{{node.data.getCommentText(note, t.selectedLang)}}</li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </ng-template>
