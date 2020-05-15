@@ -32,7 +32,6 @@ export class GraphTab {
     public autoFilterParent: GraphTab;
     public errors: any = {};
     private updateSubjectParent = new Rx.BehaviorSubject(null);
-    private updateSubjectColumn = new Rx.BehaviorSubject(null);
     public selectedLang: string = "default";
     public inputObjectsMap: any = {};
     public id: string;
@@ -51,9 +50,6 @@ export class GraphTab {
             this.updateSubjectParent.pipe(debounce(() => Rx.timer(1))).subscribe({
                 next: (v) => this.parentTabTreeChangedImp(v)
             });
-            this.updateSubjectColumn.pipe(debounce(() => Rx.timer(1))).subscribe({
-                next: (v) => this.columnTabTreeChangedImp(v)
-            });
         }
     }
     public get errorStrings(): string[] {
@@ -70,83 +66,7 @@ export class GraphTab {
     }
     public nodes = [];
     public column: GraphTab;
-    public static filterBySelectedLeafs(visibleNodes: TreeNode[], parentTree: TreeModel, node: TreeNode, noSelection: boolean): boolean {
-        var inSelection = node.data.id in parentTree.selectedLeafNodeIds;
-        node.data.filterColor = inSelection ? "yellow" : undefined;
-        var show = noSelection || inSelection;
-        if (show)
-            visibleNodes.push(node);
-        return show;
-    }
-    public static containsNode(parentTree: VisibleLink[], node: TreeNode): boolean {
-        return parentTree.find(n => {
-            return n.link.id == node.data.id;
-        }) != null;
-    }
-    public static filterByVisibleLinks(visibleNodes: TreeNode[], parentTree: VisibleLink[], node: TreeNode): boolean {
-        var show = GraphTab.containsNode(parentTree, node);
-        var parent = node.parent;
-        while (!show && parent) {
-            // didnt find us but see if any parent is linked
-            show = GraphTab.containsNode(parentTree, parent);
-            parent = parent.parent;
-        }
-        if (show)
-            visibleNodes.push(node);
-        return show;
-    }
-    public static filterByMyLinks(visibleNodes: TreeNode[], parentTree: GraphTab, node: TreeNode): boolean {
-        // keep unmapped stuff by default
-        var show = node.data.isUnmapped;
-        if (!show) {
-            // include linked stuff
-            var links = node.data.node.links;
-            if (links) {
-                for (var l of links) {
-                    if (!(l.id in parentTree.state.hiddenNodeIds) || !parentTree.state.hiddenNodeIds[l.id]) {
-                        show = true;
-                        break;
-                    }
-                }
-            }
-        }
-        if (show)
-            visibleNodes.push(node);
-        return show;
-    }
-    public runFilter() {
-        this.visibleNodes = [];
-        this.visibleLinks = [];
-        if (this.treeModel) {
-            this.treeModel.clearFilter();
-            var noSelection = Object.keys(this.parent.treeModel.selectedLeafNodeIds).length == 0;
-            this.treeModel.filterNodes((node: TreeNode) => {
-                node.data.connectedTo = {}; // clear connectivity
-                var show = false;
-                if (this.autoFilterSrc) {
-                    if (this.autoFilterSelf) {
-                        show = GraphTab.filterByMyLinks(this.visibleNodes, this.autoFilterSrc, node);
-                    }
-                    else
-                        show = GraphTab.filterByVisibleLinks(this.visibleNodes, this.autoFilterSrc.visibleLinks, node);
-                }
-                else {
-                    show = GraphTab.filterBySelectedLeafs(this.visibleNodes, this.parent.treeModel, node, noSelection);
-                }
-                return show;
-            }, false);
-            if (this.autoFilterParent) {
-                if (this.autoFilterParent.anySelected)
-                    this.treeModel.expandAll();
-                else
-                    this.treeModel.collapseAll();
-            }
-            this.visibleLinks = GraphTab.flatten(this.visibleNodes.map(v => {
-                var links = v.data.node.links;
-                return links ? links.map(l => new VisibleLink(v, l)) : [];
-            }));
-        }
-    }
+
     public filterMapped() {
         // collapse all
         this.forAllTreeNodes(n => n.collapse());
@@ -220,13 +140,10 @@ export class GraphTab {
                 this.forAllTreeNodesRecursive(n, cb);
         }
     }
-    public parentTabTreeChanged(updateSubject: any) {
-        this.updateSubjectParent.next([updateSubject]);
+    public parentTabTreeChanged() {
+        this.updateSubjectParent.next(0);
     }
     public parentTabTreeChangedImp(data: any) {
-        if (!data)
-            return;
-        var updateSubject = data[0];
         if (this.column.treeModel) {
             // Due to a bug https://github.com/500tech/angular-tree-component/issues/521
             //  must manually clear nodes that are no longer selected
@@ -235,8 +152,8 @@ export class GraphTab {
                 if (node && !node.isSelected)
                     delete this.treeModel.selectedLeafNodeIds[n];
             }
-            this.graphService.runFilters(this, true, updateSubject);
-            updateSubject.next(0);
+            this.graphService.runFilters(this, true);
+            this.graphService.updateSubject.next(0);
             // Must be delayed or you'll get an infinite loop of change events.
             //setTimeout(() => {
             // by default, collapse everything
@@ -250,27 +167,10 @@ export class GraphTab {
             //}, 1);
         }
     }
-    public columnTabTreeChanged(event: any, updateSubject: any) {
-        this.updateSubjectColumn.next([event, updateSubject]);
-    }
-    public columnTabTreeChangedImp(data: any) {
-        if (!data)
-            return;
-        var event = data[0];
-        var updateSubject = data[1];
+
+    public columnTabTreeChanged() {
         if (this.column.treeModel) {
-            if (event) {
-                // on expand
-                if (event.isExpanded && event.node.isActive) {
-                    var allNodes = this.graphService.getNodesWithLinks(event.node.data.children, []);
-                    // select children with links
-                    for (var c of allNodes) {
-                        this.column.state.activeNodeIds[c.id] = true; // select child
-                    }
-                }
-            }
-            this.graphService.runFilters(this, false, updateSubject);
-            updateSubject.next(0);
+            this.graphService.runFilters(this, false);
         }
     }
 
