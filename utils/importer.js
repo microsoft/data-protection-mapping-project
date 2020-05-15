@@ -131,13 +131,13 @@ var recursiveSort = function (doc) {
       recursiveSort(c);
 }
 
-var mergeDocRecursive = function (src, dst) {
+var mergeDocRecursive = function (src, dst, prefix = '') {
     for (var d of src)
     {
-        var node = findOrCreateSection(dst, d.id);
+        var node = findOrCreateSection(dst, prefix + d.id);
 
         // copy properties
-        node.id = d.id;
+        node.id = prefix + d.id;
         node.section = d.section;
         node.body = d.body;
         node.hyperlink = d.hyperlink;
@@ -146,12 +146,12 @@ var mergeDocRecursive = function (src, dst) {
         node.langs = d.langs;
 
         if (d.children)
-          mergeDocRecursive(d.children, dst);
+          mergeDocRecursive(d.children, dst, prefix);
     }
 };
 
-var mergeDoc = function (src, dst) {
-    mergeDocRecursive(src, dst);
+var mergeDoc = function (src, dst, prefix = '') {
+    mergeDocRecursive(src, dst, prefix);
 
     recursiveSort(dst);
 
@@ -161,7 +161,7 @@ var mergeDoc = function (src, dst) {
 var parseIsoLinks = function (isoLinks) {
   return isoLinks.split(';').filter(v => v).map(v => {
     return {
-      "id": v,
+      "id": v.trim(),
       "type": "ISO"
     };
   })
@@ -177,7 +177,8 @@ function processRegulation(worksheet) {
       "type": worksheet.name.trim(),
       "id": worksheet.name.replace(/\W/g, ''), // keep only alphanumeric
       "rev": 1,
-      "children": []
+      "children": [],
+      "langs": []
   };
 
   var newChildren = [];
@@ -311,6 +312,22 @@ function importXlsx() {
                 allDocs.push(doc);
               }
           });
+
+          // Create all-doc
+          var allDoc = {
+              "type": "All",
+              "id": "All",
+              "rev": 1,
+              "children": [],
+              "langs": []
+          };
+
+          for (var d of allDocs) {
+            if (d.type != "ISO")
+              mergeDoc(d.children, allDoc, d.type.replace(/\W/g, '_') + "."); // replace nonalphanumeric with _ so it doesnt get parsed as id structure.
+          }
+
+          allDocs.push(allDoc);
 
           var db = {
             "changelog": changeLog,
