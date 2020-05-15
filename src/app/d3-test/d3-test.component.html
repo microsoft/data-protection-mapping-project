@@ -126,7 +126,7 @@
                       <span *ngIf="!node.data.node.hyperlink">{{node.data.getSection(t.selectedLang)}}</span>
                       <a *ngIf="node.data.node.hyperlink" (mousedown)="openTab(node.data.node.hyperlink)" class="fake-link" target="_blank" href="{{node.data.node.hyperlink}}">{{node.data.getSection(t.selectedLang)}}</a>
                       <span>{{node.data.getBody(t.selectedLang)}}</span>
-                      <span class="visuallyhidden">{{node.data.getConnectionsText(t.selectedLang)}}</span>
+                      <span *ngIf="node.data.connectedTo.length" class="visuallyhidden">{{node.data.getConnectionsText(t.selectedLang)}}</span>
                     </span>
                     <div *ngIf="node.data.node.notes.length">
                       <ul>

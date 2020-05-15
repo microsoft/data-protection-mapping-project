@@ -512,9 +512,6 @@ export class D3TestComponent implements OnInit, OnDestroy {
             if (fromNode.id in fromTree.hiddenNodeIds)
               return a;
 
-            // store a refrence to the connections in the source node.
-            fromNode.data.connectedTo = destinationMap;
-
             // one source node may map to many destination.
             for (var destinationKey in destinationMap)
             {
@@ -522,6 +519,8 @@ export class D3TestComponent implements OnInit, OnDestroy {
               if (!(toNode.id in toTree.hiddenNodeIds))
               {
                 var destinationData = destinationMap[destinationKey];
+                // store a refrence to the connections in the source node.
+                fromNode.data.connectedTo[destinationKey] = true;
                 a.push({
                     from: b[0],
                     fromNode: fromNode,
@@ -785,7 +784,7 @@ export class D3TestComponent implements OnInit, OnDestroy {
         case "ArrowUp": D3TestComponent.moveFocusUpDown(tab, node, -1); break;
         case "Home":
           {
-            var root = node.treeModel.getFirstRoot();
+            var root = node.treeModel.getVisibleRoots()[0];
             if (root) {
               D3TestComponent.selectInputById(tab, root.id);
               event.preventDefault(); 
@@ -833,7 +832,7 @@ export class D3TestComponent implements OnInit, OnDestroy {
           finalize = this.graphService.activateTab(tab);
 
         finalize.then(v => {
-          var nextId = tab.treeModel.getFirstRoot().id
+          var nextId = tab.treeModel.getVisibleRoots()[0].id
           D3TestComponent.selectInputById(tab, nextId);
         });
     }
@@ -870,22 +869,22 @@ export class D3TestComponent implements OnInit, OnDestroy {
     }
 
     static descendTree(node: TreeNode, tab: GraphTab, event: any) {
-        if (node.children.length > 0) {
+        if (node.visibleChildren.length > 0) {
             // dont let them keyboard expand if we have a tab.parent, ie we are in the graph.
             //  expand is disabled in that view
             if (!tab.parent)
                 node.expand();
             if (node.isExpanded) {
-                D3TestComponent.selectInputById(tab, node.children[0].id);
+                D3TestComponent.selectInputById(tab, node.visibleChildren[0].id);
             }
         }
     }
 
     static moveFocusUpDown(tab: GraphTab, node: TreeNode, amount: number) {
-        var index = node.parent.children.findIndex(f => f.id == node.id);
+        var index = node.parent.visibleChildren.findIndex(f => f.id == node.id);
         if (index > -1) {
             var newIndex = index + amount;
-            var nextId = node.parent.children[newIndex].id;
+            var nextId = node.parent.visibleChildren[newIndex].id;
             D3TestComponent.selectInputById(tab, nextId);
         }
     }

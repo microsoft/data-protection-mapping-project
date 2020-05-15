@@ -121,6 +121,7 @@ export class GraphTab {
             this.treeModel.clearFilter();
             var noSelection = Object.keys(this.parent.treeModel.selectedLeafNodeIds).length == 0;
             this.treeModel.filterNodes((node: TreeNode) => {
+                node.data.connectedTo = {}; // clear connectivity
                 var show = false;
                 if (this.autoFilterSrc) {
                     if (this.autoFilterSelf) {

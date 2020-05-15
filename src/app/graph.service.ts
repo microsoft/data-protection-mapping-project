@@ -148,11 +148,11 @@ export class GraphService {
       return child;
   }
 
-  getFullDocByType(docType: string) : Observable<FullDocNode> {
+  getFullDocByType(id: string) : Observable<FullDocNode> {
       return this.getDb().pipe(
         map(
           data => {
-              var doc = data.docs.find(n => n.type == docType);
+              var doc = data.docs.find(n => n.id == id);
               return this.addToDoc(null, doc);
           }
         )
