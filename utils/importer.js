@@ -174,7 +174,8 @@ function processRegulation(worksheet) {
 
   var ids = [];
   var doc = {
-      "type": worksheet.name,
+      "type": worksheet.name.trim(),
+      "id": worksheet.name.replace(/\W/g, ''), // keep only alphanumeric
       "rev": 1,
       "children": []
   };

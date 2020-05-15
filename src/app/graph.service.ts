@@ -125,7 +125,7 @@ export class GraphService {
       return this.getDb().pipe(
         map(
           data => {
-              return data.docs.map(v => { return { id: v.type, title: v.type }; });
+              return data.docs.map(v => { return { id: v.id, title: v.type }; });
           }
         )
       );
@@ -183,7 +183,7 @@ export class GraphService {
 
       this.getFullDocByType(id)
         .subscribe(doc => {
-          var newTab = new GraphTab(id, this, null, doc);
+          var newTab = new GraphTab(this, null, doc);
 
           newTab.nodes = doc.children;
           newTab.column.nodes = doc.children;
@@ -205,7 +205,7 @@ export class GraphService {
   }
 
   private ensureISOIsInMiddle() {
-      var isoTab = this.graphTabs.find(t => t.title == "ISO");
+      var isoTab = this.graphTabs.find(t => t.id == "ISO");
 
       if (this.graphTabs.length > 1)
       {
@@ -224,7 +224,7 @@ export class GraphService {
       }
 
       // setup filters
-      var isoTab = this.graphTabs.find(t => t.title == "ISO");
+      var isoTab = this.graphTabs.find(t => t.id == "ISO");
       var primary = this.graphTabs[filterOrder[0]];
 
       if (!primary)

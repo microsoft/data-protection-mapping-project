@@ -35,15 +35,18 @@ export class GraphTab {
     private updateSubjectColumn = new Rx.BehaviorSubject(null);
     public selectedLang: string = "default";
     public inputObjectsMap: any = {};
+    public id: string;
+    public title: string;
 
     constructor(
-      public title: string,
       public graphService: GraphService,
-      public parent: GraphTab = null,
-      public doc: FullDocNode = null) {
-        this.isIso = title == "ISO";
+      public parent: GraphTab,
+      public doc: FullDocNode) {
+        this.id = doc.id;
+        this.title = doc.name;
+        this.isIso = this.id == "ISO";
         if (!parent) {
-            this.column = new GraphTab(title, this.graphService, this);
+            this.column = new GraphTab(this.graphService, this, doc);
             this.column.options.useCheckbox = false;
             this.updateSubjectParent.pipe(debounce(() => Rx.timer(1))).subscribe({
                 next: (v) => this.parentTabTreeChangedImp(v)

@@ -95,7 +95,7 @@ export class D3TestComponent implements OnInit, OnDestroy {
         if (this.graphService.canAdd)
         {
             for (var t of this.graphCategories)
-                if (!this.graphService.graphTabs.find(g => g.title == t.id))
+                if (!this.graphService.graphTabs.find(g => g.id == t.id))
                     result.push(t);
         }
 
@@ -832,7 +832,7 @@ export class D3TestComponent implements OnInit, OnDestroy {
         else if (this.graphService.selectedTab != index)
           finalize = this.graphService.activateTab(tab);
 
-        finalize.then((v, e) => {
+        finalize.then(v => {
           var nextId = tab.treeModel.getFirstRoot().id
           D3TestComponent.selectInputById(tab, nextId);
         });
@@ -891,7 +891,7 @@ export class D3TestComponent implements OnInit, OnDestroy {
     }
 
     static selectInputById(tab: GraphTab, nextId: any) {
-        var selectedObject = tab.inputObjectsMap[tab.title + '.cb.' + nextId];
+        var selectedObject = tab.inputObjectsMap[tab.id + '.cb.' + nextId];
         if (selectedObject)
           selectedObject.focus();
     }

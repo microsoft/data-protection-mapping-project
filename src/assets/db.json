@@ -14,6 +14,7 @@
     "docs": [
         {
             "type": "ISO",
+            "id": "ISO",
             "rev": 1,
             "children": [
                 {
@@ -4755,7 +4756,8 @@
             ]
         },
         {
-            "type": "Australia ",
+            "type": "Australia",
+            "id": "Australia",
             "rev": 1,
             "children": [
                 {
@@ -5718,7 +5720,8 @@
             ]
         },
         {
-            "type": "Canada ",
+            "type": "Canada",
+            "id": "Canada",
             "rev": 1,
             "children": [
                 {
@@ -6529,7 +6532,8 @@
             ]
         },
         {
-            "type": "Hong Kong ",
+            "type": "Hong Kong",
+            "id": "HongKong",
             "rev": 1,
             "children": [
                 {
@@ -7262,7 +7266,8 @@
             ]
         },
         {
-            "type": "Singapore ",
+            "type": "Singapore",
+            "id": "Singapore",
             "rev": 1,
             "children": [
                 {
@@ -7897,7 +7902,8 @@
             ]
         },
         {
-            "type": "South Korea ",
+            "type": "South Korea",
+            "id": "SouthKorea",
             "rev": 1,
             "children": [
                 {
@@ -8692,7 +8698,8 @@
             ]
         },
         {
-            "type": "Turkey ",
+            "type": "Turkey",
+            "id": "Turkey",
             "rev": 1,
             "children": [
                 {
@@ -9404,7 +9411,8 @@
             ]
         },
         {
-            "type": "California CCPA ",
+            "type": "California CCPA",
+            "id": "CaliforniaCCPA",
             "rev": 1,
             "children": [
                 {
@@ -10329,7 +10337,8 @@
             ]
         },
         {
-            "type": "Brazil ",
+            "type": "Brazil",
+            "id": "Brazil",
             "rev": 1,
             "children": [
                 {
@@ -11348,6 +11357,7 @@
         },
         {
             "type": "GDPR",
+            "id": "GDPR",
             "rev": 1,
             "children": [
                 {
