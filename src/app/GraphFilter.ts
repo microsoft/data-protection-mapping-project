@@ -64,8 +64,7 @@ export class GraphFilter {
     }
 
     private static filterByMyLinks(visibleNodes: TreeNode[], parentTree: GraphTab, node: TreeNode): boolean {
-        // keep unmapped stuff by default
-      var show = node.data.isUnmapped;
+        var show = false;
         if (!show) {
             // include linked stuff
             var links = node.data.node.links;
