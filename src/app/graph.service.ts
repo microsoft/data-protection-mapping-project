@@ -10,6 +10,7 @@ import { MessageService } from './message.service';
 import * as d3Sankey from 'd3-sankey';
 import { TreeNode, IActionMapping } from 'angular-tree-component';
 import { GraphTab } from './GraphTab';
+import { GraphFilter } from './GraphFilter';
 
 
 export interface ICategory {
@@ -67,7 +68,9 @@ export class GraphService {
   private docGuids = {};
   private docDb: Db = null;
   private nextDocGuid = 0;
-  public tabsChangedSubject = new Rx.BehaviorSubject(0);
+  private filterOrder = [];
+  public updateSubject = new Rx.BehaviorSubject(0);
+  public updateViewSubject = new Rx.BehaviorSubject(0);
 
   constructor(
     private messageService: MessageService,
@@ -75,18 +78,27 @@ export class GraphService {
       this.addTab("ISO");
     }
 
-  public runFilters(changedTab: GraphTab, parentChanged: boolean, updateSubject: any) 
+  public runFilters(changedTab: GraphTab, parentChanged: boolean) 
   {
       var tabs = this.graphTabs;
-      for (var t of tabs)
+      var anyChanged = false;
+
+      for (var i of this.filterOrder)
       {
-          if (t.column.autoFilterSrc == changedTab.column || (parentChanged && t == changedTab))
+          var t = tabs[i];
+          if (!t)
+            continue;
+
+          if (anyChanged || t.column.autoFilterSrc == changedTab.column || (parentChanged && t == changedTab))
           {
+              anyChanged = true;
               // filter child tree
-              t.column.runFilter();
-              t.columnTabTreeChanged(null, updateSubject);
+              GraphFilter.runFilter(t.column);
           }
       }
+
+      if (anyChanged)
+        this.updateSubject.next(0);
   }
 
   getGuid(id: string, type: string, rev: string, createMissing: boolean = true): number {
@@ -125,7 +137,7 @@ export class GraphService {
       return this.getDb().pipe(
         map(
           data => {
-              return data.docs.map(v => { return { id: v.type, title: v.type }; });
+              return data.docs.map(v => { return { id: v.id, title: v.type }; });
           }
         )
       );
@@ -148,11 +160,11 @@ export class GraphService {
       return child;
   }
 
-  getFullDocByType(docType: string) : Observable<FullDocNode> {
+  getFullDocByType(id: string) : Observable<FullDocNode> {
       return this.getDb().pipe(
         map(
           data => {
-              var doc = data.docs.find(n => n.type == docType);
+              var doc = data.docs.find(n => n.id == id);
               return this.addToDoc(null, doc);
           }
         )
@@ -183,7 +195,7 @@ export class GraphService {
 
       this.getFullDocByType(id)
         .subscribe(doc => {
-          var newTab = new GraphTab(id, this, null, doc);
+          var newTab = new GraphTab(this, null, doc);
 
           newTab.nodes = doc.children;
           newTab.column.nodes = doc.children;
@@ -199,13 +211,11 @@ export class GraphService {
             
           this.selectedTab = -1; // set it to non-value so change is detected if the index is the same
           setTimeout(() => this.activateTab(newTab), 1); // need to let dom regenerate
-
-          this.tabsChangedSubject.next(0);
         });
   }
 
   private ensureISOIsInMiddle() {
-      var isoTab = this.graphTabs.find(t => t.title == "ISO");
+      var isoTab = this.graphTabs.find(t => t.isIso);
 
       if (this.graphTabs.length > 1)
       {
@@ -215,17 +225,16 @@ export class GraphService {
   }
 
   public configureFilterStack() {
-      var filterOrder = [];
       switch (this.selectedTab)
       {
-        case 0: filterOrder = [0, 1, 2]; break;
-        case 1: filterOrder = [1, 0, 2]; break;
-        case 2: filterOrder = [2, 1, 0]; break;
+        case 0: this.filterOrder = [0, 1, 2]; break;
+        case 1: this.filterOrder = [1, 0, 2]; break;
+        case 2: this.filterOrder = [2, 1, 0]; break;
       }
 
       // setup filters
-      var isoTab = this.graphTabs.find(t => t.title == "ISO");
-      var primary = this.graphTabs[filterOrder[0]];
+      var isoTab = this.graphTabs.find(t => t.isIso);
+      var primary = this.graphTabs[this.filterOrder[0]];
 
       if (!primary)
         return;
@@ -235,7 +244,7 @@ export class GraphService {
       primary.column.autoFilterParent = null;
       primary.column.autoFilterSelf = false;
 
-      var secondary = this.graphTabs[filterOrder[1]];
+      var secondary = this.graphTabs[this.filterOrder[1]];
       if (secondary)
       {
           if (secondary == isoTab)
@@ -254,7 +263,7 @@ export class GraphService {
           }
       }
 
-      var third = this.graphTabs[filterOrder[2]];
+      var third = this.graphTabs[this.filterOrder[2]];
       if (third)
       {
           // auto filter with this tabs connections to iso
@@ -278,7 +287,6 @@ export class GraphService {
       {
         this.selectedTab = newIndex;
         this.configureFilterStack();
-        this.tabsChangedSubject.next(0);
         setTimeout(() => {
           resolve(true);
         }, 1000);
@@ -289,7 +297,6 @@ export class GraphService {
         setTimeout(() => {
           this.selectedTab = newIndex;
           this.configureFilterStack();
-          this.tabsChangedSubject.next(0);
           setTimeout(() => {
             resolve(true);
           }, 1000);

@@ -49,19 +49,16 @@ export class D3TestComponent implements OnInit, OnDestroy {
     
     public complianceColors = ["white", "green", "yellow", "red", "black"];
     public svgbgElement: any;
-    private updateSubject = new Rx.BehaviorSubject(0);
-    private updateViewSubject = new Rx.BehaviorSubject(0);
-    private tabsChangedSubscription;
     private searchable: Searchable;
 
     constructor(
       public graphService: GraphService,
       private sanitizer: DomSanitizer) {
         
-        this.updateSubject.pipe(debounce(() => Rx.timer(1))).subscribe({
+        this.graphService.updateSubject.pipe(debounce(() => Rx.timer(1))).subscribe({
           next: (v) => this.updateGraph()
         });
-        this.updateViewSubject.pipe(debounce(() => Rx.timer(1))).subscribe({
+        this.graphService.updateViewSubject.pipe(debounce(() => Rx.timer(1))).subscribe({
           next: (v) => this.updateGraphView()
         });
 
@@ -72,21 +69,10 @@ export class D3TestComponent implements OnInit, OnDestroy {
       this.graphService.getDocTypes()
         .subscribe(dt => { 
           this.graphCategories = dt; 
-
-          //// activate first 3
-          //for (var i = 0; i< 3; ++i)
-          //  this.graphCategories[i].active = true;
-            
-          //this.RefreshGraph(); 
         });
-      
-      this.tabsChangedSubscription = this.graphService.tabsChangedSubject.subscribe(a => {
-          //this.tabChanged();
-      })
     }
 
     ngOnDestroy(): void {
-        this.tabsChangedSubscription.unsubscribe();
     }
 
     public getMenuOptions(): any[] {
@@ -95,49 +81,12 @@ export class D3TestComponent implements OnInit, OnDestroy {
         if (this.graphService.canAdd)
         {
             for (var t of this.graphCategories)
-                if (!this.graphService.graphTabs.find(g => g.title == t.id))
+                if (!this.graphService.graphTabs.find(g => g.id == t.id))
                     result.push(t);
         }
 
         return result;
     }
-
-    //public RefreshGraph() {
-    //
-    //  var limitedDocs = this.graphCategories.filter(v => v.active).map(v => v.id);
-    //  if (limitedDocs.length > 0)
-    //    this.graphCriteria.categoryIds = limitedDocs;
-    //
-    //  this.graphCriteria.categoryOrder = limitedDocs;
-    //
-    //  if (this.graphType == 1)
-    //  {
-    //      // move ISO to second slot so it draws in the middle
-    //      var i0 = this.graphCriteria.categoryOrder[0];
-    //      var i1 = this.graphCriteria.categoryOrder[1];
-    //      this.graphCriteria.categoryOrder[0] = i1;
-    //      this.graphCriteria.categoryOrder[1] = i0;
-    //  }
-    //
-    //  this.graphService.getGraphData2(this.graphCriteria)
-    //    .subscribe(gd => { 
-    //      console.log(JSON.stringify(gd)); 
-    //      this.graphData = gd;
-    //
-    //      switch (this.graphType)
-    //      {
-    //          case 0:
-    //            this.DrawTable(this.graphData);
-    //            break;
-    //          case 1:
-    //            this.DrawChart(this.graphData);
-    //            break;
-    //          case 2:
-    //            this.DrawGraph(this.graphData);
-    //            break;
-    //    }
-    //    });
-    //}
 
     private DrawTable(data: DAG) {
         var rowType = this.graphCriteria.categoryOrder ? this.graphCriteria.categoryOrder[0] : (data.nodes[0] as SNode).data.type;
@@ -421,7 +370,7 @@ export class D3TestComponent implements OnInit, OnDestroy {
 
         if (this.graphService.selectedTab >= 0 && this.graphService.selectedTab < this.graphService.graphTabs.length)
         {
-            this.graphService.graphTabs[this.graphService.selectedTab].parentTabTreeChanged(this.updateSubject);
+            this.graphService.graphTabs[this.graphService.selectedTab].parentTabTreeChanged();
         }
     }
 
@@ -431,13 +380,13 @@ export class D3TestComponent implements OnInit, OnDestroy {
             newSelection[tab.column.state.focusedNodeId] = true; // single select
             tab.column.state.activeNodeIds = newSelection; 
             
-            this.updateSubject.next(0);
+            this.graphService.updateSubject.next(0);
         }
     }
 
     public onResize(event) {
         //event.target.innerWidth;
-        this.updateViewSubject.next(0);
+        this.graphService.updateViewSubject.next(0);
     }
 
     private buildLinkSet(fromTab: GraphTab, toTab: GraphTab, rtl: boolean): void {
@@ -506,7 +455,7 @@ export class D3TestComponent implements OnInit, OnDestroy {
             var fromTree = fromTab.treeModel;
             var toTree = toTab.treeModel;
             var destinationMap = b[1];
-            var fromNode = fromTree.getNodeById(b[0]);
+            var fromNode: TreeNode = fromTree.getNodeById(b[0]);
 
             // If the source node is hidden, continue.
             if (fromNode.id in fromTree.hiddenNodeIds)
@@ -519,6 +468,8 @@ export class D3TestComponent implements OnInit, OnDestroy {
               if (!(toNode.id in toTree.hiddenNodeIds))
               {
                 var destinationData = destinationMap[destinationKey];
+                // store a refrence to the connections in the source node.
+                fromNode.data.connectedTo[destinationKey] = true;
                 a.push({
                     from: b[0],
                     fromNode: fromNode,
@@ -559,7 +510,7 @@ export class D3TestComponent implements OnInit, OnDestroy {
                   this.buildLinkSet(tab.column, isoTab.column, t > isoIndex);
             }
             
-            this.updateViewSubject.next(0);
+            this.graphService.updateViewSubject.next(0);
         //}, 1);
     }
 
@@ -782,7 +733,7 @@ export class D3TestComponent implements OnInit, OnDestroy {
         case "ArrowUp": D3TestComponent.moveFocusUpDown(tab, node, -1); break;
         case "Home":
           {
-            var root = node.treeModel.getFirstRoot();
+            var root = node.treeModel.getVisibleRoots()[0];
             if (root) {
               D3TestComponent.selectInputById(tab, root.id);
               event.preventDefault(); 
@@ -829,8 +780,8 @@ export class D3TestComponent implements OnInit, OnDestroy {
         else if (this.graphService.selectedTab != index)
           finalize = this.graphService.activateTab(tab);
 
-        finalize.then((v, e) => {
-          var nextId = tab.treeModel.getFirstRoot().id
+        finalize.then(v => {
+          var nextId = tab.treeModel.getVisibleRoots()[0].id
           D3TestComponent.selectInputById(tab, nextId);
         });
     }
@@ -867,28 +818,28 @@ export class D3TestComponent implements OnInit, OnDestroy {
     }
 
     static descendTree(node: TreeNode, tab: GraphTab, event: any) {
-        if (node.children.length > 0) {
+        if (node.visibleChildren.length > 0) {
             // dont let them keyboard expand if we have a tab.parent, ie we are in the graph.
             //  expand is disabled in that view
             if (!tab.parent)
                 node.expand();
             if (node.isExpanded) {
-                D3TestComponent.selectInputById(tab, node.children[0].id);
+                D3TestComponent.selectInputById(tab, node.visibleChildren[0].id);
             }
         }
     }
 
     static moveFocusUpDown(tab: GraphTab, node: TreeNode, amount: number) {
-        var index = node.parent.children.findIndex(f => f.id == node.id);
+        var index = node.parent.visibleChildren.findIndex(f => f.id == node.id);
         if (index > -1) {
             var newIndex = index + amount;
-            var nextId = node.parent.children[newIndex].id;
+            var nextId = node.parent.visibleChildren[newIndex].id;
             D3TestComponent.selectInputById(tab, nextId);
         }
     }
 
     static selectInputById(tab: GraphTab, nextId: any) {
-        var selectedObject = tab.inputObjectsMap[tab.title + '.cb.' + nextId];
+        var selectedObject = tab.inputObjectsMap[tab.id + '.cb.' + nextId];
         if (selectedObject)
           selectedObject.focus();
     }

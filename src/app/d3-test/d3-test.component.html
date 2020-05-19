@@ -25,7 +25,7 @@
               <mat-tab *ngFor="let t of graphService.graphTabs">
                 <ng-template mat-tab-label>
                   {{t.title}}
-                  <button mat-button *ngIf="t.title != 'ISO'" matSuffix mat-icon-button aria-label="Remove Tab" (click)="graphService.removeTab(t)">
+                  <button mat-button *ngIf="t.id != 'ISO'" matSuffix mat-icon-button aria-label="Remove Tab" (click)="graphService.removeTab(t)">
                     <mat-icon>close</mat-icon>
                   </button>
                 </ng-template>
@@ -57,12 +57,12 @@
                 </div>
 
                 <div class="tree-container">
-                  <tree-root #tree [(state)]="t.state" [options]="t.options" [nodes]="t.nodes" (initialized)="t.treeModel = tree.treeModel" (stateChange)="t.parentTabTreeChanged(updateSubject)">
+                  <tree-root #tree [(state)]="t.state" [options]="t.options" [nodes]="t.nodes" (initialized)="t.treeModel = tree.treeModel" (stateChange)="t.parentTabTreeChanged()">
                     <ng-template #treeNodeWrapperTemplate let-node let-index="index">
                       <div #wrapper class="node-wrapper" [style.padding-left]="node.getNodePadding()">
                         <tree-node-expander title="Expand/Collapse Regulation" [node]="node"></tree-node-expander>
-                        <input #checkBox attr.aria-labelledby="{{t.title + '.lbl.' + node.data.node.id}}"
-                               id="{{t.title + '.cb.' + node.data.node.id}}"
+                        <input #checkBox attr.aria-labelledby="{{t.id + '.lbl.' + node.data.node.id}}"
+                               id="{{t.id + '.cb.' + node.data.node.id}}"
                                class="tree-node-checkbox"
                                type="checkbox"
                                (click)="node.mouseAction('checkboxClick', $event)"
@@ -74,8 +74,8 @@
                              [class.node-content-wrapper-active]="node.isActive"
                              [class.node-content-wrapper-focused]="node.isFocused"
                              (click)="node.mouseAction('click', $event)"
-                             [style.background-color]="getNodeColor(t, node)"  id="{{t.title + '.lbl.' + node.data.node.id}}">
-                          <div class="node-content-icon"><mat-icon class="node-content-icon" aria-hidden="false" attr.aria-label="{{getNodeIconAlt(t, node)}}">{{getNodeIcon(t, node)}}</mat-icon></div>
+                             [style.background-color]="getNodeColor(t, node)"  id="{{t.id + '.lbl.' + node.data.node.id}}">
+                          <div class="node-content-icon"><mat-icon class="node-content-icon" aria-hidden="false" title="{{getNodeIconAlt(t.column, node)}}" attr.aria-label="{{getNodeIconAlt(t, node)}}">{{getNodeIcon(t, node)}}</mat-icon></div>
                           <span>
                             <span *ngIf="!node.data.node.hyperlink" [innerHTML]="injectHighlightSection(node.data, t.selectedLang)"></span>
                             <a *ngIf="node.data.node.hyperlink" (mousedown)="openTab(node.data.node.hyperlink)" class="fake-link" target="_blank" href="{{node.data.node.hyperlink}}" [innerHTML]="injectHighlightSection(node.data, t.selectedLang)"></a>
@@ -111,9 +111,9 @@
               </mat-form-field>
             </div>
 
-            <tree-root #tree [(state)]="t.column.state" [options]="t.column.options" [nodes]="t.column.nodes" (initialized)="setup(t.column, tree); t.parentTabTreeChanged(updateSubject)" (activate)="activateNode(t, $event)" (deactivate)="t.columnTabTreeChanged(null, updateSubject)" (toggleExpanded)="t.columnTabTreeChanged($event, updateSubject)">
+            <tree-root #tree [(state)]="t.column.state" [options]="t.column.options" [nodes]="t.column.nodes" (initialized)="setup(t.column, tree); t.parentTabTreeChanged()" (activate)="activateNode(t, $event)" (deactivate)="t.columnTabTreeChanged()">
               <ng-template #treeNodeWrapperTemplate let-node let-index="index">
-                <div #wrapper class="node-wrapper" [style.padding-left]="node.getNodePadding()" id="{{t.title + '.cb.' + node.data.node.id}}" tabindex="0" (keydown)="onKeyDown(t.column, node, $event)">
+                <div #wrapper class="node-wrapper" [style.padding-left]="node.getNodePadding()" id="{{t.id + '.cb.' + node.data.node.id}}" tabindex="0" (keydown)="onKeyDown(t.column, node, $event)">
                   <!--<tree-node-expander [node]="node"></tree-node-expander>-->
                   <div class="node-content-wrapper"
                        [class.dummystyle]="bindTogether(node, wrapper, svgbg, wrapper, t.column)"
@@ -121,12 +121,18 @@
                        [class.node-content-wrapper-focused]="node.isFocused"
                        (click)="node.mouseAction('click', $event)"
                        [style.background-color]="getNodeColor(t.column, node)">
-                    <div class="node-content-icon"><mat-icon aria-hidden="false" attr.aria-label="{{getNodeIconAlt(t.column, node)}}">{{getNodeIcon(t.column, node)}}</mat-icon></div>
+                    <div class="node-content-icon"><mat-icon aria-hidden="false" title="{{getNodeIconAlt(t.column, node)}}" attr.aria-label="{{getNodeIconAlt(t.column, node)}}">{{getNodeIcon(t.column, node)}}</mat-icon></div>
                     <span>
                       <span *ngIf="!node.data.node.hyperlink">{{node.data.getSection(t.selectedLang)}}</span>
                       <a *ngIf="node.data.node.hyperlink" (mousedown)="openTab(node.data.node.hyperlink)" class="fake-link" target="_blank" href="{{node.data.node.hyperlink}}">{{node.data.getSection(t.selectedLang)}}</a>
                       <span>{{node.data.getBody(t.selectedLang)}}</span>
+                      <span *ngIf="node.data.connectedTo.length" class="visuallyhidden">{{node.data.getConnectionsText(t.selectedLang)}}</span>
                     </span>
+                    <div *ngIf="node.data.node.notes.length">
+                      <ul>
+                        <li *ngFor="let note of node.data.node.notes">{{node.data.getCommentText(note, t.selectedLang)}}</li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </ng-template>
