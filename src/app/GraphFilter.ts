@@ -1,7 +1,7 @@
 import { TreeModel, TreeNode } from 'angular-tree-component';
 import { VisibleLink, GraphService } from './graph.service';
 import { GraphTab } from './GraphTab';
-import { D3TestComponent } from './d3-test/d3-test.component';
+import { GraphComponent } from './graph/graph.component';
 
 export class GraphFilter {
     public static runFilter(tab: GraphTab) {
@@ -29,7 +29,7 @@ export class GraphFilter {
             if (tab.isAll) {
               // if it's isAll, put icons on all roots
               for (var r of tab.treeModel.getVisibleRoots()) {
-                  tab.iconStatus[r.id] = r.visibleChildren.length ? D3TestComponent.None : D3TestComponent.Unmapped;
+                  tab.iconStatus[r.id] = r.visibleChildren.length ? GraphComponent.None : GraphComponent.Unmapped;
               }
             }
 

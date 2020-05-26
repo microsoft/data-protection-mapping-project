@@ -35,12 +35,12 @@ function saturateColor(input, saturationZeroToOne){
 
 
 @Component({
-  selector: 'app-d3-test',
-  templateUrl: './d3-test.component.html',
-  styleUrls: [ './d3-test.component.css' ],
+  selector: 'app-graph',
+  templateUrl: './graph.component.html',
+  styleUrls: [ './graph.component.css' ],
   encapsulation: ViewEncapsulation.None // Allow D3 to read styles through shadow DOM
 })
-export class D3TestComponent implements OnInit, OnDestroy {    
+export class GraphComponent implements OnInit, OnDestroy {    
     public graphType: number = 0;
     public graphData: DAG;
     public graphCategories: CategoryList = [];
@@ -593,7 +593,7 @@ export class D3TestComponent implements OnInit, OnDestroy {
     }
   
     // pass null for default lang
-    public getCommentText(data: FullDocNode, note: Note, lang: string = null): string {
+    public getCommentText(data: FullDocNode, note: Note, lang: string = null) {
       return this.sanitizer.bypassSecurityTrustHtml(data.getCommentText(note, lang));
     }
 
@@ -622,17 +622,17 @@ export class D3TestComponent implements OnInit, OnDestroy {
     public getNodeStatus(tab: GraphTab, node: TreeNode)
     {
         // if we're a tree in the right side view, highlight active nodes
-        var status = D3TestComponent.None;
+        var status = GraphComponent.None;
 
         if (tab.parent && node.data.filterColor)
         {
             if (!tab.isIso && node.data.isUnmapped)
             {
-                status = D3TestComponent.Unmapped;
+                status = GraphComponent.Unmapped;
             }
             else
             {
-                status = D3TestComponent.Filtered;
+                status = GraphComponent.Filtered;
             }
         }
         else if (!tab.isIso)
@@ -640,11 +640,11 @@ export class D3TestComponent implements OnInit, OnDestroy {
             // Iso never has outward mappings
             if (node.data.isUnmapped)
             {
-                status = D3TestComponent.Unmapped;
+                status = GraphComponent.Unmapped;
             }
             else if (node.data.isAnyChildUnmapped)
             {
-                status = D3TestComponent.ChildrenUnmapped;
+                status = GraphComponent.ChildrenUnmapped;
             }
         }
         
@@ -657,7 +657,7 @@ export class D3TestComponent implements OnInit, OnDestroy {
         if (tab.isAll)
           return "unset";
 
-        var color = D3TestComponent.visualTraits[this.getNodeStatus(tab, node)].color;
+        var color = GraphComponent.visualTraits[this.getNodeStatus(tab, node)].color;
                   
         // if we're a tree in the right side view
         if (tab.parent)
@@ -674,14 +674,14 @@ export class D3TestComponent implements OnInit, OnDestroy {
 
     public getNodeIcon(tab: GraphTab, node: TreeNode)
     {
-        var status = (tab.isAll ? tab.iconStatus[node.id] : this.getNodeStatus(tab, node)) || D3TestComponent.None;
-        var icon = D3TestComponent.visualTraits[status].icon;
+        var status = (tab.isAll ? tab.iconStatus[node.id] : this.getNodeStatus(tab, node)) || GraphComponent.None;
+        var icon = GraphComponent.visualTraits[status].icon;
         return icon;
     }
 
     public getNodeIconAlt(tab: GraphTab, node: TreeNode)
     {
-        var alt = D3TestComponent.visualTraits[this.getNodeStatus(tab, node)].alt;
+        var alt = GraphComponent.visualTraits[this.getNodeStatus(tab, node)].alt;
         return alt;
     }
   
@@ -724,7 +724,7 @@ export class D3TestComponent implements OnInit, OnDestroy {
             if (event.shiftKey)
               this.nextTree(node, tab, event);
             else
-              D3TestComponent.descendTree(node, tab, event);
+              GraphComponent.descendTree(node, tab, event);
             event.preventDefault();
             event.stopPropagation();
           }
@@ -734,18 +734,18 @@ export class D3TestComponent implements OnInit, OnDestroy {
             if (event.shiftKey)
               this.prevTree(node, tab, event);
             else
-              D3TestComponent.ascendTree(node, tab, event);
+              GraphComponent.ascendTree(node, tab, event);
             event.preventDefault();
             event.stopPropagation();
           }
           break;
-        case "ArrowDown": D3TestComponent.moveFocusUpDown(tab, node, 1); break;
-        case "ArrowUp": D3TestComponent.moveFocusUpDown(tab, node, -1); break;
+        case "ArrowDown": GraphComponent.moveFocusUpDown(tab, node, 1); break;
+        case "ArrowUp": GraphComponent.moveFocusUpDown(tab, node, -1); break;
         case "Home":
           {
             var root = node.treeModel.getVisibleRoots()[0];
             if (root) {
-              D3TestComponent.selectInputById(tab, root.id);
+              GraphComponent.selectInputById(tab, root.id);
               event.preventDefault(); 
             }
           }
@@ -792,7 +792,7 @@ export class D3TestComponent implements OnInit, OnDestroy {
 
         finalize.then(v => {
           var nextId = tab.treeModel.getVisibleRoots()[0].id
-          D3TestComponent.selectInputById(tab, nextId);
+          GraphComponent.selectInputById(tab, nextId);
         });
     }
 
@@ -823,7 +823,7 @@ export class D3TestComponent implements OnInit, OnDestroy {
             //  expand is disabled in that view
             if (!tab.parent)
                 node.collapse();
-            D3TestComponent.selectInputById(tab, node.parent.id);
+            GraphComponent.selectInputById(tab, node.parent.id);
         }
     }
 
@@ -834,7 +834,7 @@ export class D3TestComponent implements OnInit, OnDestroy {
             if (!tab.parent)
                 node.expand();
             if (node.isExpanded) {
-                D3TestComponent.selectInputById(tab, node.visibleChildren[0].id);
+                GraphComponent.selectInputById(tab, node.visibleChildren[0].id);
             }
         }
     }
@@ -844,7 +844,7 @@ export class D3TestComponent implements OnInit, OnDestroy {
         if (index > -1) {
             var newIndex = index + amount;
             var nextId = node.parent.visibleChildren[newIndex].id;
-            D3TestComponent.selectInputById(tab, nextId);
+            GraphComponent.selectInputById(tab, nextId);
         }
     }
 

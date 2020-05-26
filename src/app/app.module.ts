@@ -22,7 +22,7 @@ import { HowToDialogComponent }    from './dialogs/howto-dialog.component';
 import { PurchaseDialogComponent }    from './dialogs/purchase-dialog.component';
 import { CharterContentComponent }    from './dialogs/charter-content.component';
 import { MessagesComponent }    from './messages/messages.component';
-import { D3TestComponent }      from './d3-test/d3-test.component';
+import { GraphComponent }      from './graph/graph.component';
 import { TreeModule } from 'angular-tree-component';
 
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -140,7 +140,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     PurchaseDialogComponent,
     MessagesComponent,
     StandardMapSearchComponent,
-    D3TestComponent,
+    GraphComponent,
     CharterContentComponent
   ],
   providers: [ CookieService ],
