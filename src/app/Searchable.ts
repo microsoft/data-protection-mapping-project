@@ -20,7 +20,7 @@ export class Searchable {
         location: 0,
         distance: 800,
         maxPatternLength: 32,
-        minMatchCharLength: 3,
+        minMatchCharLength: 1,
         keys: ["value"]
     };
     private fuse: any;

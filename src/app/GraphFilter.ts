@@ -1,6 +1,7 @@
 import { TreeModel, TreeNode } from 'angular-tree-component';
 import { VisibleLink, GraphService } from './graph.service';
 import { GraphTab } from './GraphTab';
+import { D3TestComponent } from './d3-test/d3-test.component';
 
 export class GraphFilter {
     public static runFilter(tab: GraphTab) {
@@ -14,7 +15,7 @@ export class GraphFilter {
                 var show = false;
                 if (tab.autoFilterSrc) {
                     if (tab.autoFilterSelf) {
-                        show = GraphFilter.filterByMyLinks(tab.visibleNodes, tab.autoFilterSrc, node);
+                        show = GraphFilter.filterByMyLinks(tab, tab.visibleNodes, tab.autoFilterSrc, node);
                     }
                     else
                         show = GraphFilter.filterByVisibleLinks(tab.visibleNodes, tab.autoFilterSrc.visibleLinks, node);
@@ -24,7 +25,15 @@ export class GraphFilter {
                 }
                 return show;
             }, false);
-            if (tab.autoFilterParent) {
+          
+            if (tab.isAll) {
+              // if it's isAll, put icons on all roots
+              for (var r of tab.treeModel.getVisibleRoots()) {
+                  tab.iconStatus[r.id] = r.visibleChildren.length ? D3TestComponent.None : D3TestComponent.Unmapped;
+              }
+            }
+
+            if (tab.autoFilterParent && !tab.isAll) {
                 if (tab.autoFilterParent.anySelected)
                     tab.treeModel.expandAll();
                 else
@@ -63,8 +72,10 @@ export class GraphFilter {
         return show;
     }
 
-    private static filterByMyLinks(visibleNodes: TreeNode[], parentTree: GraphTab, node: TreeNode): boolean {
-        var show = false;
+  private static filterByMyLinks(myTab: GraphTab, visibleNodes: TreeNode[], parentTree: GraphTab, node: TreeNode): boolean {
+      var isRootInAllTab = myTab.isAll && !node.parent.parent;
+      var show = isRootInAllTab;
+
         if (!show) {
             // include linked stuff
             var links = node.data.node.links;

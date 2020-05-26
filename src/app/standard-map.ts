@@ -119,7 +119,7 @@ export class FullDocNode {
   
   // pass null for default lang
   public getCommentText(note: Note, lang: string = null): string {
-    return note.comment + "[Iso Sections: " + note.links.map(v=>v.id).join(", ") + "]";
+    return note.comment + " [Iso Sections: " + note.links.map(v=>v.id).join(", ") + "]";
   }
 }
 

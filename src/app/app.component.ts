@@ -37,6 +37,10 @@ export class AppComponent implements AfterViewInit {
 		}
 	}
 
+  closeSidenav() {
+    this.sidenav.close();
+  }
+
 	openDialog(sideNav: any, dialogId: string) {
 		//sideNav.close();
 

@@ -69,6 +69,7 @@ export class GraphService {
   private docDb: Db = null;
   private nextDocGuid = 0;
   private filterOrder = [];
+  private runningFilters = false;
   public updateSubject = new Rx.BehaviorSubject(0);
   public updateViewSubject = new Rx.BehaviorSubject(0);
 
@@ -80,6 +81,10 @@ export class GraphService {
 
   public runFilters(changedTab: GraphTab, parentChanged: boolean) 
   {
+      if (this.runningFilters)
+          return; // prevent re-entry
+
+      this.runningFilters = true;
       var tabs = this.graphTabs;
       var anyChanged = false;
 
@@ -97,8 +102,10 @@ export class GraphService {
           }
       }
 
-      if (anyChanged)
+      //if (anyChanged)
         this.updateSubject.next(0);
+
+      this.runningFilters = false;
   }
 
   getGuid(id: string, type: string, rev: string, createMissing: boolean = true): number {
@@ -208,9 +215,15 @@ export class GraphService {
               // compare with iso.
               newTab.coverage = this.compareDocs(newTab.column, this.graphTabs[1]);
           }
-            
+
+          var selectTab = newTab;
+          if (newTab.isAll) {
+            selectTab = this.graphTabs.find(t => t.isIso);
+          }
+
+          // Activate tab
           this.selectedTab = -1; // set it to non-value so change is detected if the index is the same
-          setTimeout(() => this.activateTab(newTab), 1); // need to let dom regenerate
+          setTimeout(() => this.activateTab(selectTab), 1); // need to let dom regenerate
         });
   }
 

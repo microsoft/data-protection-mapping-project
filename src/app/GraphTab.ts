@@ -11,13 +11,13 @@ export class GraphTab {
         allowDrop: false,
         scrollOnActivate: false,
         scrollContainer: <HTMLElement>document.body,
-        actionMapping: {
-            mouse: {
-                click: (tree, node, $event) => {
-                    TREE_ACTIONS.TOGGLE_ACTIVE_MULTI(tree, node, $event);
-                },
-            }
-        }
+        //actionMapping: {
+        //    mouse: {
+        //        click: (tree, node, $event) => {
+        //            TREE_ACTIONS.TOGGLE_ACTIVE_MULTI(tree, node, $event);
+        //        },
+        //    }
+        //}
     };
     public state: ITreeState = {};
     public treeModel: TreeModel;
@@ -25,6 +25,7 @@ export class GraphTab {
     public visibleLinks: VisibleLink[] = [];
     public displayLinks: any[] = [];
     public isIso: boolean = false;
+    public isAll: boolean = false;
     public searchValue: string = null;
     public coverage: any = null;
     public autoFilterSrc: GraphTab;
@@ -36,6 +37,7 @@ export class GraphTab {
     public inputObjectsMap: any = {};
     public id: string;
     public title: string;
+    public iconStatus: any = { };
 
     constructor(
       public graphService: GraphService,
@@ -44,6 +46,7 @@ export class GraphTab {
         this.id = doc.id;
         this.title = doc.name;
         this.isIso = this.id == "ISO";
+        this.isAll = this.id == "All";
         if (!parent) {
             this.column = new GraphTab(this.graphService, this, doc);
             this.column.options.useCheckbox = false;

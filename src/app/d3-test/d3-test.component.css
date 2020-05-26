@@ -1,7 +1,7 @@
 
 .container {
   position: absolute;
-  width: 100%;
+  width: calc(100% - 40px);
   height: 96%;
 }
 
@@ -25,10 +25,10 @@ h1 {
 }
 
 .graph-categories {
-    vertical-align: top;
-    display: inline-block;
-    width: 25%;
-    overflow: hidden;
+  vertical-align: top;
+  display: inline-block;
+  width: 100%;
+  /*overflow: hidden;*/
 }
 
 .node-content-wrapper {
@@ -45,7 +45,7 @@ h1 {
     display: inline;
 }
 
-.d3 {
+/*.d3 {
     display: inline-block;
     width: 74%;
 }
@@ -61,7 +61,7 @@ table, th, td {
   border: 1px solid black;
   border-collapse: collapse;
   width: 100%;
-}
+}*/
 
 .graph-tab-buttons {
 
@@ -89,16 +89,23 @@ table, th, td {
 }
 
 .graph-columns {
+  position: relative;
+  width: calc(100% - 130px);
+  overflow: auto;
 }
 
 .graph-column {
-    display: inline-block;
-    vertical-align: top;
-    margin-right: 60px;
-    max-width: 500px;
-    height: 90%;
-    padding-bottom: 20px;
-    width: 400px;
+  display: inline-block;
+  vertical-align: top;
+  max-width: 500px;
+  height: calc(100% - 50px);
+  padding-bottom: 20px;
+  width: 400px;
+}
+
+/* add margin to all but last column. Which is nth-last-child(2) because svg is really last. */
+.graph-column:not(:nth-last-child(2)) {
+  margin-right: 60px;
 }
 
 .example-spacer {
@@ -115,7 +122,6 @@ table, th, td {
 }
 
 .tree-container {
-  height: 482px;
 }
 
 .button-disabled {
@@ -147,6 +153,10 @@ table, th, td {
     stroke-width: 2;
 }
 
+.mat-tab-group {
+  height: calc(100% - 30px);
+}
+
 .mat-tab-label-content {
     color: #000 !important;
 }
@@ -157,12 +167,11 @@ table, th, td {
 }
 
 mat-card {
-  width: 100% !important;
   height: calc(100% - 32px) !important;
 }
 
 .mat-tab-body-content {
-    overflow: hidden !important;
+    /*overflow: hidden !important;*/
 }
 
 mat-checkbox {
@@ -196,4 +205,14 @@ mat-checkbox {
 
 .share-header-pad {
   padding-left: 20px;
+}
+
+.notes-list {
+  border-top: black 1px solid;
+  margin: 15px -6px -1px -6px;
+}
+
+.notes-header {
+  font-size: 12px;
+  margin: 5px;
 }
