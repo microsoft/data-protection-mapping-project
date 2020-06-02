@@ -140,7 +140,6 @@
                 </ng-template>
               </tree-root>
             </div>
-            <!--        </div>-->
             <svg #svgbg class="svg-background">
               <defs>
                 <marker id="arrow" markerWidth="10" markerHeight="10" refX="0" refY="3" orient="auto" markerUnits="strokeWidth">
@@ -149,17 +148,15 @@
               </defs>
               <g *ngFor="let t of graphService.graphTabs">
                 <g *ngFor="let l of t.column.displayLinks">
-                  <!--              <line class="svg-line-click" (click)="clickedLink(l)" [attr.x1]="l.x3" [attr.x2]="l.x4" [attr.y1]="l.y2" [attr.y2]="l.y2" marker-end="url(#arrow)"></line>
-                          <line class="svg-line-click" (click)="clickedLink(l)" [attr.x1]="l.x1" [attr.x2]="l.x3" [attr.y1]="l.y1" [attr.y2]="l.y2"></line>-->
-                  <line class="svg-line-visible" [class.svg-line-active]="l.weight > 1" [attr.x1]="l.x3" [attr.x2]="l.x4" [attr.y1]="l.y2" [attr.y2]="l.y2" marker-end="url(#arrow)"></line>
-                  <line class="svg-line-visible" [class.svg-line-active]="l.weight > 1" [attr.x1]="l.x1" [attr.x2]="l.x3" [attr.y1]="l.y1" [attr.y2]="l.y2"></line>
+                  <path class="svg-line-visible"
+                        [class.svg-line-active]="l.weight > 1"
+                        [attr.d]="l.d"
+                        [attr.fill]="l.color"
+                        fill-opacity="50%"
+                        stroke-width="0pt"/>
                 </g>
               </g>
             </svg>
-            <!--        <div class="table-wrapper" *ngIf="tableData">
-              </div>
-              <div id="d3" class="d3">
-              </div>-->
           </mat-card>
         </div>
       </div>

@@ -105,7 +105,7 @@ table, th, td {
 
 /* add margin to all but last column. Which is nth-last-child(2) because svg is really last. */
 .graph-column:not(:nth-last-child(2)) {
-  margin-right: 60px;
+  margin-right: 160px;
 }
 
 .example-spacer {

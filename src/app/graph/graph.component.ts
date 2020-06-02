@@ -50,6 +50,8 @@ export class GraphComponent implements OnInit, OnDestroy {
     public complianceColors = ["white", "green", "yellow", "red", "black"];
     public svgbgElement: any;
     private searchable: Searchable;
+  
+    private graphColorScale = d3.scaleOrdinal().range(d3.schemeSet3);
 
     constructor(
       public graphService: GraphService,
@@ -417,16 +419,20 @@ export class GraphComponent implements OnInit, OnDestroy {
             return a;
         }, { });
 
+        var destinationHits = { };
+        var fromTree = fromTab.treeModel;
+        var toTree = toTab.treeModel;
+
         // for each source root node, aggregate links to destination root nodes
         //  destination _root_ nodes are the first node in the ascenstery that is visible (parent is not collpased)
         var rollup2 = Object.keys(rollup).map(k => {
             var collapsed = rollup[k].reduce((a, b) => {
                 var link = b.link;
-				var owner = toTab.treeModel.getNodeById(link.id);
-				if (!owner) {
-					toTab.parent.errors["- node not found: " + link.id + ", Referenced from: " + b.fromNode.id] = true;
-					return a;
-				}
+				        var owner = toTree.getNodeById(link.id);
+				        if (!owner) {
+					        toTab.parent.errors["- node not found: " + link.id + ", Referenced from: " + b.fromNode.id] = true;
+					        return a;
+				        }
 
                 // Iterate to root, keep track of highest collapsed node.
                 var iterator = owner;
@@ -443,35 +449,69 @@ export class GraphComponent implements OnInit, OnDestroy {
 
                 // add the link
                 a[owner.id].push(link);
+                
+                // Create the list if it doesnt exist
+                if (!(owner.id in destinationHits))
+                    destinationHits[owner.id] = {};
+
+                // add the link
+                var hitsMap = destinationHits[owner.id];
+                if (!(k in hitsMap))
+                  hitsMap[k] = { k: k, top: fromTree.getNodeById(k).elementRef2.getBoundingClientRect().top };
+
                 return a;
             }, { });
 
             return [k, collapsed];
         });
 
+        for (var h in destinationHits) {
+          var list = destinationHits[h];
+          destinationHits[h] = Object.keys(list).map(v => list[v]).sort((a, b) => a.top - b.top);
+        }
+
+
         // Create one aggregated list of links with all the necessary parameters for the view
         // start with the links map from source root node, to destination root nodes 
         var flatten = rollup2.reduce((a, b) => {
-            var fromTree = fromTab.treeModel;
-            var toTree = toTab.treeModel;
             var destinationMap = b[1];
-            var fromNode: TreeNode = fromTree.getNodeById(b[0]);
+            var fromKey = b[0];
+            var fromNode: TreeNode = fromTree.getNodeById(fromKey);
 
             // If the source node is hidden, continue.
             if (fromNode.id in fromTree.hiddenNodeIds)
               return a;
 
+            var srcNodes = Object.keys(destinationMap).map(v => {
+              var node = toTree.getNodeById(v);
+              var bounds = (node&&node.elementRef2) ? node.elementRef2.getBoundingClientRect().top : 0;
+              return { key: v, node: node, y: bounds };
+            });
+
+            //srcNodes.sort((a, b) => a.y - b.y);
+            var srcScale = 1/srcNodes.length;
+            var srcIndex = 0;
+
+
             // one source node may map to many destination.
-            for (var destinationKey in destinationMap)
+            for (var destinationNode of srcNodes)
             {
-              var toNode = toTree.getNodeById(destinationKey);                  
+              var toNode = destinationNode.node; 
+              var destinationKey = destinationNode.key;
+              
               if (!(toNode.id in toTree.hiddenNodeIds))
               {
-                var destinationData = destinationMap[destinationKey];
+                var dstHitKeys = destinationHits[destinationKey];
+                //var destinationData = destinationMap[destinationKey];
+                
+                //var dstHitKeys = Object.keys(destinationHit);
+                var dstScale = 1/dstHitKeys.length;
+                var dstIndex = dstHitKeys.findIndex(v => v.k == fromKey);
+
                 // store a refrence to the connections in the source node.
                 fromNode.data.connectedTo[destinationKey] = true;
                 a.push({
-                    from: b[0],
+                    from: fromKey,
                     fromNode: fromNode,
                     to: destinationKey,
                     toNode: toNode,
@@ -486,6 +526,12 @@ export class GraphComponent implements OnInit, OnDestroy {
                     x4: 0,
                     y1: 0,
                     y2: 0,
+                    d: "",
+                    color: "#000",
+                    srcScale: srcScale,
+                    srcIndex: srcIndex++,
+                    dstScale: dstScale,
+                    dstIndex: dstIndex
                 });
               }
             }
@@ -520,9 +566,10 @@ export class GraphComponent implements OnInit, OnDestroy {
 
         var tabs = this.graphService.graphTabs;        
         var startingGapLeft = 0;
-        var startingGapRight = 10;
-        var arrowLength = 10;
+        var startingGapRight = 0;
+        var arrowLength = 0;
         var svgBounds = this.svgbgElement.getBoundingClientRect();
+        var colorIndex = 0;
 
         for (var tab of tabs)
         {
@@ -539,6 +586,26 @@ export class GraphComponent implements OnInit, OnDestroy {
             // Locations for the arrow head
             l.x3 = l.x2 - 2 * l.scale;
             l.x4 = l.x2 + 0.1 * l.scale;
+
+            // bezier based path
+            var p1yDiff = fromBounds.height *  l.srcScale;
+            var p2yDiff = toBounds.height * l.dstScale;
+            var horzSpan = l.x2 - l.x1;
+            var controlLength = horzSpan * 0.5;
+            var p1x = l.x1;
+            var p1y = fromBounds.top - svgBounds.top + fromBounds.height * l.srcScale * l.srcIndex;
+            var c1x = p1x + controlLength;
+            var c1y = p1y;
+            var p2x = l.x2;
+            var p2y = toBounds.top - svgBounds.top + toBounds.height * l.dstScale * l.dstIndex
+            var c2x = p2x - controlLength;
+            var c2y = p2y;
+
+            l.color = this.graphColorScale(colorIndex++);
+            l.d = `M ${p1x},${p1y} ` // Move to start
+                + `C ${ c1x },${ c1y }, ${ c2x },${ c2y }, ${ p2x },${ p2y } ` // Bezier the top edge
+                + `L ${ p2x },${ p2y + p2yDiff } `  // Line to the thickness
+                + `C ${ c2x },${ c2y + p2yDiff }, ${ c1x },${ c1y + p1yDiff }, ${ p1x },${ p1y + p1yDiff }`; // Bezier back the bottom edge
           }
         }
     }
