@@ -213,7 +213,7 @@ mat-checkbox {
 
 .notes-list {
   border-top: black 1px solid;
-  margin: 15px -6px -1px -6px;
+  margin: 15px -6px -1px 20px;
 }
 
 .notes-header {
