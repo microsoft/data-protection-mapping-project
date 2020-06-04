@@ -50,6 +50,8 @@ export class GraphComponent implements OnInit, OnDestroy {
     public complianceColors = ["white", "green", "yellow", "red", "black"];
     public svgbgElement: any;
     private searchable: Searchable;
+
+    private hideFilter: boolean = false;
   
     private graphColorScale = d3.scaleOrdinal().range(d3.schemeSet3);
 
@@ -920,4 +922,9 @@ export class GraphComponent implements OnInit, OnDestroy {
         if (selectedObject)
           selectedObject.focus();
     }
+
+    toggleShowFilter() {
+        this.hideFilter = !this.hideFilter;
+    }
+
 }

@@ -77,7 +77,10 @@ table, th, td {
 }
 
 .graph-tabs {
+}
 
+.hide-filter {
+  display: none !important;
 }
 
 .graph-tab {
@@ -113,7 +116,8 @@ table, th, td {
 }
 
 .filter-title {
-    display: inline-block !important;
+  display: inline-block !important;
+  margin-left: 30px;
 }
 
 .title-container {
@@ -215,4 +219,16 @@ mat-checkbox {
 .notes-header {
   font-size: 12px;
   margin: 5px;
+}
+
+
+.filter-pin {
+  font-size: 19px;
+  position: absolute;
+  top: 8px;
+  left: -10px;
+}
+
+.filter-hidden {
+  transform: rotate(90deg);
 }

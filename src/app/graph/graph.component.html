@@ -9,7 +9,7 @@
     </div>-->
   <div fxLayout="column" fxFlexFill>
     <div fxLayout="row" fxLayoutGap="32px" fxLayoutAlign="flex-start" class="container">
-      <div fxFlex="0 0 300px">
+      <div fxFlex="0 0 300px" [class.hide-filter]="hideFilter">
         <mat-card class="graph-categories">
           <div class="title-container">
             <mat-card-title class="filter-title">Filter</mat-card-title>
@@ -28,9 +28,10 @@
                   <button mat-button *ngIf="t.id != 'ISO'" matSuffix mat-icon-button aria-label="Remove Tab" (click)="graphService.removeTab(t)">
                     <mat-icon>close</mat-icon>
                   </button>
+                  /b
                 </ng-template>
                 <!--<div class="coverage-box" *ngIf="!t.isIso"><a class="fake-link" (click)="filterIsoCoverage(t)">ISO:</a> {{t.coverage.coverage}}, <a class="fake-link" (click)="filterMapped(t)">Mapped:</a> {{t.coverage.mapped}}, <span>Unique:</span> {{t.coverage.uniqueconnections}}</div>
-                <div class="coverage-box" *ngIf="t.isIso">-</div>-->
+            <div class="coverage-box" *ngIf="t.isIso">-</div>-->
                 <div>
                   <mat-form-field class="filter-field">
                     <input matInput type="text" attr.aria-label="" placeholder="Search" [(ngModel)]="t.searchValue" #filter3 (keyup)="searchable.filter(filter3.value, tree.treeModel, t)">
@@ -74,7 +75,7 @@
                              [class.node-content-wrapper-active]="node.isActive"
                              [class.node-content-wrapper-focused]="node.isFocused"
                              (click)="node.mouseAction('click', $event)"
-                             [style.background-color]="getNodeColor(t, node)"  id="{{t.id + '.lbl.' + node.data.node.id}}">
+                             [style.background-color]="getNodeColor(t, node)" id="{{t.id + '.lbl.' + node.data.node.id}}">
                           <div class="node-content-icon"><mat-icon class="node-content-icon" aria-hidden="false" title="{{getNodeIconAlt(t.column, node)}}" attr.aria-label="{{getNodeIconAlt(t, node)}}">{{getNodeIcon(t, node)}}</mat-icon></div>
                           <span>
                             <span *ngIf="!node.data.node.hyperlink" [innerHTML]="injectHighlightSection(node.data, t.selectedLang)"></span>
@@ -99,9 +100,9 @@
               <h3 class="share-header" *ngIf="t.isIso"><a href="https://www.iso.org/standard/71670.html" target="_blank">ISO</a>/<a href="https://webstore.iec.ch/publication/65597" target="_blank">IEC</a> 27701</h3>
               <h3 class="share-header" *ngIf="!t.isIso">{{t.title}}</h3>
               <!--            <div><a routerLink="/doctypes/{{t.title}}"><h3>{{t.title}}</h3></a>
-                      <div>
-                        <mat-checkbox (change)="t.column.expandAll()" [checked]="t.column.anyExpanded">{{t.column.anyExpanded ? 'Collapse' : 'Expand'}} All</mat-checkbox>
-                      </div></div>-->
+                  <div>
+                    <mat-checkbox (change)="t.column.expandAll()" [checked]="t.column.anyExpanded">{{t.column.anyExpanded ? 'Collapse' : 'Expand'}} All</mat-checkbox>
+                  </div></div>-->
 
               <div class="share-header share-header-pad">
                 <mat-form-field *ngIf="t.doc.node.langs.length > 1">
@@ -153,13 +154,14 @@
                         [attr.d]="l.d"
                         [attr.fill]="l.color"
                         fill-opacity="50%"
-                        stroke-width="0pt"/>
+                        stroke-width="0pt" />
                 </g>
               </g>
             </svg>
           </mat-card>
         </div>
       </div>
+      <button mat-button class="filter-pin" [class.filter-hidden]="hideFilter" (click)="toggleShowFilter()"><mat-icon>push_pin</mat-icon><span class="visuallyhidden">Open/Close Filter</span></button>
     </div>
   </div>
 </div>
