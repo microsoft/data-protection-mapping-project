@@ -20,6 +20,7 @@ import { DisclaimerDialogComponent }    from './dialogs/disclaimer-dialog.compon
 import { DownloadDialogComponent }    from './dialogs/download-dialog.component';
 import { HowToDialogComponent }    from './dialogs/howto-dialog.component';
 import { PurchaseDialogComponent }    from './dialogs/purchase-dialog.component';
+import { ErrorsDialogComponent }    from './dialogs/errors-dialog.component';
 import { CharterContentComponent }    from './dialogs/charter-content.component';
 import { MessagesComponent }    from './messages/messages.component';
 import { GraphComponent }      from './graph/graph.component';
@@ -123,6 +124,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     DownloadDialogComponent,
     HowToDialogComponent,
     PurchaseDialogComponent,
+    ErrorsDialogComponent,
     CharterContentComponent
   ],
   declarations: [
@@ -138,6 +140,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     DownloadDialogComponent,
     HowToDialogComponent,
     PurchaseDialogComponent,
+    ErrorsDialogComponent,
     MessagesComponent,
     StandardMapSearchComponent,
     GraphComponent,

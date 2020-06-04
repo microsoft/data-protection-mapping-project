@@ -923,7 +923,7 @@ export class GraphComponent implements OnInit, OnDestroy {
           selectedObject.focus();
     }
 
-    toggleShowFilter() {
+    public toggleShowFilter() {
         this.hideFilter = !this.hideFilter;
     }
 

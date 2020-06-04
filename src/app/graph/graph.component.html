@@ -28,7 +28,6 @@
                   <button mat-button *ngIf="t.id != 'ISO'" matSuffix mat-icon-button aria-label="Remove Tab" (click)="graphService.removeTab(t)">
                     <mat-icon>close</mat-icon>
                   </button>
-                  /b
                 </ng-template>
                 <!--<div class="coverage-box" *ngIf="!t.isIso"><a class="fake-link" (click)="filterIsoCoverage(t)">ISO:</a> {{t.coverage.coverage}}, <a class="fake-link" (click)="filterMapped(t)">Mapped:</a> {{t.coverage.mapped}}, <span>Unique:</span> {{t.coverage.uniqueconnections}}</div>
             <div class="coverage-box" *ngIf="t.isIso">-</div>-->
@@ -100,9 +99,9 @@
               <h3 class="share-header" *ngIf="t.isIso"><a href="https://www.iso.org/standard/71670.html" target="_blank">ISO</a>/<a href="https://webstore.iec.ch/publication/65597" target="_blank">IEC</a> 27701</h3>
               <h3 class="share-header" *ngIf="!t.isIso">{{t.title}}</h3>
               <!--            <div><a routerLink="/doctypes/{{t.title}}"><h3>{{t.title}}</h3></a>
-                  <div>
-                    <mat-checkbox (change)="t.column.expandAll()" [checked]="t.column.anyExpanded">{{t.column.anyExpanded ? 'Collapse' : 'Expand'}} All</mat-checkbox>
-                  </div></div>-->
+              <div>
+                <mat-checkbox (change)="t.column.expandAll()" [checked]="t.column.anyExpanded">{{t.column.anyExpanded ? 'Collapse' : 'Expand'}} All</mat-checkbox>
+              </div></div>-->
 
               <div class="share-header share-header-pad">
                 <mat-form-field *ngIf="t.doc.node.langs.length > 1">
@@ -162,6 +161,7 @@
         </div>
       </div>
       <button mat-button class="filter-pin" [class.filter-hidden]="hideFilter" (click)="toggleShowFilter()"><mat-icon>push_pin</mat-icon><span class="visuallyhidden">Open/Close Filter</span></button>
+      <button mat-button class="error-icon" [class.error-hidden]="!graphService.anyErrors" (click)="graphService.openDialog('errors')"><mat-icon>error</mat-icon><span class="visuallyhidden">Show Errors</span></button>
     </div>
   </div>
 </div>
