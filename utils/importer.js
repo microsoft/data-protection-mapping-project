@@ -181,8 +181,10 @@ function processRegulation(worksheet) {
       "langs": []
   };
 
+  const defaultLangKey = "en";
+
   var newChildren = [];
-  var langDictTotal = { "default": true };
+  var langDictTotal = { [defaultLangKey]: true };
   var processingNotes = false;
   var skippedNotesRows = 0;
   var notes = [];
@@ -231,14 +233,14 @@ function processRegulation(worksheet) {
         var hyperlink = row.getCell(4).text;
         var isoLinks = row.getCell(5).text;
         var langDict = {
-          "default": {
+          [defaultLangKey]: {
             section: section,
             body: body.length ? body : undefined
           }
         };
 
         for (var i = 6; i < headerRow.cellCount; i += 2) {
-          var lang = headerRow.getCell(i).text.replace("-section", "");
+          var lang = headerRow.getCell(i).text.replace("_section", "");
           var langSection = row.getCell(i).text;
           var langBody = row.getCell(i + 1).text;
           langDictTotal[lang] = true;

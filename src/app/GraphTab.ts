@@ -4,6 +4,8 @@ import { FullDocNode, Link } from './standard-map';
 import { TreeModel, TreeNode, ITreeState, TREE_ACTIONS } from 'angular-tree-component';
 import { GraphService } from './graph.service';
 
+const defaultLangKey = "en";
+
 export class VisibleLink {
     constructor(
          public fromNode: TreeNode,
@@ -40,7 +42,7 @@ export class GraphTab {
     public autoFilterParent: GraphTab;
     public errors: any = {};
     private updateSubjectParent = new Rx.BehaviorSubject(null);
-    public selectedLang: string = "default";
+    public selectedLang: string = defaultLangKey;
     public inputObjectsMap: any = {};
     public id: string;
     public title: string;
