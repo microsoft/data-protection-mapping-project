@@ -1,8 +1,15 @@
 import { debounce } from 'rxjs/operators';
 import * as Rx from 'rxjs';
-import { FullDocNode } from './standard-map';
+import { FullDocNode, Link } from './standard-map';
 import { TreeModel, TreeNode, ITreeState, TREE_ACTIONS } from 'angular-tree-component';
-import { VisibleLink, GraphService } from './graph.service';
+import { GraphService } from './graph.service';
+
+export class VisibleLink {
+    constructor(
+         public fromNode: TreeNode,
+         public link: Link) {
+         }
+}
 
 export class GraphTab {
     public options = {
@@ -67,6 +74,7 @@ export class GraphTab {
     public get anySelected(): boolean {
         return this.treeModel && this.treeModel.selectedLeafNodeIds && Object.keys(this.treeModel.selectedLeafNodeIds).length > 0;
     }
+
     public nodes = [];
     public column: GraphTab;
 

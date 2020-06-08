@@ -1,9 +1,24 @@
 import { TreeModel, TreeNode } from 'angular-tree-component';
-import { VisibleLink, GraphService } from './graph.service';
-import { GraphTab } from './GraphTab';
-import { GraphComponent } from './graph/graph.component';
+import { GraphTab, VisibleLink } from './GraphTab';
 
 export class GraphFilter {
+  
+    static None = 0;
+    static UnSelected = 1;
+    static Selected = 2;
+    static Unmapped = 3;
+    static ChildrenUnmapped = 4;
+    static Filtered = 5;
+
+    static visualTraits = [
+      { color: 'unset', icon: '', alt: '' },
+      { color: 'unset', icon: '', alt: '' },
+      { color: '#add8e6', icon: '', alt: '' },
+      { color: '#ff6969', icon: 'error', alt: 'This node is not mapped.' },
+      { color: '#ffc0cb', icon: 'warning', alt: 'This node has children that are not mapped.' },
+      { color: '#ffff00', icon: 'done', alt: 'This node is selected in the filter.' },
+    ];
+
     public static runFilter(tab: GraphTab) {
         tab.visibleNodes = [];
         tab.visibleLinks = [];
@@ -29,7 +44,7 @@ export class GraphFilter {
             if (tab.isAll) {
               // if it's isAll, put icons on all roots
               for (var r of tab.treeModel.getVisibleRoots()) {
-                  tab.iconStatus[r.id] = r.visibleChildren.length ? GraphComponent.None : GraphComponent.Unmapped;
+                  tab.iconStatus[r.id] = r.visibleChildren.length ? GraphFilter.None : GraphFilter.Unmapped;
               }
             }
 
@@ -72,7 +87,7 @@ export class GraphFilter {
         return show;
     }
 
-  private static filterByMyLinks(myTab: GraphTab, visibleNodes: TreeNode[], parentTree: GraphTab, node: TreeNode): boolean {
+    private static filterByMyLinks(myTab: GraphTab, visibleNodes: TreeNode[], parentTree: GraphTab, node: TreeNode): boolean {
       var isRootInAllTab = myTab.isAll && !node.parent.parent;
       var show = isRootInAllTab;
 

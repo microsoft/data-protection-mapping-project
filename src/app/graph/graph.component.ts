@@ -3,6 +3,7 @@ import * as d3 from 'd3';
 import * as d3Sankey from 'd3-sankey';
 import { DAG, SNode, GraphService, CategoryList, FilterCriteria } from '../graph.service';
 import { GraphTab } from "../GraphTab";
+import { GraphFilter } from "../GraphFilter";
 import { Searchable } from "../Searchable";
 import { FullDocNode, Note } from '../standard-map';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -670,38 +671,22 @@ export class GraphComponent implements OnInit, OnDestroy {
     {
         window.open(url, "_blank").focus();
     }
-  
-    static None = 0;
-    static UnSelected = 1;
-    static Selected = 2;
-    static Unmapped = 3;
-    static ChildrenUnmapped = 4;
-    static Filtered = 5;
-
-    static visualTraits = [
-      { color: 'unset', icon: '', alt: '' },
-      { color: 'unset', icon: '', alt: '' },
-      { color: '#add8e6', icon: '', alt: '' },
-      { color: '#ff6969', icon: 'error', alt: 'This node is not mapped.' },
-      { color: '#ffc0cb', icon: 'warning', alt: 'This node has children that are not mapped.' },
-      { color: '#ffff00', icon: 'done', alt: 'This node is selected in the filter.' },
-    ];
 
 
     public getNodeStatus(tab: GraphTab, node: TreeNode)
     {
         // if we're a tree in the right side view, highlight active nodes
-        var status = GraphComponent.None;
+        var status = GraphFilter.None;
 
         if (tab.parent && node.data.filterColor)
         {
             if (!tab.isIso && node.data.isUnmapped)
             {
-                status = GraphComponent.Unmapped;
+                status = GraphFilter.Unmapped;
             }
             else
             {
-                status = GraphComponent.Filtered;
+                status = GraphFilter.Filtered;
             }
         }
         else if (!tab.isIso)
@@ -709,11 +694,11 @@ export class GraphComponent implements OnInit, OnDestroy {
             // Iso never has outward mappings
             if (node.data.isUnmapped)
             {
-                status = GraphComponent.Unmapped;
+                status = GraphFilter.Unmapped;
             }
             else if (node.data.isAnyChildUnmapped)
             {
-                status = GraphComponent.ChildrenUnmapped;
+                status = GraphFilter.ChildrenUnmapped;
             }
         }
         
@@ -726,7 +711,7 @@ export class GraphComponent implements OnInit, OnDestroy {
         if (tab.isAll)
           return "unset";
 
-        var color = GraphComponent.visualTraits[this.getNodeStatus(tab, node)].color;
+        var color = GraphFilter.visualTraits[this.getNodeStatus(tab, node)].color;
                   
         // if we're a tree in the right side view
         if (tab.parent)
@@ -743,14 +728,14 @@ export class GraphComponent implements OnInit, OnDestroy {
 
     public getNodeIcon(tab: GraphTab, node: TreeNode)
     {
-        var status = (tab.isAll ? tab.iconStatus[node.id] : this.getNodeStatus(tab, node)) || GraphComponent.None;
-        var icon = GraphComponent.visualTraits[status].icon;
+        var status = (tab.isAll ? tab.iconStatus[node.id] : this.getNodeStatus(tab, node)) || GraphFilter.None;
+        var icon = GraphFilter.visualTraits[status].icon;
         return icon;
     }
 
     public getNodeIconAlt(tab: GraphTab, node: TreeNode)
     {
-        var alt = GraphComponent.visualTraits[this.getNodeStatus(tab, node)].alt;
+        var alt = GraphFilter.visualTraits[this.getNodeStatus(tab, node)].alt;
         return alt;
     }
   

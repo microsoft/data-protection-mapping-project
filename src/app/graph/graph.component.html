@@ -33,7 +33,7 @@
             <div class="coverage-box" *ngIf="t.isIso">-</div>-->
                 <div>
                   <mat-form-field class="filter-field">
-                    <input matInput type="text" attr.aria-label="" placeholder="Search" [(ngModel)]="t.searchValue" #filter3 (keyup)="searchable.filter(filter3.value, tree.treeModel, t)">
+                    <input matInput type="text" [lang]="t.selectedLang" attr.aria-label="" placeholder="Search" [(ngModel)]="t.searchValue" #filter3 (keyup)="searchable.filter(filter3.value, tree.treeModel, t)">
                     <button mat-button *ngIf="t.searchValue" matSuffix mat-icon-button aria-label="Clear Search" (click)="searchable.filter('', tree.treeModel, t); t.searchValue=''">
                       <mat-icon>close</mat-icon>
                     </button>
@@ -76,7 +76,7 @@
                              (click)="node.mouseAction('click', $event)"
                              [style.background-color]="getNodeColor(t, node)" id="{{t.id + '.lbl.' + node.data.node.id}}">
                           <div class="node-content-icon"><mat-icon class="node-content-icon" aria-hidden="false" title="{{getNodeIconAlt(t.column, node)}}" attr.aria-label="{{getNodeIconAlt(t, node)}}">{{getNodeIcon(t, node)}}</mat-icon></div>
-                          <span>
+                          <span [lang]="t.selectedLang">
                             <span *ngIf="!node.data.node.hyperlink" [innerHTML]="injectHighlightSection(node.data, t.selectedLang)"></span>
                             <a *ngIf="node.data.node.hyperlink" (mousedown)="openTab(node.data.node.hyperlink)" class="fake-link" target="_blank" href="{{node.data.node.hyperlink}}" [innerHTML]="injectHighlightSection(node.data, t.selectedLang)"></a>
                             <span [innerHTML]="injectHighlightBody(node.data, t.selectedLang)"></span>
@@ -123,7 +123,7 @@
                          (click)="node.mouseAction('click', $event)"
                          [style.background-color]="getNodeColor(t.column, node)">
                       <div class="node-content-icon"><mat-icon aria-hidden="false" title="{{getNodeIconAlt(t.column, node)}}" attr.aria-label="{{getNodeIconAlt(t.column, node)}}">{{getNodeIcon(t.column, node)}}</mat-icon></div>
-                      <span>
+                      <span [lang]="t.selectedLang">
                         <span *ngIf="!node.data.node.hyperlink">{{node.data.getSection(t.selectedLang)}}</span>
                         <a *ngIf="node.data.node.hyperlink" (mousedown)="openTab(node.data.node.hyperlink)" class="fake-link" target="_blank" href="{{node.data.node.hyperlink}}">{{node.data.getSection(t.selectedLang)}}</a>
                         <span>{{node.data.getBody(t.selectedLang)}}</span>
@@ -132,7 +132,7 @@
                       <div *ngIf="node.data.node.notes.length" class="notes-list">
                         <span class="notes-header">Notes:</span>
                         <ul>
-                          <li *ngFor="let note of node.data.node.notes" [innerHTML]="getCommentText(node.data, note, t.selectedLang)"></li>
+                          <li *ngFor="let note of node.data.node.notes" [lang]="t.selectedLang" [innerHTML]="getCommentText(node.data, note, t.selectedLang)"></li>
                         </ul>
                       </div>
                     </div>
