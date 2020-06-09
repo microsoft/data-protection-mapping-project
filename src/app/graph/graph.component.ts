@@ -914,4 +914,9 @@ export class GraphComponent implements OnInit, OnDestroy {
         this.hideFilter = !this.hideFilter;
     }
 
+    public onSliderChange(event) {
+        // Update the value in real time
+        this.graphService.visualZoom = event.value;
+        this.graphService.updateViewSubject.next(0);
+    }
 }

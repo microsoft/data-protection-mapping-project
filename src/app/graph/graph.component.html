@@ -94,51 +94,67 @@
       <div class="graph-columns">
         <div fxFlex="1 0 auto">
           <mat-card>
+            <div class="settings-row">
+              <div class="settings-row" fxFlex="1 0 auto" fxLayout="row" fxFlexFill>
+                <!--<span class="example-spacer"></span>-->
+                <div class="setting">
+                  <mat-label>Zoom:</mat-label>
+                  <mat-slider aria-label="Zoom" [(value)]="graphService.visualZoom" min="0.5" max="1" step="0.05" (input)="onSliderChange($event)"></mat-slider>
+                </div>
+                <div class="setting">
+                  <mat-label>Visual Style:</mat-label>
+                  <mat-slide-toggle aria-label="Visual Style" [(checked)]="graphService.visualStyle"></mat-slide-toggle>
+                </div>
+                <span class="example-spacer"></span>
+              </div>
+            </div>
             <!--        <div fxLayout="row" fxLayoutGap="80px" fxLayoutAlign="flex-start">-->
             <div class="graph-column" *ngFor="let t of graphService.graphTabs">
-              <h3 class="share-header" *ngIf="t.isIso"><a href="https://www.iso.org/standard/71670.html" target="_blank">ISO</a>/<a href="https://webstore.iec.ch/publication/65597" target="_blank">IEC</a> 27701</h3>
-              <h3 class="share-header" *ngIf="!t.isIso">{{t.title}}</h3>
-              <!--            <div><a routerLink="/doctypes/{{t.title}}"><h3>{{t.title}}</h3></a>
-              <div>
-                <mat-checkbox (change)="t.column.expandAll()" [checked]="t.column.anyExpanded">{{t.column.anyExpanded ? 'Collapse' : 'Expand'}} All</mat-checkbox>
-              </div></div>-->
+              <div class="zoom-viewport" [style.transform]="'scale(' + graphService.visualZoom + ')'"  [style.height]="sanitizer.bypassSecurityTrustStyle('calc(100% / ' + graphService.visualZoom + ')')">
+                <h3 class="share-header" *ngIf="t.isIso"><a href="https://www.iso.org/standard/71670.html" target="_blank">ISO</a>/<a href="https://webstore.iec.ch/publication/65597" target="_blank">IEC</a> 27701</h3>
+                <h3 class="share-header" *ngIf="!t.isIso">{{t.title}}</h3>
+                <!--            <div><a routerLink="/doctypes/{{t.title}}"><h3>{{t.title}}</h3></a>
+                <div>
+                  <mat-checkbox (change)="t.column.expandAll()" [checked]="t.column.anyExpanded">{{t.column.anyExpanded ? 'Collapse' : 'Expand'}} All</mat-checkbox>
+                </div></div>-->
 
-              <div class="share-header share-header-pad">
-                <mat-form-field *ngIf="t.doc.node.langs.length > 1">
-                  <mat-label>Language:</mat-label>
-                  <mat-select matNativeControl required [(value)]="t.selectedLang">
-                    <mat-option *ngFor="let l of t.doc.node.langs" value="{{l}}">{{l}}</mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
+                <div class="share-header share-header-pad">
+                  <mat-form-field *ngIf="t.doc.node.langs.length > 1" hideRequiredMarker>
+                    <mat-label>Language:</mat-label>
+                    <mat-select matNativeControl required [(value)]="t.selectedLang">
+                      <mat-option *ngFor="let l of t.doc.node.langs" value="{{l}}">{{l}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
 
-              <tree-root #tree [(state)]="t.column.state" [options]="t.column.options" [nodes]="t.column.nodes" (initialized)="setup(t.column, tree); t.parentTabTreeChanged()" (activate)="activateNode(t, $event)" (deactivate)="t.columnTabTreeChanged()" (toggleExpanded)="t.columnTabTreeChanged()">
-                <ng-template #treeNodeWrapperTemplate let-node let-index="index">
-                  <div #wrapper class="node-wrapper" [style.padding-left]="node.getNodePadding()" id="{{t.id + '.cb.' + node.data.node.id}}" tabindex="0" (keydown)="onKeyDown(t.column, node, $event)">
-                    <tree-node-expander [node]="node" *ngIf="t.isAll"></tree-node-expander>
-                    <div class="node-content-wrapper"
-                         [class.dummystyle]="bindTogether(node, wrapper, svgbg, wrapper, t.column)"
-                         [class.node-content-wrapper-active]="node.isActive"
-                         [class.node-content-wrapper-focused]="node.isFocused"
-                         (click)="node.mouseAction('click', $event)"
-                         [style.background-color]="getNodeColor(t.column, node)">
-                      <div class="node-content-icon"><mat-icon aria-hidden="false" title="{{getNodeIconAlt(t.column, node)}}" attr.aria-label="{{getNodeIconAlt(t.column, node)}}">{{getNodeIcon(t.column, node)}}</mat-icon></div>
-                      <span [lang]="t.selectedLang">
-                        <span *ngIf="!node.data.node.hyperlink">{{node.data.getSection(t.selectedLang)}}</span>
-                        <a *ngIf="node.data.node.hyperlink" (mousedown)="openTab(node.data.node.hyperlink)" class="fake-link" target="_blank" href="{{node.data.node.hyperlink}}">{{node.data.getSection(t.selectedLang)}}</a>
-                        <span>{{node.data.getBody(t.selectedLang)}}</span>
-                        <span *ngIf="node.data.connectedTo.length" class="visuallyhidden">{{node.data.getConnectionsText(t.selectedLang)}}</span>
-                      </span>
-                      <div *ngIf="node.data.node.notes.length" class="notes-list">
-                        <span class="notes-header">Notes:</span>
-                        <ul>
-                          <li *ngFor="let note of node.data.node.notes" [lang]="t.selectedLang" [innerHTML]="getCommentText(node.data, note, t.selectedLang)"></li>
-                        </ul>
+                <tree-root #tree [(state)]="t.column.state" [options]="t.column.options" [nodes]="t.column.nodes" (initialized)="setup(t.column, tree); t.parentTabTreeChanged()" (activate)="activateNode(t, $event)" (deactivate)="t.columnTabTreeChanged()" (toggleExpanded)="t.columnTabTreeChanged()">
+                  <ng-template #treeNodeWrapperTemplate let-node let-index="index">
+                    <div #wrapper class="node-wrapper" [style.padding-left]="node.getNodePadding()" id="{{t.id + '.cb.' + node.data.node.id}}" tabindex="0" (keydown)="onKeyDown(t.column, node, $event)">
+                      <tree-node-expander [node]="node" *ngIf="t.isAll"></tree-node-expander>
+                      <div class="node-content-wrapper"
+                           [class.dummystyle]="bindTogether(node, wrapper, svgbg, wrapper, t.column)"
+                           [class.node-content-wrapper-active]="node.isActive"
+                           [class.node-content-wrapper-focused]="node.isFocused"
+                           (click)="node.mouseAction('click', $event)"
+                           [style.background-color]="getNodeColor(t.column, node)">
+                        <div class="node-content-icon"><mat-icon aria-hidden="false" title="{{getNodeIconAlt(t.column, node)}}" attr.aria-label="{{getNodeIconAlt(t.column, node)}}">{{getNodeIcon(t.column, node)}}</mat-icon></div>
+                        <span [lang]="t.selectedLang">
+                          <span *ngIf="!node.data.node.hyperlink">{{node.data.getSection(t.selectedLang)}}</span>
+                          <a *ngIf="node.data.node.hyperlink" (mousedown)="openTab(node.data.node.hyperlink)" class="fake-link" target="_blank" href="{{node.data.node.hyperlink}}">{{node.data.getSection(t.selectedLang)}}</a>
+                          <span>{{node.data.getBody(t.selectedLang)}}</span>
+                          <span *ngIf="node.data.connectedTo.length" class="visuallyhidden">{{node.data.getConnectionsText(t.selectedLang)}}</span>
+                        </span>
+                        <div *ngIf="node.data.node.notes.length" class="notes-list">
+                          <span class="notes-header">Notes:</span>
+                          <ul>
+                            <li *ngFor="let note of node.data.node.notes" [lang]="t.selectedLang" [innerHTML]="getCommentText(node.data, note, t.selectedLang)"></li>
+                          </ul>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </ng-template>
-              </tree-root>
+                  </ng-template>
+                </tree-root>
+              </div>
             </div>
             <svg #svgbg class="svg-background">
               <defs>

@@ -98,12 +98,21 @@ table, th, td {
 }
 
 .graph-column {
+  position: relative;
   display: inline-block;
   vertical-align: top;
   max-width: 500px;
-  height: calc(100% - 50px);
+  height: calc(100% - 90px);
   padding-bottom: 20px;
   width: 400px;
+}
+
+.zoom-viewport {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  transform-origin: top left;
 }
 
 /* add margin to all but last column. Which is nth-last-child(2) because svg is really last. */
@@ -136,8 +145,8 @@ table, th, td {
     position: absolute;
     width: 100%;
     left: 0px;
-    top: 60px;
-    height: calc(100% - 80px);
+    top: 100px;
+    height: calc(100% - 100px);
     pointer-events: none;
 }
 
@@ -244,4 +253,18 @@ mat-checkbox {
 
 .error-hidden {
   display: none;
+}
+
+
+.settings-row {
+}
+
+.setting {
+  display: inline;
+  height: 48px;
+  margin: 0px 10px;
+}
+
+.setting .mat-slide-toggle {
+  height: 40px !important;
 }
