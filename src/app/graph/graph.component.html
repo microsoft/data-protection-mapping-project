@@ -68,13 +68,14 @@
                                (click)="node.mouseAction('checkboxClick', $event)"
                                [checked]="node.isSelected"
                                [indeterminate]="node.isPartiallySelected"
-                               (keydown)="onKeyDown(t, node, $event)" />
+                               (keydown)="onKeyDown(t, node, $event)"
+                               [attr.aria-expanded]="node.visibleChildren.length ? (node.isExpanded?'true':'false') : null" />
                         <div class="node-content-wrapper"
                              [class.dummystyle]="bindTogether(node, wrapper, svgbg, checkBox, t)"
                              [class.node-content-wrapper-active]="node.isActive"
                              [class.node-content-wrapper-focused]="node.isFocused"
                              (click)="node.mouseAction('click', $event)"
-                             [style.background-color]="getNodeColor(t, node)" id="{{t.id + '.lbl.' + node.data.node.id}}">
+                             [style.background-color]="getNodeColor(t, node)" id="{{t.id + '.lbl.' + node.data.node.id}}" >
                           <div class="node-content-icon"><mat-icon class="node-content-icon" aria-hidden="false" title="{{getNodeIconAlt(t.column, node)}}" attr.aria-label="{{getNodeIconAlt(t, node)}}">{{getNodeIcon(t, node)}}</mat-icon></div>
                           <span [lang]="t.selectedLang">
                             <span *ngIf="!node.data.node.hyperlink" [innerHTML]="injectHighlightSection(node.data, t.selectedLang)"></span>
@@ -136,7 +137,8 @@
                            [class.node-content-wrapper-active]="node.isActive"
                            [class.node-content-wrapper-focused]="node.isFocused"
                            (click)="node.mouseAction('click', $event)"
-                           [style.background-color]="getNodeColor(t.column, node)">
+                           [style.background-color]="getNodeColor(t.column, node)"
+                           [attr.aria-expanded]="node.visibleChildren.length ? (node.isExpanded?'true':'false') : null">
                         <div class="node-content-icon"><mat-icon aria-hidden="false" title="{{getNodeIconAlt(t.column, node)}}" attr.aria-label="{{getNodeIconAlt(t.column, node)}}">{{getNodeIcon(t.column, node)}}</mat-icon></div>
                         <span [lang]="t.selectedLang">
                           <span *ngIf="!node.data.node.hyperlink">{{node.data.getSection(t.selectedLang)}}</span>

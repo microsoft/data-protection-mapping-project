@@ -53,7 +53,7 @@ export class GraphComponent implements OnInit, OnDestroy {
     public svgbgElement: any;
     private searchable: Searchable;
 
-    private hideFilter: boolean = false;
+    public hideFilter: boolean = false;
   
     private graphColorScale = d3.scaleOrdinal().range(d3.schemeSet3);
 
@@ -905,8 +905,10 @@ export class GraphComponent implements OnInit, OnDestroy {
         var index = node.parent.visibleChildren.findIndex(f => f.id == node.id);
         if (index > -1) {
             var newIndex = index + amount;
-            var nextId = node.parent.visibleChildren[newIndex].id;
-            GraphComponent.selectInputById(tab, nextId);
+            var nextItem = node.parent.visibleChildren[newIndex];
+            if (nextItem) {
+              GraphComponent.selectInputById(tab, nextItem.id);
+            }
         }
     }
 
