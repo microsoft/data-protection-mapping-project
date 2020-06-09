@@ -576,6 +576,12 @@ export class GraphComponent implements OnInit, OnDestroy {
         var svgBounds = this.svgbgElement.getBoundingClientRect();
         var colorIndex = 0;
 
+        if (!this.graphService.visualStyle) {
+          // legacy style
+          startingGapRight = 10;
+          arrowLength = 10;
+        }
+      
         for (var tab of tabs)
         {
           for (var l of tab.column.displayLinks)
@@ -917,6 +923,10 @@ export class GraphComponent implements OnInit, OnDestroy {
     public onSliderChange(event) {
         // Update the value in real time
         this.graphService.visualZoom = event.value;
+        this.graphService.updateViewSubject.next(0);
+    }
+
+    public onStyleChange(event) {
         this.graphService.updateViewSubject.next(0);
     }
 }

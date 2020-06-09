@@ -63,7 +63,7 @@ export class GraphService {
   private runningFilters = false;
   public updateSubject = new Rx.BehaviorSubject(0);
   public updateViewSubject = new Rx.BehaviorSubject(0);
-  public visualStyle = false;
+  public visualStyle = true;
   public visualZoom = 1;
 
   constructor(

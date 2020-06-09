@@ -103,7 +103,6 @@ table, th, td {
   vertical-align: top;
   max-width: 500px;
   height: calc(100% - 90px);
-  padding-bottom: 20px;
   width: 400px;
 }
 
@@ -145,8 +144,8 @@ table, th, td {
     position: absolute;
     width: 100%;
     left: 0px;
-    top: 100px;
-    height: calc(100% - 100px);
+    top: 86px;
+    height: calc(100% - 86px);
     pointer-events: none;
 }
 
