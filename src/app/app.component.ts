@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
 import { DialogsService } from './dialogs.service';
 
 
@@ -7,12 +7,14 @@ import { DialogsService } from './dialogs.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements AfterViewInit {
+export class AppComponent implements AfterViewInit, OnDestroy {
   title = 'Data Protection Mapping Project';
+  static globalApp;
 
 	@ViewChild('sidenav') public sidenav: any;
 
-	constructor(public dialogsService: DialogsService) {
+  constructor(public dialogsService: DialogsService) {
+    AppComponent.globalApp = this;
 	}
 
   ngAfterViewInit() {
@@ -27,9 +29,22 @@ export class AppComponent implements AfterViewInit {
 			  this.dialogsService.openDialog('disclaimer');
 		  }
     }, 100);
-	}
+
+    document.addEventListener('keydown', this.keyDown);
+  }
+
+  ngOnDestroy() {
+    document.removeEventListener('keydown', this.keyDown);
+  }
 
   closeSidenav() {
     this.sidenav.close();
   }
+
+  public keyDown(event) {
+    if (event.code == 'Escape') {
+      AppComponent.globalApp.closeSidenav();
+    }
+  }
+
 }
