@@ -49,7 +49,7 @@ function exportXlsx(allDocs) {
 function writeResult(result) {
     const fs = require('fs');
     let data = JSON.stringify(result, null, 4);  
-    console.log(data);
+    //console.log(data);
     fs.writeFileSync(outputFile, data); 
     fs.writeFileSync(outputFile2, data); 
 }
@@ -199,7 +199,7 @@ function processRegulation(worksheet) {
       if (processingNotes)
       {
         // process notes row
-          console.log("notez.");
+        console.log("notes.");
         
         // skip blank rows
         if (idText == "")
@@ -226,7 +226,6 @@ function processRegulation(worksheet) {
           processingNotes = true;
           return;
         }
-          console.log(idText);
 
         var section = row.getCell(2).text;
         var body = row.getCell(3).text;
@@ -325,8 +324,11 @@ function importXlsx() {
           };
 
           for (var d of allDocs) {
-            if (d.type != "ISO")
-              mergeDoc(d.children, allDoc, d.type.replace(/\W/g, '_') + "."); // replace nonalphanumeric with _ so it doesnt get parsed as id structure.
+            if (d.type != "ISO") {
+              var rootKey = d.type.replace(/\W/g, '_'); // replace nonalphanumeric with _ so it doesnt get parsed as id structure.
+              mergeDoc(d.children, allDoc, rootKey + ".");
+              allDoc.children[allDoc.children.length - 1].section = d.type;
+            }
           }
 
           allDocs.push(allDoc);

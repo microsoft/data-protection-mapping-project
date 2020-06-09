@@ -29115,7 +29115,7 @@
                 {
                     "id": "India___Submission",
                     "frag": "India___Submission",
-                    "section": "India___Submission",
+                    "section": "India - Submission",
                     "children": [
                         {
                             "id": "India___Submission.2",
@@ -38248,7 +38248,7 @@
                 {
                     "id": "Hong_Kong",
                     "frag": "Hong_Kong",
-                    "section": "Hong_Kong",
+                    "section": "Hong Kong",
                     "children": [
                         {
                             "id": "Hong_Kong.DPP",
@@ -39595,7 +39595,7 @@
                 {
                     "id": "South_Korea",
                     "frag": "South_Korea",
-                    "section": "South_Korea",
+                    "section": "South Korea",
                     "children": [
                         {
                             "id": "South_Korea.A",
@@ -41104,7 +41104,7 @@
                 {
                     "id": "California_CCPA",
                     "frag": "California_CCPA",
-                    "section": "California_CCPA",
+                    "section": "California CCPA",
                     "children": [
                         {
                             "id": "California_CCPA.S",
@@ -50680,7 +50680,7 @@
                 {
                     "id": "NIST_Privacy_Framework",
                     "frag": "NIST_Privacy_Framework",
-                    "section": "NIST_Privacy_Framework",
+                    "section": "NIST Privacy Framework",
                     "children": [
                         {
                             "id": "NIST_Privacy_Framework.ID_P",
