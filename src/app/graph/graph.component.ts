@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 import * as d3 from 'd3';
 import * as d3Sankey from 'd3-sankey';
 import { DAG, SNode, GraphService, CategoryList, FilterCriteria } from '../graph.service';
+import { DialogsService } from './../dialogs.service';
 import { GraphTab } from "../GraphTab";
 import { GraphFilter } from "../GraphFilter";
 import { Searchable } from "../Searchable";
@@ -58,6 +59,7 @@ export class GraphComponent implements OnInit, OnDestroy {
 
     constructor(
       public graphService: GraphService,
+      public dialogService: DialogsService,
       private sanitizer: DomSanitizer) {
         
         this.graphService.updateSubject.pipe(debounce(() => Rx.timer(1))).subscribe({

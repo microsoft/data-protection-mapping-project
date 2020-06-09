@@ -161,7 +161,7 @@
         </div>
       </div>
       <button mat-button class="filter-pin" [class.filter-hidden]="hideFilter" (click)="toggleShowFilter()"><mat-icon>push_pin</mat-icon><span class="visuallyhidden">Open/Close Filter</span></button>
-      <button mat-button class="error-icon" [class.error-hidden]="!graphService.anyErrors" (click)="graphService.openDialog('errors')"><mat-icon>error</mat-icon><span class="visuallyhidden">Show Errors</span></button>
+      <button mat-button class="error-icon" [class.error-hidden]="!graphService.anyErrors" (click)="dialogService.openDialog('errors')"><mat-icon>error</mat-icon><span class="visuallyhidden">Show Errors</span></button>
     </div>
   </div>
 </div>
