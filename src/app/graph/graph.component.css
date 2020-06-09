@@ -93,7 +93,7 @@ table, th, td {
 
 .graph-columns {
   position: relative;
-  width: calc(100% - 130px);
+  flex-grow: 1;
   overflow: auto;
 }
 
