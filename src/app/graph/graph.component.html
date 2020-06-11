@@ -103,7 +103,7 @@
                   <mat-slider aria-label="Zoom" [(value)]="graphService.visualZoom" min="0.5" max="1" step="0.05" (input)="onSliderChange($event)"></mat-slider>
                 </div>
                 <div class="setting">
-                  <mat-label>Visual Style:</mat-label>
+                  <mat-label>Sankey Diagram:</mat-label>
                   <mat-slide-toggle aria-label="Visual Style" [(ngModel)]="graphService.visualStyle" (toggleChange)="onStyleChange($event)"></mat-slide-toggle>
                 </div>
                 <span class="example-spacer"></span>
@@ -111,13 +111,13 @@
             </div>
             <!--        <div fxLayout="row" fxLayoutGap="80px" fxLayoutAlign="flex-start">-->
             <div class="graph-column" *ngFor="let t of graphService.graphTabs">
-              <div class="zoom-viewport" [style.transform]="'scale(' + graphService.visualZoom + ')'"  [style.height]="sanitizer.bypassSecurityTrustStyle('calc(100% / ' + graphService.visualZoom + ')')">
+              <div class="zoom-viewport" [style.transform]="'scale(' + graphService.visualZoom + ')'" [style.height]="sanitizer.bypassSecurityTrustStyle('calc(100% / ' + graphService.visualZoom + ')')">
                 <h3 class="share-header" *ngIf="t.isIso"><a href="https://www.iso.org/standard/71670.html" target="_blank">ISO</a>/<a href="https://webstore.iec.ch/publication/65597" target="_blank">IEC</a> 27701</h3>
                 <h3 class="share-header" *ngIf="!t.isIso">{{t.title}}</h3>
                 <!--            <div><a routerLink="/doctypes/{{t.title}}"><h3>{{t.title}}</h3></a>
-                <div>
-                  <mat-checkbox (change)="t.column.expandAll()" [checked]="t.column.anyExpanded">{{t.column.anyExpanded ? 'Collapse' : 'Expand'}} All</mat-checkbox>
-                </div></div>-->
+        <div>
+          <mat-checkbox (change)="t.column.expandAll()" [checked]="t.column.anyExpanded">{{t.column.anyExpanded ? 'Collapse' : 'Expand'}} All</mat-checkbox>
+        </div></div>-->
 
                 <div class="share-header share-header-pad">
                   <mat-form-field *ngIf="t.doc.node.langs.length > 1" hideRequiredMarker>
@@ -169,7 +169,7 @@
                 <g *ngFor="let t of graphService.graphTabs">
                   <g *ngFor="let l of t.column.displayLinks">
                     <!-- <line class="svg-line-click" (click)="clickedLink(l)" [attr.x1]="l.x3" [attr.x2]="l.x4" [attr.y1]="l.y2" [attr.y2]="l.y2" marker-end="url(#arrow)"></line>
-                      <line class="svg-line-click" (click)="clickedLink(l)" [attr.x1]="l.x1" [attr.x2]="l.x3" [attr.y1]="l.y1" [attr.y2]="l.y2"></line>-->
+            <line class="svg-line-click" (click)="clickedLink(l)" [attr.x1]="l.x1" [attr.x2]="l.x3" [attr.y1]="l.y1" [attr.y2]="l.y2"></line>-->
                     <line class="svg-line-visible" [class.svg-line-active]="l.weight > 1" [attr.x1]="l.x3" [attr.x2]="l.x4" [attr.y1]="l.y2" [attr.y2]="l.y2" marker-end="url(#arrow)"></line>
                     <line class="svg-line-visible" [class.svg-line-active]="l.weight > 1" [attr.x1]="l.x1" [attr.x2]="l.x3" [attr.y1]="l.y1" [attr.y2]="l.y2"></line>
                   </g>

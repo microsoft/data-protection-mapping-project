@@ -267,3 +267,7 @@ mat-checkbox {
 .setting .mat-slide-toggle {
   height: 40px !important;
 }
+
+.setting mat-label {
+  padding-right: 10px;
+}
