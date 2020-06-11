@@ -99,11 +99,11 @@
               <div class="settings-row" fxFlex="1 0 auto" fxLayout="row" fxFlexFill>
                 <!--<span class="example-spacer"></span>-->
                 <div class="setting">
-                  <mat-label>Zoom:</mat-label>
+                  <mat-label>Zoom</mat-label>
                   <mat-slider aria-label="Zoom" [(value)]="graphService.visualZoom" min="0.5" max="1" step="0.05" (input)="onSliderChange($event)"></mat-slider>
                 </div>
                 <div class="setting">
-                  <mat-label>Sankey Diagram:</mat-label>
+                  <mat-label>Sankey Diagram</mat-label>
                   <mat-slide-toggle aria-label="Visual Style" [(ngModel)]="graphService.visualStyle" (toggleChange)="onStyleChange($event)"></mat-slide-toggle>
                 </div>
                 <span class="example-spacer"></span>
