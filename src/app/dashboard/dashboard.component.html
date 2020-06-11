@@ -1,13 +1,4 @@
-﻿
-<app-d3-test></app-d3-test>
 
-<div *ngFor="let t of graphService.graphTabs">
-  <div *ngIf="t.anyErrors">
-    {{t.title}} Errors
-    <div *ngFor="let e of t.errorStrings">
-      <div>
-        <h4>{{e}}</h4>
-      </div>
-    </div>
-  </div>
-</div>
+<app-graph></app-graph>
+
+
