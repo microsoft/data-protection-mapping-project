@@ -1,0 +1,273 @@
+
+.container {
+  position: absolute;
+  width: calc(100% - 40px);
+  height: 96%;
+}
+
+h1 {
+  font-size: 1.2em;
+  color: #999;
+  margin-bottom: 0;
+}
+
+.node {
+}
+
+.link { 
+  stroke: #999; 
+  stroke-opacity: .6; 
+  stroke-width: 1px; 
+}
+
+.graph-container {
+    position: relative;
+}
+
+.graph-categories {
+  vertical-align: top;
+  display: inline-block;
+  width: 100%;
+  /*overflow: hidden;*/
+}
+
+.node-content-wrapper {
+    border: 1px solid #d6d6d6;
+    width: 100%;
+    padding: 0px 5px;
+}
+
+.node-content-wrapper-active {
+    border: 3px solid #000;
+}
+
+.node-content-icon {
+    display: inline;
+}
+
+/*.d3 {
+    display: inline-block;
+    width: 74%;
+}
+
+.table-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 70%;
+}
+
+table, th, td {
+  table-layout: fixed;
+  border: 1px solid black;
+  border-collapse: collapse;
+  width: 100%;
+}*/
+
+.graph-tab-buttons {
+
+}
+
+.graph-tab-button {
+    display: inline-block;
+    margin: 2px;
+}
+
+.button-active {
+    border: 1px solid green;
+}
+
+.graph-tabs {
+}
+
+.hide-filter {
+  display: none !important;
+}
+
+.graph-tab {
+    height: 400px;
+}
+
+.graph-inactive {
+    display: none;
+}
+
+.graph-columns {
+  position: relative;
+  flex-grow: 1;
+  overflow: auto;
+}
+
+.graph-column {
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+  max-width: 500px;
+  height: calc(100% - 90px);
+  width: 400px;
+}
+
+.zoom-viewport {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  transform-origin: top left;
+}
+
+/* add margin to all but last column. Which is nth-last-child(2) because svg is really last. */
+.graph-column:not(:nth-last-child(2)) {
+  margin-right: 160px;
+}
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+.filter-title {
+  display: inline-block !important;
+  margin-left: 30px;
+}
+
+.title-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.tree-container {
+}
+
+.button-disabled {
+    opacity: 0.15;
+}
+
+.svg-background {
+    position: absolute;
+    width: 100%;
+    left: 0px;
+    top: 86px;
+    height: calc(100% - 86px);
+    pointer-events: none;
+}
+
+.svg-line-click {
+    cursor: pointer;
+    pointer-events: all;
+    stroke-width: 20px;
+    opacity: .0;
+}
+
+.svg-line-visible {
+    stroke: #b7b5b5;
+}
+
+.svg-line-active {
+    stroke: black;
+    stroke-width: 2;
+}
+
+.mat-tab-group {
+  height: calc(100% - 30px);
+}
+
+.mat-tab-label-content {
+    color: #000 !important;
+}
+
+.mat-tab-label {
+  min-width: 50px !important;
+  padding: 0px !important;
+}
+
+mat-card {
+  height: calc(100% - 32px) !important;
+}
+
+.mat-tab-body-content {
+    /*overflow: hidden !important;*/
+}
+
+mat-checkbox {
+    margin-left: 10px !important;
+}
+
+.mat-icon {
+  vertical-align: middle !important;
+  margin: 2px !important;
+}
+
+.filter-field {
+    width: 100%;
+}
+
+.fake-link {
+    color: blue;
+    text-decoration: underline;
+    text-underline-position: under;
+    cursor: pointer;
+}
+
+.coverage-box {
+    padding: 10px;
+}
+
+.share-header {
+  display: inline-block;
+  padding-left: 20px;
+}
+
+.share-header-pad {
+  padding-left: 20px;
+}
+
+.notes-list {
+  border-top: black 1px solid;
+  margin: 15px -6px -1px 20px;
+}
+
+.notes-header {
+  font-size: 12px;
+  margin: 5px;
+}
+
+
+.filter-pin {
+  font-size: 19px;
+  position: absolute;
+  top: 8px;
+  left: -10px;
+}
+
+.filter-hidden {
+  transform: rotate(90deg);
+}
+
+
+
+.error-icon {
+  font-size: 19px;
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+}
+
+.error-hidden {
+  display: none;
+}
+
+
+.settings-row {
+}
+
+.setting {
+  display: inline;
+  height: 48px;
+  margin: 0px 10px;
+}
+
+.setting .mat-slide-toggle {
+  height: 40px !important;
+}
+
+.setting mat-label {
+  padding-right: 10px;
+}

@@ -5,6 +5,12 @@ export class Link {
   rev: string;
 }
 
+export class Note {
+  id: string;
+  links: Link[];  
+  comment: string;
+}
+
 export class DocNode2 {
   id?: string;
   section?: string;
@@ -13,6 +19,8 @@ export class DocNode2 {
   compliance_level?: number;
   children: DocNode2[];
   links: Link[];
+  notes: Note[];
+  langs: any;
 }
 
 
@@ -30,16 +38,19 @@ export class FullDocNode {
   public isAnyChildUnmappedCached: boolean;
   public shouldBeMappedCached: boolean;
   public filterColor: string;
+  public connectedTo: any[] = [];
 
   public constructor(
     public node: Doc2 | DocNode2,
     public children: FullDocNode[] = []) {
   }
 
-  get name():string {
-    var name = this.node.section ? this.node.section : (this.node as Doc2).type;
-    if (this.node.body)
-      name += " - " + this.node.body;
+  get name(): string {
+    var section = this.getSection();
+    var name = section ? section : (this.node as Doc2).type;
+    var body = this.getBody();
+    if (body)
+      name += " - " + body;
     return name;
   }
 
@@ -79,11 +90,36 @@ export class FullDocNode {
     if (this.shouldBeMappedCached === undefined)
     {
         // to be qualified as unmapped        
-        this.shouldBeMappedCached = this.node.body  //  needs a body
+        this.shouldBeMappedCached = this.getBody()  //  needs a body
             && (!this.node.children || this.node.children.length == 0); // no children
     }
 
     return this.shouldBeMappedCached;
+  }
+
+  // pass null for default lang
+  public getBody(lang: string = null, includeNotes: boolean = false): string {
+    var langs = this.node.langs;
+    var l = lang ? langs[lang] : langs['default'];
+    var text = l ? (l.body ? (' - ' + l.body) : '') : this.node.body;
+    return text;
+  }
+  
+  // pass null for default lang
+  public getSection(lang: string = null): string {
+    var langs = this.node.langs;
+    var l = lang ? langs[lang] : langs['default'];
+    return l ? l.section : this.node.section;
+  }
+  
+  // pass null for default lang
+  public getConnectionsText(lang: string = null): string {
+    return "References ISO sections: " + Object.keys(this.connectedTo).join(", ") + ".";
+  }
+  
+  // pass null for default lang
+  public getCommentText(note: Note, lang: string = null): string {
+    return note.comment + " [Iso Sections: " + note.links.map(v=>v.id).join(", ") + "]";
   }
 }
 
