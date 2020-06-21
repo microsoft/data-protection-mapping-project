@@ -1,7 +1,7 @@
 
 .container {
   position: absolute;
-  width: calc(100% - 40px);
+  width: 100%;
   height: 96%;
 }
 
@@ -27,8 +27,7 @@ h1 {
 .graph-categories {
   vertical-align: top;
   display: inline-block;
-  width: 100%;
-  /*overflow: hidden;*/
+  width: calc(100% - 2px);
 }
 
 .node-content-wrapper {
@@ -94,7 +93,24 @@ table, th, td {
 .graph-columns {
   position: relative;
   flex-grow: 1;
-  overflow: auto;
+  overflow: hidden;
+}
+
+.fill-graph {
+  width: calc(100% - 40px);
+  height: calc(100% - 1px);
+}
+
+.scroll-parent {
+  position: relative;
+  flex-grow: 1;
+  overflow-x: auto;
+  height: calc(100% - 40px);
+  width: 100%;
+}
+.scroll-client {
+  position: relative;
+  height: 100%;
 }
 
 .graph-column {
@@ -102,7 +118,7 @@ table, th, td {
   display: inline-block;
   vertical-align: top;
   max-width: 500px;
-  height: calc(100% - 90px);
+  height: calc(100% - 50px);
   width: 400px;
 }
 
@@ -144,8 +160,8 @@ table, th, td {
     position: absolute;
     width: 100%;
     left: 0px;
-    top: 86px;
-    height: calc(100% - 86px);
+    top: 46px;
+    height: calc(100% - 50px);
     pointer-events: none;
 }
 
@@ -215,8 +231,8 @@ mat-checkbox {
   padding-left: 20px;
 }
 
-.share-header-pad {
-  padding-left: 20px;
+.column-header {
+  height: 46px;
 }
 
 .notes-list {
@@ -246,8 +262,8 @@ mat-checkbox {
 .error-icon {
   font-size: 19px;
   position: absolute;
-  bottom: 0px;
-  right: 0px;
+  bottom: 30px;
+  right: 60px;
 }
 
 .error-hidden {
