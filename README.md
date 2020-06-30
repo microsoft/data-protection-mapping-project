@@ -63,7 +63,7 @@ Most decisions within the project can be done through informal consensus and rec
 
 ### Running the app
 
-You can access the app live at the following URL: https://dataprotectionmapping.z21.web.core.windows.net/.
+You can access the app live at the following URL: https://dataprotectionmapping.z21.web.core.windows.net/ or https://aka.ms/dpmap.
 
 ### Building the code
 
