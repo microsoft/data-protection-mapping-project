@@ -143,10 +143,10 @@
                                [attr.aria-expanded]="node.visibleChildren.length ? (node.isExpanded?'true':'false') : null">
                             <div class="node-content-icon"><mat-icon aria-hidden="false" title="{{node|getNodeIconAlt:t.column}}" attr.aria-label="{{node|getNodeIconAlt:t.column}}">{{node|getNodeIcon:t.column}}</mat-icon></div>
                             <span [lang]="t.viewSettings.selectedLang">
-                              <span *ngIf="!node.data.node.hyperlink">{{node.data.getSection(t.viewSettings.selectedLang)}}</span>
-                              <a *ngIf="node.data.node.hyperlink" (mousedown)="openTab(node.data.node.hyperlink)" class="fake-link" target="_blank" href="{{node.data.node.hyperlink}}">{{node.data.getSection(t.viewSettings.selectedLang)}}</a>
-                              <span>{{node.data.getBody(t.viewSettings.selectedLang)}}</span>
-                              <span *ngIf="node.data.connectedTo.length" class="visuallyhidden">{{node.data.getConnectionsText(t.viewSettings.selectedLang)}}</span>
+                              <span *ngIf="!node.data.node.hyperlink">{{node|getSection:t.viewSettings}}</span>
+                              <a *ngIf="node.data.node.hyperlink" (mousedown)="openTab(node.data.node.hyperlink)" class="fake-link" target="_blank" href="{{node.data.node.hyperlink}}">{{node|getSection:t.viewSettings}}</a>
+                              <span>{{node|getBody:t.viewSettings}}</span>
+                              <span *ngIf="node.data.connectedTo.length" class="visuallyhidden">{{node|getConnectionsText:t.viewSettings}}</span>
                             </span>
                             <div *ngIf="node.data.node.notes.length" class="notes-list">
                               <span class="notes-header">Notes:</span>

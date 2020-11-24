@@ -112,3 +112,33 @@ export class getNodeIconAltPipe implements PipeTransform {
         return getNodeIconAlt(tab, node);
     }
 }
+
+@Pipe({ name: 'getBody' })
+export class getBodyPipe implements PipeTransform {
+    constructor() {
+    }
+
+    transform(node: TreeNode, viewSettings: ViewSettings): string {
+        return (node.data as FullDocNode).getBody(viewSettings.selectedLang);
+    }
+}
+
+@Pipe({ name: 'getSection' })
+export class getSectionPipe implements PipeTransform {
+    constructor() {
+    }
+
+    transform(node: TreeNode, viewSettings: ViewSettings): string {
+        return (node.data as FullDocNode).getSection(viewSettings.selectedLang);
+    }
+}
+
+@Pipe({ name: 'getConnectionsText' })
+export class getConnectionsTextPipe implements PipeTransform {
+    constructor() {
+    }
+
+    transform(node: TreeNode, viewSettings: ViewSettings): string {
+        return (node.data as FullDocNode).getConnectionsText(viewSettings.selectedLang);
+    }
+}
