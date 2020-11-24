@@ -65,6 +65,7 @@ import { PortalModule } from '@angular/cdk/portal';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { injectHighlightBodyPipe, injectHighlightSectionPipe } from './pipes/HighlightPipe';
 
 @NgModule({
   imports: [
@@ -144,7 +145,10 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     MessagesComponent,
     StandardMapSearchComponent,
     GraphComponent,
-    CharterContentComponent
+    CharterContentComponent,
+
+    injectHighlightBodyPipe,
+    injectHighlightSectionPipe
   ],
   providers: [ CookieService ],
   bootstrap: [ AppComponent ]

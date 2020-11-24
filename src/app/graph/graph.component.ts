@@ -637,38 +637,6 @@ export class GraphComponent implements OnInit, OnDestroy {
       if (checkBox)
         tab.inputObjectsMap[checkBox.id] = checkBox;
     }
-
-    private highlightText(text: string, highlight: number[]): string
-    {
-        return text.substring(0, highlight[0]) + "<mark>" + text.substring(highlight[0], highlight[1]) + "</mark>" + text.substring(highlight[1], text.length);
-    }
-
-    public injectHighlightSection(data: FullDocNode, lang: string) 
-    {
-        var section = data.getSection(lang);
-
-        if (data.highlight && data.highlightName)
-            section = this.highlightText(section, data.highlight);
-
-        return this.sanitizer.bypassSecurityTrustHtml(section);
-    }
-
-    public injectHighlightBody(data: FullDocNode, lang: string) 
-    {
-        var body = data.getBody(lang);
-        if (body)
-        {
-            if (data.highlight && !data.highlightName)
-            {
-                body = this.highlightText(body, data.highlight);
-            }
-        }   
-        else
-            body = "";
-
-
-        return this.sanitizer.bypassSecurityTrustHtml(body);
-    }
   
     // pass null for default lang
     public getCommentText(data: FullDocNode, note: Note, lang: string = null) {
