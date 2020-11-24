@@ -191,4 +191,12 @@ export class GraphTab {
     public static flatten(array) {
         return array.reduce((a,b)=>a.concat(b), []);
     }
+
+    // This is called when the language has changed.
+    //  ViewSettings is immutable. Create a new one to indicate data changed.
+    //  Trigger a graph service update so the graph lines are refreshed also.
+    public refreshView() {
+        this.viewSettings = Object.assign({}, this.viewSettings); // clone
+        this.graphService.updateSubject.next(0);
+    }
 }

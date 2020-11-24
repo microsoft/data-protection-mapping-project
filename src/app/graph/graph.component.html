@@ -50,7 +50,7 @@
                 <div>
                   <mat-form-field *ngIf="t.doc.node.langs.length > 1">
                     <mat-label>Language:</mat-label>
-                    <mat-select matNativeControl required [(value)]="t.viewSettings.selectedLang">
+                    <mat-select matNativeControl required [(value)]="t.viewSettings.selectedLang" (selectionChange)="t.refreshView()">
                       <mat-option *ngFor="let l of t.doc.node.langs" value="{{l}}">{{l}}</mat-option>
                     </mat-select>
                   </mat-form-field>
@@ -124,7 +124,7 @@
                       <div class="share-header">
                         <mat-form-field *ngIf="t.doc.node.langs.length > 1" hideRequiredMarker>
                           <mat-label>Language:</mat-label>
-                          <mat-select matNativeControl required [(value)]="t.viewSettings.selectedLang">
+                          <mat-select matNativeControl required [(value)]="t.viewSettings.selectedLang" (selectionChange)="t.refreshView()">
                             <mat-option *ngFor="let l of t.doc.node.langs" value="{{l}}">{{l}}</mat-option>
                           </mat-select>
                         </mat-form-field>
