@@ -8,7 +8,7 @@ import { ViewSettings } from '../ViewSettings';
 
 function highlightText(text: string, highlight: number[]): string
 {
-    return text.substring(0, highlight[0]) + "<mark>" + text.substring(highlight[0], highlight[1]) + "</mark>" + text.substring(highlight[1], text.length);
+    return text.substring(0, highlight[0]) + "<b><mark>" + text.substring(highlight[0], highlight[1]) + "</mark></b>" + text.substring(highlight[1], text.length);
 }
 
 @Pipe({ name: 'injectHighlightBody' })
