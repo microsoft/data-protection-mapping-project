@@ -75,8 +75,8 @@
                              [class.node-content-wrapper-active]="node.isActive"
                              [class.node-content-wrapper-focused]="node.isFocused"
                              (click)="node.mouseAction('click', $event)"
-                             [style.background-color]="getNodeColor(t, node)" id="{{t.id + '.lbl.' + node.data.node.id}}" >
-                          <div class="node-content-icon"><mat-icon class="node-content-icon" aria-hidden="false" title="{{getNodeIconAlt(t.column, node)}}" attr.aria-label="{{getNodeIconAlt(t, node)}}">{{getNodeIcon(t, node)}}</mat-icon></div>
+                             [style.background-color]="node|getNodeColor:t.column" id="{{t.id + '.lbl.' + node.data.node.id}}" >
+                          <div class="node-content-icon"><mat-icon class="node-content-icon" aria-hidden="false" title="{{node|getNodeIconAlt:t.column}}" attr.aria-label="{{node|getNodeIconAlt:t.column}}">{{node|getNodeIcon:t.column}}</mat-icon></div>
                           <span [lang]="t.viewSettings.selectedLang">
                             <span *ngIf="!node.data.node.hyperlink" [innerHTML]="t.viewSettings|injectHighlightSection:node.data"></span>
                             <a *ngIf="node.data.node.hyperlink" (mousedown)="openTab(node.data.node.hyperlink)" class="fake-link" target="_blank" href="{{node.data.node.hyperlink}}" [innerHTML]="t.viewSettings|injectHighlightSection:node.data"></a>
@@ -139,9 +139,9 @@
                                [class.node-content-wrapper-active]="node.isActive"
                                [class.node-content-wrapper-focused]="node.isFocused"
                                (click)="node.mouseAction('click', $event)"
-                               [style.background-color]="getNodeColor(t.column, node)"
+                               [style.background-color]="node|getNodeColor:t.column"
                                [attr.aria-expanded]="node.visibleChildren.length ? (node.isExpanded?'true':'false') : null">
-                            <div class="node-content-icon"><mat-icon aria-hidden="false" title="{{getNodeIconAlt(t.column, node)}}" attr.aria-label="{{getNodeIconAlt(t.column, node)}}">{{getNodeIcon(t.column, node)}}</mat-icon></div>
+                            <div class="node-content-icon"><mat-icon aria-hidden="false" title="{{node|getNodeIconAlt:t.column}}" attr.aria-label="{{node|getNodeIconAlt:t.column}}">{{node|getNodeIcon:t.column}}</mat-icon></div>
                             <span [lang]="t.viewSettings.selectedLang">
                               <span *ngIf="!node.data.node.hyperlink">{{node.data.getSection(t.viewSettings.selectedLang)}}</span>
                               <a *ngIf="node.data.node.hyperlink" (mousedown)="openTab(node.data.node.hyperlink)" class="fake-link" target="_blank" href="{{node.data.node.hyperlink}}">{{node.data.getSection(t.viewSettings.selectedLang)}}</a>
@@ -151,7 +151,7 @@
                             <div *ngIf="node.data.node.notes.length" class="notes-list">
                               <span class="notes-header">Notes:</span>
                               <ul>
-                                <li *ngFor="let note of node.data.node.notes" [lang]="t.viewSettings.selectedLang" [innerHTML]="getCommentText(node.data, note, t.selectedLang)"></li>
+                                <li *ngFor="let note of node.data.node.notes" [lang]="t.viewSettings.selectedLang" [innerHTML]="t.viewSettings|getCommentText:node.data:note"></li>
                               </ul>
                             </div>
                           </div>

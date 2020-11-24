@@ -65,7 +65,8 @@ import { PortalModule } from '@angular/cdk/portal';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { injectHighlightBodyPipe, injectHighlightSectionPipe } from './pipes/HighlightPipe';
+import { injectHighlightBodyPipe, injectHighlightSectionPipe, getCommentTextPipe } from './pipes/HighlightPipe';
+import { getNodeColorPipe, getNodeIconPipe, getNodeIconAltPipe } from './pipes/NodePipe';
 
 @NgModule({
   imports: [
@@ -148,7 +149,11 @@ import { injectHighlightBodyPipe, injectHighlightSectionPipe } from './pipes/Hig
     CharterContentComponent,
 
     injectHighlightBodyPipe,
-    injectHighlightSectionPipe
+    injectHighlightSectionPipe,
+    getCommentTextPipe,
+    getNodeColorPipe,
+    getNodeIconPipe,
+    getNodeIconAltPipe
   ],
   providers: [ CookieService ],
   bootstrap: [ AppComponent ]

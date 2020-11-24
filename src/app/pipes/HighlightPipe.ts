@@ -2,7 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { FullDocNode } from '../standard-map';
+import { FullDocNode, Note } from '../standard-map';
 import { ViewSettings } from '../ViewSettings';
 
 
@@ -46,5 +46,16 @@ export class injectHighlightSectionPipe implements PipeTransform {
             section = highlightText(section, data.highlight);
 
         return this.sanitizer.bypassSecurityTrustHtml(section);
+    }
+}
+
+@Pipe({ name: 'getCommentText' })
+export class getCommentTextPipe implements PipeTransform {
+    constructor(
+        private sanitizer: DomSanitizer) {
+    }
+
+    transform(viewSettings: ViewSettings, note: Note, data: FullDocNode): SafeHtml {
+      return this.sanitizer.bypassSecurityTrustHtml(data.getCommentText(note, viewSettings.selectedLang));
     }
 }
