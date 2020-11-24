@@ -123,10 +123,6 @@ export class GraphService {
           tap(
             data => {
               this.docDb = data;
-              this.docDb.changelog = this.docDb.changelog.map(v => {
-                v.date = new Date(v.date).toLocaleDateString();
-                return v;
-              });
             },
             error => this.handleError("getDb", [])
           )

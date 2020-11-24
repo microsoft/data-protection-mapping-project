@@ -67,6 +67,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { injectHighlightBodyPipe, injectHighlightSectionPipe, getCommentTextPipe } from './pipes/HighlightPipe';
 import { getNodeColorPipe, getNodeIconPipe, getNodeIconAltPipe, getBodyPipe, getSectionPipe, getConnectionsTextPipe } from './pipes/NodePipe';
+import { formatDatePipe } from './pipes/FormatDatePipe'
 
 @NgModule({
   imports: [
@@ -156,7 +157,8 @@ import { getNodeColorPipe, getNodeIconPipe, getNodeIconAltPipe, getBodyPipe, get
     getNodeIconAltPipe,
     getBodyPipe,
     getSectionPipe,
-    getConnectionsTextPipe
+    getConnectionsTextPipe,
+    formatDatePipe
   ],
   providers: [ CookieService ],
   bootstrap: [ AppComponent ]
