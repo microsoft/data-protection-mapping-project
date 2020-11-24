@@ -172,10 +172,14 @@ function processRegulation(worksheet) {
   var idsCol = worksheet.getColumn(1);
   var headerRow = worksheet.getRow(1);
 
+  // override ISO tab name so its real name can be anything
+  var sheetName = worksheet.id > 1 ? worksheet.name : "ISO";
+
   var ids = [];
   var doc = {
-      "type": worksheet.name.trim(),
-      "id": worksheet.name.replace(/\W/g, ''), // keep only alphanumeric
+      "type": sheetName.trim(),
+      "id": sheetName.replace(/\W/g, ''), // keep only alphanumeric
+      "section": worksheet.name,
       "rev": 1,
       "children": [],
       "langs": []
