@@ -1,4 +1,7 @@
 
+
+export const defaultLangKey = "en";
+
 export class Link {
   id: string;
   type: string;
@@ -96,19 +99,25 @@ export class FullDocNode {
 
     return this.shouldBeMappedCached;
   }
+  
+  private getLanguage(lang: string) {
+      var langs = this.node.langs;
+      var l = lang ? langs[lang] : langs[defaultLangKey];
+      if (!l)
+          l = langs[Object.keys(langs)[0]]; //first
+      return l;
+  }
 
   // pass null for default lang
-  public getBody(lang: string = null, includeNotes: boolean = false): string {
-    var langs = this.node.langs;
-    var l = lang ? langs[lang] : langs['default'];
+  public getBody(lang: string = null): string {
+    var l = this.getLanguage(lang);
     var text = l ? (l.body ? (' - ' + l.body) : '') : this.node.body;
     return text;
   }
-  
+
   // pass null for default lang
   public getSection(lang: string = null): string {
-    var langs = this.node.langs;
-    var l = lang ? langs[lang] : langs['default'];
+    var l = this.getLanguage(lang);
     return l ? l.section : this.node.section;
   }
   

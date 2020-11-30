@@ -1,11 +1,9 @@
 import { debounce } from 'rxjs/operators';
 import * as Rx from 'rxjs';
-import { FullDocNode, Link } from './standard-map';
+import { FullDocNode, Link, defaultLangKey } from './standard-map';
 import { TreeModel, TreeNode, ITreeState, TREE_ACTIONS } from 'angular-tree-component';
 import { GraphService } from './graph.service';
 import { ViewSettings } from './ViewSettings';
-
-const defaultLangKey = "en";
 
 export class VisibleLink {
     constructor(
