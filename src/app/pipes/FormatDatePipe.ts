@@ -20,7 +20,7 @@ export class formatDatePipe implements PipeTransform {
       //if (includeTime)
       //    format += ", h:mm A";
 
-      var dt = moment(date);
+      var dt = (moment as any)(date);
 
       // set this true to ignore local time zone.
       //if (showUtc)
