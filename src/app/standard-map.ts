@@ -118,7 +118,7 @@ export class FullDocNode {
   // pass null for default lang
   public getSection(lang: string = null): string {
     var l = this.getLanguage(lang);
-    return l ? l.section : this.node.section;
+    return l?.section || this.node.section;
   }
   
   // pass null for default lang
