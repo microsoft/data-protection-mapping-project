@@ -123,10 +123,6 @@ export class GraphService {
           tap(
             data => {
               this.docDb = data;
-              this.docDb.changelog = this.docDb.changelog.map(v => {
-                v.date = new Date(v.date).toLocaleDateString();
-                return v;
-              });
             },
             error => this.handleError("getDb", [])
           )
@@ -214,9 +210,12 @@ export class GraphService {
             selectTab = this.graphTabs.find(t => t.isIso);
           }
 
-          // Activate tab
-          this.selectedTab = -1; // set it to non-value so change is detected if the index is the same
-          setTimeout(() => this.activateTab(selectTab), 1); // need to let dom regenerate
+          // The current request is to NOT activate the newly added tab. So only activate index 0
+          if (this.graphTabs.length == 1) {
+            // Activate tab
+            this.selectedTab = -1; // set it to non-value so change is detected if the index is the same
+            setTimeout(() => this.activateTab(selectTab), 1); // need to let dom regenerate
+          }
         });
   }
 

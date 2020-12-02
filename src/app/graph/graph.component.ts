@@ -13,7 +13,6 @@ import * as Rx from 'rxjs';
 
 import { TreeModel, TreeNode, ITreeState } from 'angular-tree-component';
   
- import convert from 'color-convert';
 
 import selection_attrs from 'd3-selection-multi/src/selection/attrs';
 d3.selection.prototype.attrs = selection_attrs;
@@ -24,14 +23,6 @@ class TableData
       public headers: string[],
       public rows: SNode[][]) {
     }
-}
-
-function saturateColor(input, saturationZeroToOne){
-    if (input == "unset")
-        return input;
-
-    var out = (input[0] == '#' ? input : ('#' + convert.keyword.hex(input))) + saturationZeroToOne ;
-    return out;
 }
  
 
@@ -638,113 +629,9 @@ export class GraphComponent implements OnInit, OnDestroy {
         tab.inputObjectsMap[checkBox.id] = checkBox;
     }
 
-    private highlightText(text: string, highlight: number[]): string
-    {
-        return text.substring(0, highlight[0]) + "<mark>" + text.substring(highlight[0], highlight[1]) + "</mark>" + text.substring(highlight[1], text.length);
-    }
-
-    public injectHighlightSection(data: FullDocNode, lang: string) 
-    {
-        var section = data.getSection(lang);
-
-        if (data.highlight && data.highlightName)
-            section = this.highlightText(section, data.highlight);
-
-        return this.sanitizer.bypassSecurityTrustHtml(section);
-    }
-
-    public injectHighlightBody(data: FullDocNode, lang: string) 
-    {
-        var body = data.getBody(lang);
-        if (body)
-        {
-            if (data.highlight && !data.highlightName)
-            {
-                body = this.highlightText(body, data.highlight);
-            }
-        }   
-        else
-            body = "";
-
-
-        return this.sanitizer.bypassSecurityTrustHtml(body);
-    }
-  
-    // pass null for default lang
-    public getCommentText(data: FullDocNode, note: Note, lang: string = null) {
-      return this.sanitizer.bypassSecurityTrustHtml(data.getCommentText(note, lang));
-    }
-
     public openTab(url: string)
     {
         window.open(url, "_blank").focus();
-    }
-
-
-    public getNodeStatus(tab: GraphTab, node: TreeNode)
-    {
-        // if we're a tree in the right side view, highlight active nodes
-        var status = GraphFilter.None;
-
-        if (tab.parent && node.data.filterColor)
-        {
-            if (!tab.isIso && node.data.isUnmapped)
-            {
-                status = GraphFilter.Unmapped;
-            }
-            else
-            {
-                status = GraphFilter.Filtered;
-            }
-        }
-        else if (!tab.isIso)
-        {
-            // Iso never has outward mappings
-            if (node.data.isUnmapped)
-            {
-                status = GraphFilter.Unmapped;
-            }
-            else if (node.data.isAnyChildUnmapped)
-            {
-                status = GraphFilter.ChildrenUnmapped;
-            }
-        }
-        
-        return status;
-    }
-
-    public getNodeColor(tab: GraphTab, node: TreeNode)
-    {
-        // all tab doesnt get coloring
-        if (tab.isAll)
-          return "unset";
-
-        var color = GraphFilter.visualTraits[this.getNodeStatus(tab, node)].color;
-                  
-        // if we're a tree in the right side view
-        if (tab.parent)
-        {
-            if (!node.isActive)
-            {
-              // desaturate background color unless active node
-              color = saturateColor(color, 'A0');
-            }
-        }
-        
-        return color;
-    }
-
-    public getNodeIcon(tab: GraphTab, node: TreeNode)
-    {
-        var status = (tab.isAll ? tab.iconStatus[node.id] : this.getNodeStatus(tab, node)) || GraphFilter.None;
-        var icon = GraphFilter.visualTraits[status].icon;
-        return icon;
-    }
-
-    public getNodeIconAlt(tab: GraphTab, node: TreeNode)
-    {
-        var alt = GraphFilter.visualTraits[this.getNodeStatus(tab, node)].alt;
-        return alt;
     }
   
     public filterMapped(tab: GraphTab)

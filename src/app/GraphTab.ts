@@ -1,10 +1,9 @@
 import { debounce } from 'rxjs/operators';
 import * as Rx from 'rxjs';
-import { FullDocNode, Link } from './standard-map';
+import { FullDocNode, Link, defaultLangKey } from './standard-map';
 import { TreeModel, TreeNode, ITreeState, TREE_ACTIONS } from 'angular-tree-component';
 import { GraphService } from './graph.service';
-
-const defaultLangKey = "en";
+import { ViewSettings } from './ViewSettings';
 
 export class VisibleLink {
     constructor(
@@ -42,7 +41,7 @@ export class GraphTab {
     public autoFilterParent: GraphTab;
     public errors: any = {};
     private updateSubjectParent = new Rx.BehaviorSubject(null);
-    public selectedLang: string = defaultLangKey;
+    public viewSettings: ViewSettings = { selectedLang: defaultLangKey };
     public inputObjectsMap: any = {};
     public id: string;
     public title: string;
@@ -189,5 +188,13 @@ export class GraphTab {
 
     public static flatten(array) {
         return array.reduce((a,b)=>a.concat(b), []);
+    }
+
+    // This is called when the language has changed.
+    //  ViewSettings is immutable. Create a new one to indicate data changed.
+    //  Trigger a graph service update so the graph lines are refreshed also.
+    public refreshView() {
+        this.viewSettings = Object.assign({}, this.viewSettings); // clone
+        this.graphService.updateSubject.next(0);
     }
 }

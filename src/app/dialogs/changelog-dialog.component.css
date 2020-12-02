@@ -2,10 +2,18 @@ table {
   width: 100%;
 }
 
+.mat-column-date {
+  width: 90px;
+}
+
 th.mat-sort-header-sorted {
   color: black;
 }
 
 th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
   padding: 0px 20px !important;
+}
+
+.mat-dialog-content {
+  padding: 0px !important;
 }
