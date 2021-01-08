@@ -51,9 +51,9 @@ function getNodeStatus(tab: GraphTab, node: TreeNode)
 
 function getNodeColor(tab: GraphTab, node: TreeNode)
 {
-    // all tab doesnt get coloring
-    if (tab.isAll)
-      return "unset";
+    var coloringOnAllTab = true; // at one point it was desired to turn this off.    
+    if (!coloringOnAllTab && tab.isAll)
+      return "unset"; // skip coloring on ALL tab
 
     var color = GraphFilter.visualTraits[getNodeStatus(tab, node)].color;
                   
@@ -72,7 +72,7 @@ function getNodeColor(tab: GraphTab, node: TreeNode)
 
 function getNodeIcon(tab: GraphTab, node: TreeNode)
 {
-    var status = (tab.isAll ? tab.iconStatus[node.id] : getNodeStatus(tab, node)) || GraphFilter.None;
+    var status = getNodeStatus(tab, node) || GraphFilter.None;
     var icon = GraphFilter.visualTraits[status].icon;
     return icon;
 }

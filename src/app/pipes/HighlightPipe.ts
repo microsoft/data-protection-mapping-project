@@ -55,7 +55,7 @@ export class getCommentTextPipe implements PipeTransform {
         private sanitizer: DomSanitizer) {
     }
 
-    transform(viewSettings: ViewSettings, note: Note, data: FullDocNode): SafeHtml {
+    transform(viewSettings: ViewSettings, data: FullDocNode, note: Note): SafeHtml {
       return this.sanitizer.bypassSecurityTrustHtml(data.getCommentText(note, viewSettings.selectedLang));
     }
 }
