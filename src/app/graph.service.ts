@@ -134,7 +134,7 @@ export class GraphService {
       if (this.docs[id])
           return of(this.docs[id]);
 
-      return this.http.get<Db>('assets/output/docs-' + id + '.json', {responseType: 'json'})
+      return this.http.get<Doc2>('assets/output/docs-' + id + '.json', {responseType: 'json'})
         .pipe(
           tap(
             data => {
