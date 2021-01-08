@@ -58,6 +58,7 @@ export interface DAG {
 export class GraphService {
   private docGuids = {};
   private docDb: Db = null;
+  private docs = {};
   private nextDocGuid = 0;
   private filterOrder = [];
   private runningFilters = false;
@@ -114,23 +115,38 @@ export class GraphService {
       return value;
   }
 
-  getDb() : Observable<Db> {
+  getDbIndex() : Observable<Db> {
       if (this.docDb)
           return of(this.docDb);
 
-      return this.http.get<Db>('assets/db.json', {responseType: 'json'})
+      return this.http.get<Db>('assets/output/docs-index.json', {responseType: 'json'})
         .pipe(
           tap(
             data => {
               this.docDb = data;
             },
-            error => this.handleError("getDb", [])
+            error => this.handleError("getDbIndex", [])
+          )
+        );
+  }
+
+  getDoc(id: string) : Observable<Doc2> {
+      if (this.docs[id])
+          return of(this.docs[id]);
+
+      return this.http.get<Db>('assets/output/docs-' + id + '.json', {responseType: 'json'})
+        .pipe(
+          tap(
+            data => {
+              this.docs[id] = data;
+            },
+            error => this.handleError("getDoc", [])
           )
         );
   }
 
   getDocTypes() : Observable<CategoryList> {
-      return this.getDb().pipe(
+      return this.getDbIndex().pipe(
         map(
           data => {
               return data.docs.map(v => { return { id: v.id, title: v.type }; });
@@ -157,18 +173,17 @@ export class GraphService {
   }
 
   getFullDocByType(id: string) : Observable<FullDocNode> {
-      return this.getDb().pipe(
+      return this.getDoc(id).pipe(
         map(
           data => {
-              var doc = data.docs.find(n => n.id == id);
-              return this.addToDoc(null, doc);
+              return this.addToDoc(null, data);
           }
         )
       );
   }
 
   getChangeLog(): Observable<Change[]> {
-    return this.getDb().pipe(
+    return this.getDbIndex().pipe(
       map(
         data => {
           return data.changelog;
