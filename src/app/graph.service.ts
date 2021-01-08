@@ -198,12 +198,13 @@ export class GraphService {
 
           this.graphTabs.push(newTab);
           this.ensureISOIsInMiddle();
-            
-          if (id != "ISO") 
-          {
-              // compare with iso.
-              newTab.coverage = this.compareDocs(newTab.column, this.graphTabs[1]);
-          }
+
+          // Coverage calculation is disabled to save time.
+          //if (id != "ISO") 
+          //{
+          //    // compare with iso.
+          //    newTab.coverage = this.compareDocs(newTab.column, this.graphTabs[1]);
+          //}
 
           var selectTab = newTab;
           if (newTab.isAll) {
@@ -211,11 +212,13 @@ export class GraphService {
           }
 
           // The current request is to NOT activate the newly added tab. So only activate index 0
-          if (this.graphTabs.length == 1) {
-            // Activate tab
-            this.selectedTab = -1; // set it to non-value so change is detected if the index is the same
-            setTimeout(() => this.activateTab(selectTab), 1); // need to let dom regenerate
+          if (this.graphTabs.length != 1) {
+            selectTab = this.graphTabs[this.selectedTab]; // reselect current selection
           }
+
+          // even if we dont change tabs, we still have to reactive it to configure filters
+          this.selectedTab = -1; // set it to non-value so change is detected if the index is the same
+          setTimeout(() => this.activateTab(selectTab), 1); // need to let dom regenerate
         });
   }
 
