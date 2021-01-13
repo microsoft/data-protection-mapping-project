@@ -191,7 +191,7 @@ table, th, td {
 
 .mat-tab-label {
   min-width: 50px !important;
-  padding: 0px !important;
+  padding: 15px !important;
 }
 
 mat-card {
