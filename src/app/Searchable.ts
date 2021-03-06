@@ -80,7 +80,7 @@ export class Searchable {
     // Called from the debounced search subject to do the actual searching.
     private filterFn(value: string, treeModel: TreeModel, tab: GraphTab) {
         if (value != "") {
-            this.tryRunIndex(tab.doc, tab.selectedLang);
+            this.tryRunIndex(tab.doc, tab.viewSettings.selectedLang);
 
             // Do actual search
             var searchResult = this.fuse.search(value);

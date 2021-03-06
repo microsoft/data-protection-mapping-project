@@ -2,8 +2,10 @@
 var Excel = require('exceljs');
 
 var xlsxFile = "./src/assets/database.xlsx";
-var outputFile = "./src/assets/db.json";
-var outputFile2 = "./docs/assets/db.json"; // write one straight to the bin file so the user doesnt have to run the build pipeline.
+
+var outputDir1 = "./src/assets/output/";
+var outputDir2 = "./docs/assets/output/"; // write one straight to the bin file so the user doesnt have to run the build pipeline.
+var outputFile = "db.json";
 
 function flatten(nodes, result) {
     for (var n of nodes)
@@ -46,12 +48,28 @@ function exportXlsx(allDocs) {
       });
 }
 
-function writeResult(result) {
+function writeResultDir(dir, result) {
     const fs = require('fs');
+
+    if (!fs.existsSync(dir)){
+      fs.mkdirSync(dir);
+    }
+
     let data = JSON.stringify(result, null, 4);  
     //console.log(data);
-    fs.writeFileSync(outputFile, data); 
-    fs.writeFileSync(outputFile2, data); 
+    fs.writeFileSync(dir + outputFile, data);
+
+    // for perf reasons, write it out in chunks to
+    var index = Object.assign({}, result);
+    var docs = index.docs;
+    index.docs = index.docs.map(v => { return { id: v.id, type: v.type }; });
+
+    // write out the index
+    fs.writeFileSync(dir + 'docs-index.json', JSON.stringify(index));
+
+    // write out each doc
+    for (var d of docs)
+      fs.writeFileSync(dir + 'docs-' + d.id + '.json', JSON.stringify(d)); 
 }
 
 var mergeLinks = function (src, dst) {
@@ -172,10 +190,14 @@ function processRegulation(worksheet) {
   var idsCol = worksheet.getColumn(1);
   var headerRow = worksheet.getRow(1);
 
+  // override ISO tab name so its real name can be anything
+  var sheetName = worksheet.id > 1 ? worksheet.name : "ISO";
+
   var ids = [];
   var doc = {
-      "type": worksheet.name.trim(),
-      "id": worksheet.name.replace(/\W/g, ''), // keep only alphanumeric
+      "type": sheetName.trim(),
+      "id": sheetName.replace(/\W/g, ''), // keep only alphanumeric
+      "section": worksheet.name,
       "rev": 1,
       "children": [],
       "langs": []
@@ -337,13 +359,13 @@ function importXlsx() {
             "changelog": changeLog,
             "docs": allDocs
           };
-          writeResult(db);
+          writeResultDir(outputDir1, db);
+          writeResultDir(outputDir2, db);
       });
 };
 
 module.exports = {
     exportXlsx,
-    writeResult,
     mergeDoc,
     normalizePath,
     mergeLinks

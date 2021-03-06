@@ -58,6 +58,7 @@ export interface DAG {
 export class GraphService {
   private docGuids = {};
   private docDb: Db = null;
+  private docs = {};
   private nextDocGuid = 0;
   private filterOrder = [];
   private runningFilters = false;
@@ -114,27 +115,38 @@ export class GraphService {
       return value;
   }
 
-  getDb() : Observable<Db> {
+  getDbIndex() : Observable<Db> {
       if (this.docDb)
           return of(this.docDb);
 
-      return this.http.get<Db>('assets/db.json', {responseType: 'json'})
+      return this.http.get<Db>('assets/output/docs-index.json', {responseType: 'json'})
         .pipe(
           tap(
             data => {
               this.docDb = data;
-              this.docDb.changelog = this.docDb.changelog.map(v => {
-                v.date = new Date(v.date).toLocaleDateString();
-                return v;
-              });
             },
-            error => this.handleError("getDb", [])
+            error => this.handleError("getDbIndex", [])
+          )
+        );
+  }
+
+  getDoc(id: string) : Observable<Doc2> {
+      if (this.docs[id])
+          return of(this.docs[id]);
+
+      return this.http.get<Doc2>('assets/output/docs-' + id + '.json', {responseType: 'json'})
+        .pipe(
+          tap(
+            data => {
+              this.docs[id] = data;
+            },
+            error => this.handleError("getDoc", [])
           )
         );
   }
 
   getDocTypes() : Observable<CategoryList> {
-      return this.getDb().pipe(
+      return this.getDbIndex().pipe(
         map(
           data => {
               return data.docs.map(v => { return { id: v.id, title: v.type }; });
@@ -161,18 +173,17 @@ export class GraphService {
   }
 
   getFullDocByType(id: string) : Observable<FullDocNode> {
-      return this.getDb().pipe(
+      return this.getDoc(id).pipe(
         map(
           data => {
-              var doc = data.docs.find(n => n.id == id);
-              return this.addToDoc(null, doc);
+              return this.addToDoc(null, data);
           }
         )
       );
   }
 
   getChangeLog(): Observable<Change[]> {
-    return this.getDb().pipe(
+    return this.getDbIndex().pipe(
       map(
         data => {
           return data.changelog;
@@ -202,19 +213,25 @@ export class GraphService {
 
           this.graphTabs.push(newTab);
           this.ensureISOIsInMiddle();
-            
-          if (id != "ISO") 
-          {
-              // compare with iso.
-              newTab.coverage = this.compareDocs(newTab.column, this.graphTabs[1]);
-          }
+
+          // Coverage calculation is disabled to save time.
+          //if (id != "ISO") 
+          //{
+          //    // compare with iso.
+          //    newTab.coverage = this.compareDocs(newTab.column, this.graphTabs[1]);
+          //}
 
           var selectTab = newTab;
           if (newTab.isAll) {
             selectTab = this.graphTabs.find(t => t.isIso);
           }
 
-          // Activate tab
+          // The current request is to NOT activate the newly added tab. So only activate index 0
+          if (this.graphTabs.length != 1) {
+            selectTab = this.graphTabs[this.selectedTab]; // reselect current selection
+          }
+
+          // even if we dont change tabs, we still have to reactive it to configure filters
           this.selectedTab = -1; // set it to non-value so change is detected if the index is the same
           setTimeout(() => this.activateTab(selectTab), 1); // need to let dom regenerate
         });
