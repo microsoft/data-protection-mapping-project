@@ -51,7 +51,7 @@ A serial contributor of quality data or code is a candidate to become a curator 
 A Data Consumer accesses the curated data. They understand that the data is provided “as-is” with no guarantees or warranties as to (a) the correctness of the data or (b) suitability for any particular purpose. All data is fully qualified as to its origin and any clarifications made and it is up to the consumer to decide whether to use the data at their own risk.
 #### Code Committer
 While the Project is focused on data, the project initially contains a modest amount of code to enable data import and data visualization. Upon the initial release of the project, code committership and data curatorship roles are integrated. But it is recognized that there is a distinct skill set that is required for a Code Committer and a Data Curator. Separation of roles may develop as the project evolve.
-The current Code Committers are: Benjamin Wong, Jieying Chng, and Alex Li on behalf of Microsoft
+The current Code Committer is Alex Li on behalf of Microsoft
 #### Removal from role
 In the unlikely event that a committer or curator becomes disruptive or falls inactive for an extended period of time, they may be removed from the role through an absolute majority vote of the remaining set of committers and curators. Committers and curators may resign at any time from the Project. Advance notice in case of resignation is encouraged to identify replacement. 
 ### Voting
@@ -63,7 +63,7 @@ Most decisions within the project can be done through informal consensus and rec
 
 ### Running the app
 
-You can access the app live at the following URL: https://dataprotectionmapping.z21.web.core.windows.net/.
+You can access the app live at the following URL: https://dataprotectionmapping.z21.web.core.windows.net/ or https://aka.ms/dpmap.
 
 ### Building the code
 
