@@ -232,8 +232,7 @@ export class GraphService {
           }
 
           // even if we dont change tabs, we still have to reactive it to configure filters
-          this.selectedTab = -1; // set it to non-value so change is detected if the index is the same
-          setTimeout(() => this.activateTab(selectTab), 1); // need to let dom regenerate
+          this.activateTab(selectTab);
         });
   }
 
@@ -296,6 +295,14 @@ export class GraphService {
       }
   }
 
+  public tabChanged() {
+    this.configureFilterStack();
+
+    if (this.selectedTab >= 0 && this.selectedTab < this.graphTabs.length) {
+      this.graphTabs[this.selectedTab].parentTabTreeChanged();
+    }
+  }
+
   public removeTab(tab) {
       this.graphTabs = this.graphTabs.filter(t => t!=tab);
       this.ensureISOIsInMiddle();
@@ -304,27 +311,18 @@ export class GraphService {
 
   public activateTab(tab: GraphTab): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
-
       var newIndex = this.graphTabs.indexOf(tab);
-      if (newIndex != this.selectedTab)
-      {
+      var finalize = () => {
         this.selectedTab = newIndex;
-        this.configureFilterStack();
+        this.tabChanged();
         setTimeout(() => {
           resolve(true);
         }, 1000);
-      }
-      else
-      {
-        this.selectedTab = -1;
-        setTimeout(() => {
-          this.selectedTab = newIndex;
-          this.configureFilterStack();
-          setTimeout(() => {
-            resolve(true);
-          }, 1000);
-        }, 10);
-      }
+      };
+
+      // if the index is the same
+      this.selectedTab = -1; // set it to non-value so change is detected
+      setTimeout(finalize, 1000); // give dom time to stabilize
     });
   }
 
