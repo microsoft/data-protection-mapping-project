@@ -48,11 +48,16 @@ function exportXlsx(allDocs) {
       });
 }
 
-function writeResultDir(dir, result) {
+function writeResultDir(dir, result, optional) {
     const fs = require('fs');
 
-    if (!fs.existsSync(dir)){
-      fs.mkdirSync(dir);
+    try {
+      if (!fs.existsSync(dir)){
+        fs.mkdirSync(dir);
+      }
+    } catch (e) {
+      if (!optional)
+        throw e;
     }
 
     let data = JSON.stringify(result, null, 4);  
@@ -360,7 +365,7 @@ function importXlsx() {
             "docs": allDocs
           };
           writeResultDir(outputDir1, db);
-          writeResultDir(outputDir2, db);
+          writeResultDir(outputDir2, db, true); // this is only here to hot fix an existing build. if there's no build, no need.
       });
 };
 
