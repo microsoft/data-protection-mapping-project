@@ -1,0 +1,7 @@
+# Set the default behavior, in case people don't have core.autocrlf set.
+* text=auto
+
+# Also can define which files are text and binary, to help Git make the right decision
+*.md   text
+
+*.png  binary

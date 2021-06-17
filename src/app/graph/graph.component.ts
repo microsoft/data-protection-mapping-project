@@ -364,12 +364,7 @@ export class GraphComponent implements OnInit, OnDestroy {
     //}
 
     public tabChanged() {
-        this.graphService.configureFilterStack();
-
-        if (this.graphService.selectedTab >= 0 && this.graphService.selectedTab < this.graphService.graphTabs.length)
-        {
-            this.graphService.graphTabs[this.graphService.selectedTab].parentTabTreeChanged();
-        }
+        this.graphService.tabChanged();
     }
 
     public activateNode(tab: GraphTab, event: any) {
@@ -738,7 +733,7 @@ export class GraphComponent implements OnInit, OnDestroy {
           tab = tab.column;
         else if (this.graphService.selectedTab != index)
           finalize = this.graphService.activateTab(tab);
-
+        
         finalize.then(v => {
           var nextId = tab.treeModel.getVisibleRoots()[0].id
           GraphComponent.selectInputById(tab, nextId);
