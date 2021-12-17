@@ -226,7 +226,7 @@ function processRegulation(worksheet) {
       if (processingNotes)
       {
         // process notes row
-        console.log("notes.");
+        console.log("notes. rowNumber=", rowNumber);
         
         // skip blank rows
         if (idText == "")
