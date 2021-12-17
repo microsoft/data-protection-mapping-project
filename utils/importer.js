@@ -56,12 +56,13 @@ function writeResultDir(dir, result, optional) {
         fs.mkdirSync(dir);
       }
     } catch (e) {
+      console.log("writeResultDir e=", e);
       if (!optional)
         throw e;
     }
 
     let data = JSON.stringify(result, null, 4);  
-    //console.log(data);
+    console.log(data);
     fs.writeFileSync(dir + outputFile, data);
 
     // for perf reasons, write it out in chunks to
