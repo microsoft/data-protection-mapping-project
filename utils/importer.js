@@ -51,6 +51,7 @@ function exportXlsx(allDocs) {
 function writeResultDir(dir, result, optional) {
     const fs = require('fs');
 
+    /*
     try {
       if (!fs.existsSync(dir)){
         fs.mkdirSync(dir);
@@ -60,6 +61,7 @@ function writeResultDir(dir, result, optional) {
       if (!optional)
         throw e;
     }
+    */
 
     let data = JSON.stringify(result, null, 4); 
     fs.writeFileSync(dir + outputFile, data);
