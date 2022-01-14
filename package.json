@@ -7,7 +7,7 @@
     "lint": "tslint ./src/**/*.ts -t verbose",
     "start": "npm run import && ng serve",
     "test": "ng test",
-    "build": "npm run import && ng build --prod=true --outputPath=docs",
+    "build": "npm run import && ng build --prod=true",
     "e2e": "ng e2e",
     "ng": "ng",
     "import": "node utils/importer.js",
