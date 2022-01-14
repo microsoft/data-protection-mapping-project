@@ -51,17 +51,19 @@ function exportXlsx(allDocs) {
 function writeResultDir(dir, result, optional) {
     const fs = require('fs');
 
+    /*
     try {
       if (!fs.existsSync(dir)){
         fs.mkdirSync(dir);
       }
     } catch (e) {
+      console.log("writeResultDir()", dir, result, optional," e=", e);
       if (!optional)
         throw e;
     }
+    */
 
-    let data = JSON.stringify(result, null, 4);  
-    //console.log(data);
+    let data = JSON.stringify(result, null, 4); 
     fs.writeFileSync(dir + outputFile, data);
 
     // for perf reasons, write it out in chunks to
@@ -226,7 +228,7 @@ function processRegulation(worksheet) {
       if (processingNotes)
       {
         // process notes row
-        console.log("notes.");
+        console.log("notes. rowNumber=", rowNumber);
         
         // skip blank rows
         if (idText == "")
