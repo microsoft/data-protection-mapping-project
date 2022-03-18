@@ -38,7 +38,7 @@
     "d3-sankey": "^0.12.1",
     "d3-selection-multi": "^1.0.1",
     "exceljs": "^1.11.0",
-    "fuse.js": "^3.4.5",
+    "fuse.js": "^6.5.3",
     "mammoth": "^1.4.19",
     "mobx": "4.1.0",
     "mobx-angular": "^2.1.1",
