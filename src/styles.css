@@ -26,3 +26,45 @@ body {
   position: absolute;
   width: 1px;
 }
+
+@media print {
+  .dontprint {
+    display: none !important;
+  }
+
+  body {
+    zoom: 60%;
+    -webkit-print-color-adjust: exact;
+  }
+
+  .zoom-viewport {
+    height: unset !important;
+  }
+
+  .scroll-parent {
+    overflow-x: unset !important;
+    height: unset !important;
+  }
+
+  .mat-drawer-content {
+    position: unset !important;
+    height: unset !important;
+  }
+
+  .mat-drawer-container {
+    position: unset !important;
+    height: unset !important;
+  }
+
+  .graph-columns {
+    overflow: unset !important;
+  }
+
+  .angular-tree-component {
+    -webkit-touch-callout: unset !important;
+    -webkit-user-select: unset !important;
+    -moz-user-select: unset !important;
+    -ms-user-select: unset !important;
+    user-select: unset !important;
+  }
+}
