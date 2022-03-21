@@ -3,7 +3,7 @@
   <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
     <ng-container matColumnDef="date">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Date </th>
-      <td mat-cell *matCellDef="let element"> {{element.date}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.date | formatDate}} </td>
     </ng-container>
     <ng-container matColumnDef="author">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Author </th>
