@@ -94,7 +94,7 @@
       </div>
       <div class="graph-columns" margin-right="0px">
           <mat-card class="fill-graph">
-            <div class="settings-row">
+            <div class="settings-row dontprint">
               <div class="settings-row" fxFlex="1 0 auto" fxLayout="row" fxFlexFill>
                 <span class="example-spacer"></span>
                 <div class="setting">
@@ -195,7 +195,7 @@
             </div>
           </mat-card>
       </div>
-      <button mat-button class="filter-pin" [class.filter-hidden]="hideFilter" (click)="toggleShowFilter()"><mat-icon>push_pin</mat-icon><span class="visuallyhidden">Open/Close Filter</span></button>
+      <button mat-button class="filter-pin dontprint" [class.filter-hidden]="hideFilter" (click)="toggleShowFilter()"><mat-icon>push_pin</mat-icon><span class="visuallyhidden">Open/Close Filter</span></button>
       <button mat-button class="error-icon" [class.error-hidden]="!graphService.anyErrors" (click)="dialogService.openDialog('errors')"><mat-icon>error</mat-icon><span class="visuallyhidden">Show Errors</span></button>
     </div>
   </div>
