@@ -75,8 +75,8 @@
                              [class.node-content-wrapper-active]="node.isActive"
                              [class.node-content-wrapper-focused]="node.isFocused"
                              (click)="node.mouseAction('click', $event)"
-                             [style.background-color]="node|getNodeColor:t.column" id="{{t.id + '.lbl.' + node.data.node.id}}" >
-                          <div class="node-content-icon"><mat-icon class="node-content-icon" aria-hidden="false" title="{{node|getNodeIconAlt:t.column}}" attr.aria-label="{{node|getNodeIconAlt:t.column}}">{{node|getNodeIcon:t.column}}</mat-icon></div>
+                             [style.background-color]="t.displayLinks|getNodeColor:t:node" id="{{t.id + '.lbl.' + node.data.node.id}}" >
+                          <div class="node-content-icon"><mat-icon class="node-content-icon" aria-hidden="false" title="{{node|getNodeIconAlt:t}}" attr.aria-label="{{node|getNodeIconAlt:t}}">{{t.displayLinks|getNodeIcon:t:node}}</mat-icon></div>
                           <span [lang]="t.viewSettings.selectedLang">
                             <span *ngIf="!node.data.node.hyperlink" [innerHTML]="t.viewSettings|injectHighlightSection:node.data"></span>
                             <a *ngIf="node.data.node.hyperlink" (mousedown)="openTab(node.data.node.hyperlink)" class="fake-link" target="_blank" href="{{node.data.node.hyperlink}}" [innerHTML]="t.viewSettings|injectHighlightSection:node.data"></a>
@@ -139,9 +139,9 @@
                                [class.node-content-wrapper-active]="node.isActive"
                                [class.node-content-wrapper-focused]="node.isFocused"
                                (click)="node.mouseAction('click', $event)"
-                               [style.background-color]="node|getNodeColor:t.column"
+                               [style.background-color]="t.column.displayLinks|getNodeColor:t.column:node"
                                [attr.aria-expanded]="node.visibleChildren.length ? (node.isExpanded?'true':'false') : null">
-                            <div class="node-content-icon"><mat-icon aria-hidden="false" title="{{node|getNodeIconAlt:t.column}}" attr.aria-label="{{node|getNodeIconAlt:t.column}}">{{node|getNodeIcon:t.column}}</mat-icon></div>
+                            <div class="node-content-icon"><mat-icon aria-hidden="false" title="{{node|getNodeIconAlt:t.column}}" attr.aria-label="{{node|getNodeIconAlt:t.column}}">{{t.column.displayLinks|getNodeIcon:t.column:node}}</mat-icon></div>
                             <span [lang]="t.viewSettings.selectedLang">
                               <span *ngIf="!node.data.node.hyperlink">{{node|getSection:t.viewSettings}}</span>
                               <a *ngIf="node.data.node.hyperlink" (mousedown)="openTab(node.data.node.hyperlink)" class="fake-link" target="_blank" href="{{node.data.node.hyperlink}}">{{node|getSection:t.viewSettings}}</a>
