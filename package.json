@@ -41,7 +41,7 @@
     "fuse.js": "^3.4.5",
     "mammoth": "^1.4.19",
     "mobx": "4.1.0",
-    "mobx-angular": "^2.1.1",
+    "mobx-angular": "^3.1.1",
     "moment": "^2.29.1",
     "ngx-cookie-service": "^2.3.0",
     "rxjs": "~6.5.4",
