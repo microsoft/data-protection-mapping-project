@@ -9,6 +9,7 @@ export class GraphFilter {
     static Unmapped = 3;
     static ChildrenUnmapped = 4;
     static Filtered = 5;
+    static NoConnections = 6; // No connections visible, different than unmapped. 
 
     static visualTraits = [
       { color: 'unset', icon: '', alt: '' },
@@ -17,6 +18,7 @@ export class GraphFilter {
       { color: '#ff6969', icon: 'error', alt: 'This node is not mapped.' },
       { color: '#ffc0cb', icon: 'warning', alt: 'This node has children that are not mapped.' },
       { color: '#ffff00', icon: 'done', alt: 'This node is selected in the filter.' },
+      { color: '#f18f01', icon: 'error', alt: 'This node has no connections based on the active filter.' },
     ];
 
     public static runFilter(tab: GraphTab) {

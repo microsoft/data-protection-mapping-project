@@ -26,3 +26,60 @@ body {
   position: absolute;
   width: 1px;
 }
+
+/*
+    Custom print style overrides.
+    In Chrome, you must use "Save as PDF" on the print dialog, not "Microsoft Print as PDF".
+    Microsoft Print as PDF has known issues https://stackoverflow.com/a/66017274
+*/
+@media print {
+
+  /* put this class on stuff that should not be printed */
+  .dontprint {
+    display: none !important;
+  }
+
+  body {
+    zoom: 60%; /* zoom to fit 3 columns across 1 page */
+    -webkit-print-color-adjust: exact; /* this is needed to reproduce background/font colors in the pdf */
+  }
+
+  /* disable all the vertical overflow/height locking from the graph */
+  .zoom-viewport {
+    height: unset !important;
+  }
+
+  .scroll-parent {
+    overflow-x: unset !important;
+    height: unset !important;
+  }
+
+  .mat-drawer-content {
+    position: unset !important;
+    height: unset !important;
+    padding: unset !important; /* this padding is redundant to page margin in a print */
+  }
+
+  .mat-drawer-container {
+    position: unset !important;
+    height: unset !important;
+  }
+
+  .graph-columns {
+    overflow: unset !important;
+  }
+
+  /*
+    These are attempts to fix the page cutting off text during "save as pdf".
+    None of them are effective yet for some reason.
+
+  .node-wrapper {
+    position: relative !important;
+    page-break-inside: avoid !important;
+  }
+  .node-content-wrapper {
+    position: relative !important;
+    page-break-inside: avoid !important;
+    display: inline-block !important;
+  }*/
+}

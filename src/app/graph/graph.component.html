@@ -9,7 +9,7 @@
     </div>-->
   <div fxLayout="column" fxFlexFill>
     <div fxLayout="row" fxLayoutGap="32px" fxLayoutAlign="flex-start" class="container">
-      <div fxFlex="0 0 300px" [class.hide-filter]="hideFilter">
+      <div fxFlex="0 0 300px" [class.hide-filter]="hideFilter" class="dontprint">
         <mat-card class="graph-categories">
           <div class="title-container">
             <mat-card-title class="filter-title">Filter</mat-card-title>
@@ -75,8 +75,8 @@
                              [class.node-content-wrapper-active]="node.isActive"
                              [class.node-content-wrapper-focused]="node.isFocused"
                              (click)="node.mouseAction('click', $event)"
-                             [style.background-color]="node|getNodeColor:t.column" id="{{t.id + '.lbl.' + node.data.node.id}}" >
-                          <div class="node-content-icon"><mat-icon class="node-content-icon" aria-hidden="false" title="{{node|getNodeIconAlt:t.column}}" attr.aria-label="{{node|getNodeIconAlt:t.column}}">{{node|getNodeIcon:t.column}}</mat-icon></div>
+                             [style.background-color]="t.displayLinks|getNodeColor:t:node" id="{{t.id + '.lbl.' + node.data.node.id}}" >
+                          <div class="node-content-icon"><mat-icon class="node-content-icon" aria-hidden="false" title="{{node|getNodeIconAlt:t}}" attr.aria-label="{{node|getNodeIconAlt:t}}">{{t.displayLinks|getNodeIcon:t:node}}</mat-icon></div>
                           <span [lang]="t.viewSettings.selectedLang">
                             <span *ngIf="!node.data.node.hyperlink" [innerHTML]="t.viewSettings|injectHighlightSection:node.data"></span>
                             <a *ngIf="node.data.node.hyperlink" (mousedown)="openTab(node.data.node.hyperlink)" class="fake-link" target="_blank" href="{{node.data.node.hyperlink}}" [innerHTML]="t.viewSettings|injectHighlightSection:node.data"></a>
@@ -94,7 +94,7 @@
       </div>
       <div class="graph-columns" margin-right="0px">
           <mat-card class="fill-graph">
-            <div class="settings-row">
+            <div class="settings-row dontprint">
               <div class="settings-row" fxFlex="1 0 auto" fxLayout="row" fxFlexFill>
                 <span class="example-spacer"></span>
                 <div class="setting">
@@ -139,9 +139,9 @@
                                [class.node-content-wrapper-active]="node.isActive"
                                [class.node-content-wrapper-focused]="node.isFocused"
                                (click)="node.mouseAction('click', $event)"
-                               [style.background-color]="node|getNodeColor:t.column"
+                               [style.background-color]="t.column.displayLinks|getNodeColor:t.column:node"
                                [attr.aria-expanded]="node.visibleChildren.length ? (node.isExpanded?'true':'false') : null">
-                            <div class="node-content-icon"><mat-icon aria-hidden="false" title="{{node|getNodeIconAlt:t.column}}" attr.aria-label="{{node|getNodeIconAlt:t.column}}">{{node|getNodeIcon:t.column}}</mat-icon></div>
+                            <div class="node-content-icon"><mat-icon aria-hidden="false" title="{{node|getNodeIconAlt:t.column}}" attr.aria-label="{{node|getNodeIconAlt:t.column}}">{{t.column.displayLinks|getNodeIcon:t.column:node}}</mat-icon></div>
                             <span [lang]="t.viewSettings.selectedLang">
                               <span *ngIf="!node.data.node.hyperlink">{{node|getSection:t.viewSettings}}</span>
                               <a *ngIf="node.data.node.hyperlink" (mousedown)="openTab(node.data.node.hyperlink)" class="fake-link" target="_blank" href="{{node.data.node.hyperlink}}">{{node|getSection:t.viewSettings}}</a>
@@ -195,7 +195,7 @@
             </div>
           </mat-card>
       </div>
-      <button mat-button class="filter-pin" [class.filter-hidden]="hideFilter" (click)="toggleShowFilter()"><mat-icon>push_pin</mat-icon><span class="visuallyhidden">Open/Close Filter</span></button>
+      <button mat-button class="filter-pin dontprint" [class.filter-hidden]="hideFilter" (click)="toggleShowFilter()"><mat-icon>push_pin</mat-icon><span class="visuallyhidden">Open/Close Filter</span></button>
       <button mat-button class="error-icon" [class.error-hidden]="!graphService.anyErrors" (click)="dialogService.openDialog('errors')"><mat-icon>error</mat-icon><span class="visuallyhidden">Show Errors</span></button>
     </div>
   </div>
