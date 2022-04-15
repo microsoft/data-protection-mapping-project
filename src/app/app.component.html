@@ -14,7 +14,7 @@
                    [fixedInViewport]="true"
                    [fixedTopGap]="64"
                    position="end"
-                   hasBackdrop="true"  (keydown)="closeSidenav()">
+                   hasBackdrop="true" (keydown)="closeSidenav()">
         <div><button class="menu-button" mat-raised-button (click)="dialogsService.openDialog('about')">Project Charter</button></div>
         <div><button class="menu-button" mat-raised-button (click)="dialogsService.openDialog('howto')">How to use this site</button></div>
         <div><button class="menu-button" mat-raised-button (click)="dialogsService.openDialog('download')">Download Data</button></div>
@@ -22,6 +22,7 @@
         <div><button class="menu-button" mat-raised-button (click)="dialogsService.openDialog('changelog')">Change Log</button></div>
         <div><button class="menu-button" mat-raised-button (click)="dialogsService.openDialog('credits')">Credits</button></div>
         <div><button class="menu-button" mat-raised-button (click)="dialogsService.openDialog('disclaimer')">Disclaimer</button></div>
+        <div><button class="menu-button" mat-raised-button (click)="dialogsService.openDialog('feedback')">Send Feedback</button></div>
         <div class="padded-container"><a href="https://github.com/microsoft/data-protection-mapping-project" target="_blank"><img class="centered-image" src="assets/icons/github-black.svg" alt="GitHub Repository" /></a></div>
         <div class="padded-container"><a href="https://www.linkedin.com/company/dpmap" target="_blank"><img class="centered-image" src="assets/icons/LinkedIn_logo_In-Black.svg" alt="Project Linkedin Page" /></a></div>
       </mat-sidenav>
