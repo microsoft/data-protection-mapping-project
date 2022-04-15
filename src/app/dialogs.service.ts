@@ -10,6 +10,7 @@ import { DownloadDialogComponent } from './dialogs/download-dialog.component';
 import { HowToDialogComponent } from './dialogs/howto-dialog.component';
 import { ErrorsDialogComponent } from './dialogs/errors-dialog.component';
 import { PurchaseDialogComponent } from './dialogs/purchase-dialog.component';
+import { MultiSelectRegsDialogComponent } from './dialogs/multi-select-regs-dialog.component';
 
 import { CookieService } from 'ngx-cookie-service';
 
@@ -27,7 +28,7 @@ export class DialogsService {
 		//sideNav.close();
 
 		var dialogType = null;
-    switch (dialogId) {
+        switch (dialogId) {
 			case 'about': dialogType = AboutDialogComponent; break;
 			case 'changelog': dialogType = ChangeLogDialogComponent; break;
 			case 'contribute': dialogType = ContributeDialogComponent; break;
@@ -35,8 +36,10 @@ export class DialogsService {
 			case 'disclaimer': dialogType = DisclaimerDialogComponent; break;
 			case 'download': dialogType = DownloadDialogComponent; break;
 			case 'howto': dialogType = HowToDialogComponent; break;
-      case 'purchase': dialogType = PurchaseDialogComponent; break;
-      case 'errors': dialogType = ErrorsDialogComponent; break;
+            case 'purchase': dialogType = PurchaseDialogComponent; break;
+            case 'errors': dialogType = ErrorsDialogComponent; break;
+            case 'multi-select-reg': dialogType = MultiSelectRegsDialogComponent; break;
+        
 		}
 
 		if (dialogType) {

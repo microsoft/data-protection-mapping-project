@@ -74,16 +74,28 @@ export class GraphComponent implements OnInit, OnDestroy {
     }
 
     public getMenuOptions(): any[] {
-        var result = [];
+      var result = [];
 
-        if (this.graphService.canAdd)
-        {
-            for (var t of this.graphCategories)
-                if (!this.graphService.graphTabs.find(g => g.id == t.id))
-                    result.push(t);
-        }
+      if (this.graphService.canAdd) {
+        const existing = this.graphService.graphTabs.map(t => t.id);
+        for (var t of this.graphCategories)
+          if ((t.id == 'Multi' || t.id == 'All') && (existing.includes('All') || existing.includes('Multi'))) {
+            // dont compare all to multi, or either to itself
+          }
+          else if (!existing.includes(t.id)) {
+            // if it doesnt exist, add it
+            result.push(t);
+          }
+      }
 
-        return result;
+      return result;
+    }
+
+    private addTab(id: string) {
+      if (id == 'Multi')
+        this.dialogService.openDialog('multi-select-reg');
+      else
+        this.graphService.addTab(id);
     }
 
     //private DrawTable(data: DAG) {
