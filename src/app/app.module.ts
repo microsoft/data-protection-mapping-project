@@ -68,6 +68,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { injectHighlightBodyPipe, injectHighlightSectionPipe, getCommentTextPipe } from './pipes/HighlightPipe';
 import { getNodeColorPipe, getNodeIconPipe, getNodeIconAltPipe, getBodyPipe, getSectionPipe, getConnectionsTextPipe } from './pipes/NodePipe';
 import { formatDatePipe } from './pipes/FormatDatePipe'
+import { FeedbackDialogComponent } from './dialogs/feedback-dialog.component';
 
 @NgModule({
   imports: [
@@ -128,7 +129,8 @@ import { formatDatePipe } from './pipes/FormatDatePipe'
     HowToDialogComponent,
     PurchaseDialogComponent,
     ErrorsDialogComponent,
-    CharterContentComponent
+    CharterContentComponent,
+    FeedbackDialogComponent
   ],
   declarations: [
     AppComponent,
@@ -148,6 +150,7 @@ import { formatDatePipe } from './pipes/FormatDatePipe'
     StandardMapSearchComponent,
     GraphComponent,
     CharterContentComponent,
+    FeedbackDialogComponent,
 
     injectHighlightBodyPipe,
     injectHighlightSectionPipe,
