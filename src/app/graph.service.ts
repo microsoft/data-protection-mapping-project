@@ -200,7 +200,7 @@ export class GraphService {
       return this.graphTabs.length < 3;
   }
 
-  public addTab(id: string) {
+  public addTab(id: string, filterTopLevelKeys: string[] = null, customName: string = null) {
       if (!this.canAdd)
           return;
 
@@ -209,7 +209,21 @@ export class GraphService {
           var newTab = new GraphTab(this, null, doc);
 
           newTab.nodes = doc.children;
-          newTab.column.nodes = doc.children;
+
+          // Filter the top level nodes if desired
+          if (filterTopLevelKeys) {
+            newTab.nodes = doc.children.filter(c => {
+              var rootKey = c.id.replace(/_/g, ''); // The 'all' structure has _,  where the menu choice has those stripped. Remove them for comparison.
+              return filterTopLevelKeys.includes(rootKey);
+            });
+          }
+
+          // Override the tab name if desired
+          if (customName)
+            newTab.title = customName;
+
+          // Reference this data from the column view.
+          newTab.column.nodes = newTab.nodes;
 
           this.graphTabs.push(newTab);
           this.ensureISOIsInMiddle();

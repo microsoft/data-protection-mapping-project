@@ -1,0 +1,17 @@
+<h2 mat-dialog-title>Multi-select Regulations</h2>
+<mat-dialog-content class="mat-typography">
+  <mat-selection-list #regs class="select-list">
+    <mat-list-option *ngFor="let reg of dataSource" [value]="reg.id">
+      {{reg.title}}
+    </mat-list-option>
+  </mat-selection-list>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button color="primary" [mat-dialog-close]="true" cdkFocusInitial (click)="addRegulations()">Ok</button>
+</mat-dialog-actions>
+
+
+<!-- Copyright 2019 Google LLC. All Rights Reserved.
+    Use of this source code is governed by an MIT-style license that
+    can be found in the LICENSE file at http://angular.io/license -->

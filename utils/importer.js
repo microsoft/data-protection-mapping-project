@@ -362,6 +362,17 @@ function importXlsx() {
 
           allDocs.push(allDoc);
 
+          // Create multi-doc metadata
+          var multiDoc = {
+              "type": "Multi-Select",
+              "id": "Multi",
+              "rev": 1,
+              "children": [],
+              "langs": []
+          };
+
+          allDocs.push(multiDoc);
+
           var db = {
             "changelog": changeLog,
             "docs": allDocs
