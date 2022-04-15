@@ -16,7 +16,7 @@
             <span class="example-spacer"></span>
             <button mat-button aria-label="Add Regulation Tab" [matMenuTriggerFor]="menu" class="add-button" [class.button-disabled]="!graphService.canAdd"><mat-icon>add_box</mat-icon></button>
             <mat-menu #menu="matMenu">
-              <button mat-menu-item *ngFor="let d of getMenuOptions()" (click)="graphService.addTab(d.id)">{{d.title}}</button>
+              <button mat-menu-item *ngFor="let d of getMenuOptions()" (click)="addTab(d.id)">{{d.title}}</button>
             </mat-menu>
           </div>
 

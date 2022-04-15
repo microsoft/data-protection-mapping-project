@@ -21,7 +21,8 @@ import { DownloadDialogComponent }    from './dialogs/download-dialog.component'
 import { HowToDialogComponent }    from './dialogs/howto-dialog.component';
 import { PurchaseDialogComponent }    from './dialogs/purchase-dialog.component';
 import { ErrorsDialogComponent }    from './dialogs/errors-dialog.component';
-import { CharterContentComponent }    from './dialogs/charter-content.component';
+import { CharterContentComponent } from './dialogs/charter-content.component';
+import { MultiSelectRegsDialogComponent } from './dialogs/multi-select-regs-dialog.component';
 import { MessagesComponent }    from './messages/messages.component';
 import { GraphComponent }      from './graph/graph.component';
 import { TreeModule } from 'angular-tree-component';
@@ -128,7 +129,8 @@ import { formatDatePipe } from './pipes/FormatDatePipe'
     HowToDialogComponent,
     PurchaseDialogComponent,
     ErrorsDialogComponent,
-    CharterContentComponent
+    CharterContentComponent,
+    MultiSelectRegsDialogComponent
   ],
   declarations: [
     AppComponent,
@@ -148,6 +150,7 @@ import { formatDatePipe } from './pipes/FormatDatePipe'
     StandardMapSearchComponent,
     GraphComponent,
     CharterContentComponent,
+    MultiSelectRegsDialogComponent,
 
     injectHighlightBodyPipe,
     injectHighlightSectionPipe,
