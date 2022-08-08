@@ -42,7 +42,7 @@
     "mammoth": "^1.4.19",
     "mobx": "4.1.0",
     "mobx-angular": "^3.1.1",
-    "moment": "^2.29.1",
+    "moment": "^2.29.4",
     "ngx-cookie-service": "^2.4.0",
     "rxjs": "~6.5.4",
     "zone.js": "~0.10.3"
