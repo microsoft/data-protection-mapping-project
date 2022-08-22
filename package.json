@@ -40,7 +40,7 @@
     "exceljs": "^4.3.0",
     "fuse.js": "^6.6.2",
     "mammoth": "^1.4.19",
-    "mobx": "4.1.0",
+    "mobx": "6.6.1",
     "mobx-angular": "^3.1.1",
     "moment": "^2.29.4",
     "ngx-cookie-service": "^2.4.0",
